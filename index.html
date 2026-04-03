@@ -1,0 +1,1851 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EDUCEM Campus Cancún | Asesores Comerciales</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0d1b3e;
+    --navy-mid: #1a2f5e;
+    --navy-light: #253f7a;
+    --gold: #c8a84b;
+    --gold-light: #e2c97e;
+    --white: #f8f9fc;
+    --gray-soft: #e8ecf4;
+    --gray-mid: #9aa3b8;
+    --accent: #4a90d9;
+    --accent-light: #7ab3e8;
+    --success: #2ecc71;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--white);
+    color: var(--navy);
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3 { font-family: 'Playfair Display', serif; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--gray-soft); }
+  ::-webkit-scrollbar-thumb { background: var(--navy-light); border-radius: 3px; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    background: rgba(13,27,62,0.96);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(200,168,75,0.2);
+    transition: all 0.3s;
+  }
+  nav.scrolled { box-shadow: 0 4px 30px rgba(0,0,0,0.3); }
+
+  .nav-link {
+    color: rgba(248,249,252,0.75);
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+    text-decoration: none;
+  }
+  .nav-link:hover { color: var(--gold-light); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 50%, #0a1628 100%);
+    position: relative;
+    overflow: hidden;
+    display: flex; align-items: center;
+  }
+
+  .hero-pattern {
+    position: absolute; inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 50%, rgba(74,144,217,0.12) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(200,168,75,0.08) 0%, transparent 40%),
+      repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(255,255,255,0.01) 40px, rgba(255,255,255,0.01) 41px);
+  }
+
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(74,144,217,0.06) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(74,144,217,0.06) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+  }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(200,168,75,0.15);
+    border: 1px solid rgba(200,168,75,0.3);
+    color: var(--gold-light);
+    font-size: 0.75rem; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 6px 16px; border-radius: 100px;
+    margin-bottom: 24px;
+  }
+
+  .hero-badge::before {
+    content: ''; width: 6px; height: 6px;
+    background: var(--gold); border-radius: 50%;
+    animation: pulse-dot 2s infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .hero-title {
+    font-size: clamp(2.8rem, 6vw, 5rem);
+    line-height: 1.08;
+    color: var(--white);
+    font-weight: 900;
+  }
+
+  .hero-title span {
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    color: rgba(248,249,252,0.65);
+    font-size: 1.1rem;
+    line-height: 1.7;
+    max-width: 560px;
+    margin-top: 20px;
+  }
+
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: linear-gradient(135deg, var(--gold), #b8941e);
+    color: var(--navy);
+    font-weight: 700; font-size: 0.95rem;
+    padding: 14px 32px; border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.25s;
+    box-shadow: 0 4px 20px rgba(200,168,75,0.3);
+    border: none; cursor: pointer;
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(200,168,75,0.45);
+  }
+
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: transparent;
+    color: var(--white);
+    font-weight: 600; font-size: 0.95rem;
+    padding: 14px 32px; border-radius: 8px;
+    text-decoration: none;
+    border: 1.5px solid rgba(248,249,252,0.3);
+    transition: all 0.25s;
+    cursor: pointer;
+  }
+  .btn-secondary:hover {
+    background: rgba(248,249,252,0.08);
+    border-color: rgba(248,249,252,0.6);
+  }
+
+  /* STATS BAR */
+  .stats-bar {
+    background: var(--navy);
+    border-top: 1px solid rgba(200,168,75,0.2);
+    border-bottom: 1px solid rgba(200,168,75,0.2);
+  }
+
+  /* SECTION TITLES */
+  .section-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem; font-weight: 600;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    color: var(--navy);
+    line-height: 1.2;
+  }
+
+  .section-title.light { color: var(--white); }
+
+  /* FILTER TABS */
+  .filter-tabs {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    justify-content: center;
+    margin-bottom: 40px;
+  }
+
+  .filter-tab {
+    padding: 8px 20px; border-radius: 100px;
+    font-size: 0.85rem; font-weight: 600;
+    cursor: pointer; border: 1.5px solid transparent;
+    transition: all 0.2s;
+    background: var(--gray-soft);
+    color: var(--gray-mid);
+  }
+  .filter-tab:hover { color: var(--navy); border-color: var(--navy-light); }
+  .filter-tab.active {
+    background: var(--navy);
+    color: var(--white);
+    border-color: var(--navy);
+  }
+
+  /* ACADEMIC CARDS */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+
+  .academic-card {
+    background: #fff;
+    border-radius: 16px;
+    border: 1.5px solid var(--gray-soft);
+    padding: 24px;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .academic-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: linear-gradient(180deg, var(--navy-mid), var(--accent));
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.3s;
+  }
+
+  .academic-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(13,27,62,0.2);
+    box-shadow: 0 20px 50px rgba(13,27,62,0.12);
+  }
+
+  .academic-card:hover::before { transform: scaleY(1); }
+
+  .card-level {
+    display: inline-block;
+    font-size: 0.68rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 100px;
+    margin-bottom: 12px;
+  }
+
+  .level-bach { background: rgba(200,168,75,0.12); color: #8a6d00; }
+  .level-lic { background: rgba(13,27,62,0.08); color: var(--navy-mid); }
+  .level-dual { background: rgba(74,144,217,0.12); color: #1a5a9a; }
+  .level-pos { background: rgba(46,204,113,0.1); color: #1a7a45; }
+  .level-flex { background: rgba(155,89,182,0.1); color: #6a2f99; }
+  .level-exacer { background: rgba(231,76,60,0.1); color: #c0392b; }
+
+  .card-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem; font-weight: 700;
+    color: var(--navy); line-height: 1.3;
+    margin-bottom: 10px;
+  }
+
+  .card-rvoe {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 0.72rem; font-weight: 600;
+    color: var(--gray-mid);
+    margin-top: auto;
+    padding-top: 14px;
+    border-top: 1px solid var(--gray-soft);
+  }
+
+  .card-rvoe .rvoe-badge {
+    background: rgba(46,204,113,0.1);
+    color: #1a7a45;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .card-meta {
+    display: flex; gap: 12px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+
+  .meta-item {
+    display: flex; align-items: center; gap: 5px;
+    font-size: 0.78rem; color: var(--gray-mid);
+  }
+
+  .meta-icon { font-size: 0.9rem; }
+
+  /* PRICING */
+  .pricing-section {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+    position: relative; overflow: hidden;
+  }
+
+  .pricing-section::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 70% 50%, rgba(200,168,75,0.1) 0%, transparent 60%);
+  }
+
+  .pricing-card {
+    background: rgba(255,255,255,0.06);
+    border: 1.5px solid rgba(255,255,255,0.12);
+    border-radius: 20px;
+    padding: 36px;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s;
+  }
+
+  .pricing-card.highlight {
+    background: rgba(200,168,75,0.1);
+    border-color: rgba(200,168,75,0.4);
+  }
+
+  .price-amount {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem; font-weight: 900;
+    color: var(--white);
+  }
+
+  .price-label {
+    font-size: 0.8rem; font-weight: 500;
+    color: rgba(248,249,252,0.55);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+
+  .price-total {
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    border-radius: 16px; padding: 28px;
+    text-align: center;
+  }
+
+  .commission-pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(46,204,113,0.15);
+    border: 1px solid rgba(46,204,113,0.3);
+    color: #2ecc71;
+    padding: 8px 20px; border-radius: 100px;
+    font-size: 0.85rem; font-weight: 600;
+    margin-top: 16px;
+  }
+
+  /* TIMELINE */
+  .timeline-step {
+    display: flex; gap: 24px;
+    position: relative;
+  }
+
+  .timeline-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 27px; top: 56px;
+    width: 2px; height: calc(100% - 20px);
+    background: linear-gradient(180deg, var(--navy-light), rgba(13,27,62,0.1));
+  }
+
+  .step-circle {
+    width: 56px; height: 56px; flex-shrink: 0;
+    background: var(--navy);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem; font-weight: 900;
+    color: var(--gold);
+    box-shadow: 0 4px 20px rgba(13,27,62,0.2);
+    position: relative; z-index: 1;
+    transition: all 0.3s;
+  }
+
+  .timeline-step:hover .step-circle {
+    background: var(--gold);
+    color: var(--navy);
+    transform: scale(1.1);
+  }
+
+  .step-content {
+    padding-top: 8px; padding-bottom: 32px; flex: 1;
+  }
+
+  .step-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; font-weight: 700;
+    color: var(--navy); margin-bottom: 8px;
+  }
+
+  .step-desc {
+    font-size: 0.88rem; line-height: 1.6;
+    color: #6b7280;
+  }
+
+  .step-docs {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    margin-top: 10px;
+  }
+
+  .doc-tag {
+    background: var(--gray-soft);
+    color: var(--navy-mid);
+    font-size: 0.72rem; font-weight: 600;
+    padding: 4px 10px; border-radius: 6px;
+    border: 1px solid rgba(13,27,62,0.08);
+  }
+
+  /* DOCS SECTION */
+  .docs-section {
+    background: var(--gray-soft);
+  }
+
+  .doc-item {
+    display: flex; align-items: center; gap: 14px;
+    background: #fff;
+    border-radius: 12px; padding: 16px 20px;
+    border: 1.5px solid transparent;
+    transition: all 0.25s;
+  }
+
+  .doc-item:hover {
+    border-color: var(--navy-light);
+    transform: translateX(4px);
+    box-shadow: 0 4px 16px rgba(13,27,62,0.08);
+  }
+
+  .doc-icon {
+    width: 40px; height: 40px;
+    background: rgba(13,27,62,0.06);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; flex-shrink: 0;
+  }
+
+  /* CONTACT */
+  .contact-section {
+    background: var(--navy);
+  }
+
+  .contact-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px; padding: 24px;
+    transition: all 0.3s;
+  }
+
+  .contact-card:hover {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(200,168,75,0.3);
+  }
+
+  /* ANIMATIONS */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .stagger-1 { transition-delay: 0.1s; }
+  .stagger-2 { transition-delay: 0.2s; }
+  .stagger-3 { transition-delay: 0.3s; }
+  .stagger-4 { transition-delay: 0.4s; }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(13,27,62,0.85);
+    backdrop-filter: blur(8px);
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+  .modal-box {
+    background: #fff; border-radius: 20px;
+    max-width: 600px; width: 100%;
+    max-height: 90vh; overflow-y: auto;
+    padding: 36px;
+    transform: translateY(20px);
+    transition: transform 0.3s;
+  }
+  .modal-overlay.open .modal-box { transform: translateY(0); }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    .card-grid { grid-template-columns: 1fr; }
+    .pricing-grid { grid-template-columns: 1fr !important; }
+  }
+
+  /* VOICEFLOW CHAT */
+  #vf-chat-btn {
+    position: fixed; bottom: 28px; right: 28px;
+    width: 60px; height: 60px;
+    background: linear-gradient(135deg, var(--navy-mid), var(--navy));
+    border-radius: 50%; border: 2px solid var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; z-index: 150;
+    box-shadow: 0 8px 30px rgba(13,27,62,0.4);
+    transition: all 0.3s;
+    font-size: 1.5rem;
+    color: var(--gold);
+  }
+  #vf-chat-btn:hover {
+    transform: scale(1.1) rotate(-5deg);
+    box-shadow: 0 12px 40px rgba(13,27,62,0.5);
+  }
+
+  #vf-chat-frame {
+    position: fixed; bottom: 100px; right: 28px;
+    width: 380px; height: 600px;
+    max-height: 80vh;
+    border-radius: 20px; overflow: hidden;
+    box-shadow: 0 20px 60px rgba(13,27,62,0.4);
+    z-index: 150;
+    display: none;
+    border: 1px solid rgba(200,168,75,0.3);
+  }
+  #vf-chat-frame.open { display: block; }
+
+  #vf-chat-frame iframe {
+    width: 100%; height: 100%; border: none;
+  }
+
+  .chat-notification {
+    position: fixed; bottom: 98px; right: 28px;
+    background: var(--navy);
+    border: 1px solid rgba(200,168,75,0.3);
+    color: var(--white); padding: 10px 16px;
+    border-radius: 12px; font-size: 0.82rem; font-weight: 500;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    z-index: 149; white-space: nowrap;
+    animation: slideIn 0.4s ease;
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .scrollmap-section { background: #fff; }
+
+  /* Accordion for Mapa Curricular */
+  .curriculum-item {
+    border: 1.5px solid var(--gray-soft);
+    border-radius: 12px; overflow: hidden; margin-bottom: 12px;
+  }
+  .curriculum-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 16px 20px; cursor: pointer;
+    background: #fff; transition: background 0.2s;
+    font-weight: 600; color: var(--navy);
+  }
+  .curriculum-header:hover { background: var(--gray-soft); }
+  .curriculum-body {
+    display: none; padding: 16px 20px;
+    background: rgba(13,27,62,0.02);
+    font-size: 0.85rem; color: #4b5563;
+    border-top: 1px solid var(--gray-soft);
+  }
+  .curriculum-body.open { display: block; }
+
+  .subject-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 8px; margin-top: 8px;
+  }
+
+  .subject-item {
+    background: #fff; border: 1px solid var(--gray-soft);
+    border-radius: 8px; padding: 8px 12px;
+    font-size: 0.78rem;
+  }
+
+  .subject-code {
+    font-size: 0.65rem; color: var(--gray-mid);
+    font-weight: 600; letter-spacing: 0.05em;
+    display: block; margin-bottom: 2px;
+  }
+
+  .subject-name { font-weight: 600; color: var(--navy); }
+
+  /* HIDDEN CARDS */
+  .academic-card.hidden { display: none; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+    <div class="flex items-center gap-3">
+      <div style="width:38px;height:38px;background:linear-gradient(135deg,var(--gold),#b8941e);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:900;color:var(--navy);font-size:1rem;">E</div>
+      <div>
+        <div style="font-family:'Playfair Display',serif;font-weight:700;color:var(--white);font-size:1rem;line-height:1.1;">EDUCEM</div>
+        <div style="font-size:0.6rem;letter-spacing:0.12em;color:var(--gold-light);text-transform:uppercase;font-weight:600;">Campus Cancún</div>
+      </div>
+    </div>
+    <div class="hidden md:flex items-center gap-8">
+      <a href="#oferta" class="nav-link">Oferta</a>
+      <a href="#costos" class="nav-link">Costos</a>
+      <a href="#proceso" class="nav-link">Proceso</a>
+      <a href="#requisitos" class="nav-link">Requisitos</a>
+      <a href="#mapa" class="nav-link">Mapa Curr.</a>
+      <a href="#contacto" class="nav-link">Contacto</a>
+    </div>
+    <a href="#proceso" class="btn-primary" style="padding:10px 22px;font-size:0.85rem;">
+      Inscribir Alumno →
+    </a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-pattern"></div>
+  <div class="hero-grid"></div>
+  <div class="max-w-7xl mx-auto px-6 py-32 relative z-10 w-full">
+    <div class="max-w-3xl">
+      <div class="hero-badge">🎓 Herramienta para Asesores Comerciales 2026</div>
+      <h1 class="hero-title">
+        Guía Completa de<br>
+        <span>Oferta Educativa</span><br>
+        EDUCEM Cancún
+      </h1>
+      <p class="hero-sub">
+        Instituto Universitario del Centro de México. Consulta rápida de programas académicos, RVOE oficiales, costos de inscripción y proceso completo para convertir prospectos en alumnos.
+      </p>
+      <div class="flex flex-wrap gap-4 mt-10">
+        <a href="#oferta" class="btn-primary">Ver Oferta Académica →</a>
+        <a href="#costos" class="btn-secondary">Consultar Costos</a>
+      </div>
+      <div class="flex flex-wrap gap-8 mt-14">
+        <div>
+          <div style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--gold);">24+</div>
+          <div style="font-size:0.8rem;color:rgba(248,249,252,0.55);margin-top:2px;">Programas Académicos</div>
+        </div>
+        <div style="width:1px;background:rgba(255,255,255,0.1);"></div>
+        <div>
+          <div style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--gold);">RVOE</div>
+          <div style="font-size:0.8rem;color:rgba(248,249,252,0.55);margin-top:2px;">Validez Oficial SEP</div>
+        </div>
+        <div style="width:1px;background:rgba(255,255,255,0.1);"></div>
+        <div>
+          <div style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--gold);">$240</div>
+          <div style="font-size:0.8rem;color:rgba(248,249,252,0.55);margin-top:2px;">Tu Comisión</div>
+        </div>
+        <div style="width:1px;background:rgba(255,255,255,0.1);"></div>
+        <div>
+          <div style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--gold);">5</div>
+          <div style="font-size:0.8rem;color:rgba(248,249,252,0.55);margin-top:2px;">Pasos de Inscripción</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Decorative floating cards -->
+  <div class="hidden lg:block" style="position:absolute;right:5%;top:50%;transform:translateY(-50%);width:320px;">
+    <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:16px;padding:24px;backdrop-filter:blur(10px);margin-bottom:12px;">
+      <div style="font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold-light);font-weight:600;margin-bottom:8px;">Bachillerato General</div>
+      <div style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--white);margin-bottom:8px;">Bachillerato Cuatrimestral</div>
+      <div style="font-size:0.75rem;color:rgba(248,249,252,0.5);">RVOE: 16/1189 · 25/07/2016</div>
+      <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+        <span style="background:rgba(46,204,113,0.15);color:#2ecc71;font-size:0.7rem;padding:3px 10px;border-radius:6px;font-weight:600;">✓ Presencial</span>
+        <span style="background:rgba(46,204,113,0.15);color:#2ecc71;font-size:0.7rem;padding:3px 10px;border-radius:6px;font-weight:600;">✓ Virtual</span>
+        <span style="background:rgba(46,204,113,0.15);color:#2ecc71;font-size:0.7rem;padding:3px 10px;border-radius:6px;font-weight:600;">✓ 2 años</span>
+      </div>
+    </div>
+    <div style="background:rgba(200,168,75,0.1);border:1px solid rgba(200,168,75,0.25);border-radius:16px;padding:20px;backdrop-filter:blur(10px);">
+      <div style="font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold-light);font-weight:600;margin-bottom:6px;">💰 Tu Ingreso por Inscripción</div>
+      <div style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--gold);">$240.00</div>
+      <div style="font-size:0.78rem;color:rgba(248,249,252,0.55);margin-top:4px;">de comisión garantizada</div>
+    </div>
+  </div>
+</section>
+
+<!-- OFERTA ACADÉMICA -->
+<section id="oferta" style="padding:100px 0;background:#fff;">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-12 fade-up">
+      <div class="section-label">Oferta Educativa Autorizada</div>
+      <h2 class="section-title">Campus Cancún</h2>
+      <p style="color:#6b7280;max-width:580px;margin:14px auto 0;font-size:0.95rem;line-height:1.7;">
+        Todos los programas cuentan con RVOE oficial ante la SEP. Filtra por nivel académico para encontrar el programa ideal para tu prospecto.
+      </p>
+    </div>
+
+    <!-- FILTER TABS -->
+    <div class="filter-tabs fade-up">
+      <button class="filter-tab active" data-filter="all">🎓 Todos</button>
+      <button class="filter-tab" data-filter="bach">Bachillerato</button>
+      <button class="filter-tab" data-filter="lic">Licenciaturas</button>
+      <button class="filter-tab" data-filter="dual">Duales</button>
+      <button class="filter-tab" data-filter="pos">Posgrados</button>
+      <button class="filter-tab" data-filter="flex">Programas Flex</button>
+      <button class="filter-tab" data-filter="exacer">Exacer Colbach</button>
+      <button class="filter-tab" data-filter="virtual">Virtual</button>
+    </div>
+
+    <!-- CARDS GRID -->
+    <div class="card-grid" id="cardsGrid">
+
+      <!-- BACHILLERATO -->
+      <div class="academic-card fade-up" data-category="bach" onclick="openModal('bach1')">
+        <span class="card-level level-bach">Bachillerato</span>
+        <div class="card-name">Bachillerato General Cuatrimestral</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-icon">⏱</span>2 años</span>
+          <span class="meta-item"><span class="meta-icon">📍</span>Presencial / Virtual</span>
+        </div>
+        <p style="font-size:0.82rem;color:#6b7280;line-height:1.5;margin-bottom:12px;">Formación integral con 4 áreas propedéuticas. Horarios matutino, vespertino y mixto sábados.</p>
+        <div class="card-rvoe">
+          <span class="rvoe-badge">RVOE</span>
+          16/1189 · 25/07/2016
+        </div>
+      </div>
+
+      <!-- LICENCIATURAS -->
+      <div class="academic-card fade-up stagger-1" data-category="lic" onclick="openModal('lic-adm')">
+        <span class="card-level level-lic">Licenciatura</span>
+        <div class="card-name">Administración</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-icon">⏱</span>3-4 años</span>
+          <span class="meta-item"><span class="meta-icon">📍</span>Presencial / Virtual</span>
+        </div>
+        <p style="font-size:0.82rem;color:#6b7280;line-height:1.5;margin-bottom:12px;">Gestión empresarial, recursos humanos, planeación estratégica y liderazgo organizacional.</p>
+        <div class="card-rvoe"><span class="rvoe-badge">RVOE</span>20160099/2016-02-05</div>
+      </div>
+
+      <div class="academic-card fade-up stagger-2" data-category="lic" onclick="openModal('lic-crim')">
+        <span class="card-level level-lic">Licenciatura</span>
+        <div class="card-name">Criminología</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-icon">⏱</span>3-4 años</span>
+          <span class="meta-item"><span class="meta-icon">📍</span>Presencial / Virtual</span>
+        </div>
+        <p style="font-size:0.82rem;color:#6b7280;line-height:1.5;margin-bottom:12px;">Estudio del crimen, comportamiento delictivo y prevención del delito en el contexto social.</p>
+        <div class="card-rvoe"><span class="rvoe-badge">RVOE</span>20160100/2016-02-05</div>
+      </div>
+
+      <div class="academic-card fade-up stagger-3" data-category="lic">
+        <span class="card-level level-lic">Licenciatura</span>
+        <div class="card-name">Derecho</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-icon">⏱</span>3-4 años</span>
+          <span class="meta-item"><span class="meta-icon">📍</span>Presencial / Virtual</span>
+        </div>
+        <p style="font-size:0.82rem;color:#6b7280;line-height:1.5;margin-bottom:12px;">Marco jurídico nacional e internacional. Legislación, defensa y ejercicio del derecho.</p>
+        <div class="card-rvoe"><span class="rvoe-badge">RVOE</span>20171815/2017-12-05</div>
+      </div>
+
+      <div class="academic-card fade-up" data-category="lic">
+        <span class="card-level level-lic">Licenciatura</span>
+        <div class="card-name">Pedagogía</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-icon">⏱</span>3-4 años</span>
+          <span class="meta-item"><span class="meta-icon">📍</span>Presencial / Virtual</span>
+        </div>
+        <p style="font-size:0.82rem;color:#6b7280;line-height:1.5;margin-bottom:12px;">Formación docente, diseño curricular y procesos de enseñanza-aprendizaje.</p>
+        <div class="card-rvoe"><span class="rvoe-badge">RVOE</span>20160101/2016-02-05</div>
+      </div>
+
+      <div class="academic-card fade-up stagger-1" data-category="lic">
+        <span class="card-level level-lic">Licenciatura</span>
+        <div class="card-name">Tecnologías de la Información</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-icon">⏱</span>3-4 años</span>
+          <span class="meta-item"><span class="meta-icon">📍</span>Presencial / Virtual</span>
+        </div>
+        <p style="font-size:0.82rem;color:#6b7280;line-height:1.5;margin-bottom:12px;">Gestión y desarrollo de sistemas de información para organizaciones modernas.</p>
+        <div class="card-rvoe"><span class="rvoe-badge">RVOE</span>20171814/2017-12-05</div>
+      </div>
+
+      <div class="academic-card fade-up stagger-2" data-category="lic">
+        <span class="card-level level-lic">Licenciatura</span>
+        <div class="card-name">Arquitectura</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-icon">⏱</span>3-4 años</span>
+          <span class="meta-item"><span class="meta-icon">📍</span>Presencial</span>
+        </div>
+        <p style="font-size:0.82rem;color:#6b7280;line-height:1.5;margin-bottom:12px;">Diseño de espacios, construcción sostenible y proyectos arquitectónicos innovadores.</p>
+        <div class="card-rvoe"><span class="rvoe-badge">RVOE</span>20170277/2017-05-16</div>
+      </div>
+
+      <div class="academic-card fade-up stagger-3" data-category="lic">
+        <span class="card-level level-lic">Licenciatura</span>
+        <div class="card-name">Contaduría</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-icon">⏱</span>3-4 años</span>
+          <span class="meta-item"><span class="meta-icon">📍</span>Presencial / Virtual</span>
+        </div>
+        <p style="font-size:0.82rem;color:#6b7280;line-height:1.5;margin-bottom:12px;">Contabilidad, auditoría, finanzas y administración fiscal empresarial.</p>
+        <div class="card-rvoe"><span class="rvoe-badge">RVOE</span>20171023/2017-08-16</div>
+      </div>
+
+      <div class="academic-card fade-up" data-category="lic">
+        <span class="card-level level-lic">Licenciatura</span>
+        <div class="card-name">Ingeniería Industrial</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-icon">⏱</span>3-4 años</span>
+          <span class="meta-item"><span class="meta-icon">📍</span>Presencial</span>
+        </div>
+        <p style="font-size:0.82rem;color:#6b7280;line-height:1.5;margin-bottom:12px;">Optimización de procesos productivos, calidad y gestión de operaciones industriales.</p>
+        <div class="card-rvoe"><span class="rvoe-badge">RVOE</span>20211458/2021-09-03</div>
+      </div>
+
+      <div class="academic-card fade-up stagger-1" data-category="lic">
+        <span class="card-level level-lic">Licenciatura</span>
+        <div class="card-name">Ingeniería Ambiental</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-icon">⏱</span>3-4 años</span>
+          <span class="meta-item"><span class="meta-icon">📍</span>Presencial</span>
+        </div>
+        <p style="font-size:0.82rem;color:#6b7280;line-height:1.5;margin-bottom:12px;">Gestión ambiental, sustentabilidad y soluciones para el cuidado del medio ambiente.</p>
+        <div class="card-rvoe"><span class="rvoe-badge">RVOE</span>20210972/2021-06-10</div>
+      </div>
+
+      <div class="academic-card fade-up stagger-2" data-category="lic">
+        <span class="card-level level-lic">Licenciatura</span>
+        <div class="card-name">Ingeniería Informática</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-icon">⏱</span>3-4 años</span>
+          <span class="meta-item"><span class="meta-icon">📍</span>Presencial</span>
+        </div>
+        <p style="font-size:0.82rem;color:#6b7280;line-height:1.5;margin-bottom:12px;">Desarrollo de software, redes, bases de datos y sistemas computacionales.</p>
+        <div class="card-rvoe"><span class="rvoe-badge">RVOE</span>20211022/2021-06-10</div>
+      </div>
+
+      <div class="academic-card fade-up stagger-3" data-category="lic">
+        <span class="card-level level-lic">Licenciatura</span>
+        <div class="card-name">Ingeniería Mecánica Automotriz</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-icon">⏱</span>3-4 años</span>
+          <span class="meta-item"><span class="meta-icon">📍</span>Presencial</span>
+        </div>
+        <p style="font-size:0.82rem;color:#6b7280;line-height:1.5;margin-bottom:12px;">Diseño y mantenimiento de sistemas mecánicos y automotrices de vanguardia.</p>
+        <div class="card-rvoe"><span class="rvoe-badge">RVOE</span>20230375/2023-02-13</div>
+      </div>
+
+      <div class="academic-card fade-up" data-category="lic">
+        <span class="card-level level-lic">Licenciatura</span>
+        <div class="card-name">Ingeniería Mecatrónica</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-icon">⏱</span>3-4 años</span>
+          <span class="meta-item"><span class="meta-icon">📍</span>Presencial</span>
+        </div>
+        <p style="font-size:0.82rem;color:#6b7280;line-height:1.5;margin-bottom:12px;">Integración de mecánica, electrónica y programación para automatización industrial.</p>
+        <div class="card-rvoe"><span class="rvoe-badge">RVOE</span>20210970/2021-06-10</div>
+      </div>
+
+      <div class="academic-card fade-up stagger-1" data-category="lic">
+        <span class="card-level level-lic">Licenciatura</span>
+        <div class="card-name">Mercadotecnia</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-icon">⏱</span>3-4 años</span>
+          <span class="meta-item"><span class="meta-icon">📍</span>Presencial / Virtual</span>
+        </div>
+        <p style="font-size:0.82rem;color:#6b7280;line-height:1.5;margin-bottom:12px;">Estrategias de marketing, branding y posicionamiento en mercados digitales y tradicionales.</p>
+        <div class="card-rvoe"><span class="rvoe-badge">RVOE</span>20211459/2021-09-03</div>
+      </div>
+
+      <div class="academic-card fade-up stagger-2" data-category="lic">
+        <span class="card-level level-lic">Licenciatura</span>
+        <div class="card-name">Diseño Gráfico</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-icon">⏱</span>3-4 años</span>
+          <span class="meta-item"><span class="meta-icon">📍</span>Presencial / Virtual</span>
+        </div>
+        <p style="font-size:0.82rem;color:#6b7280;line-height:1.5;margin-bottom:12px;">Comunicación visual, identidad corporativa y diseño digital creativo.</p>
+        <div class="card-rvoe"><span class="rvoe-badge">RVOE</span>20230374/2023-02-13</div>
+      </div>
+
+      <div class="academic-card fade-up stagger-3" data-category="lic">
+        <span class="card-level level-lic">Licenciatura</span>
+        <div class="card-name">Negocios Internacionales</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-icon">⏱</span>3-4 años</span>
+          <span class="meta-item"><span class="meta-icon">📍</span>Presencial / Virtual</span>
+        </div>
+        <p style="font-size:0.82rem;color:#6b7280;line-height:1.5;margin-bottom:12px;">Comercio exterior, tratados internacionales y gestión de empresas globales.</p>
+        <div class="card-rvoe"><span class="rvoe-badge">RVOE</span>20211016/2021-06-10</div>
+      </div>
+
+      <div class="academic-card fade-up" data-category="lic">
+        <span class="card-level level-lic">Licenciatura</span>
+        <div class="card-name">Psicología Clínica</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-icon">⏱</span>3-4 años</span>
+          <span class="meta-item"><span class="meta-icon">📍</span>Presencial / Virtual</span>
+        </div>
+        <p style="font-size:0.82rem;color:#6b7280;line-height:1.5;margin-bottom:12px;">Diagnóstico y tratamiento de trastornos mentales y emocionales. La más longeva de EDUCEM.</p>
+        <div class="card-rvoe"><span class="rvoe-badge">RVOE</span>20090314/2009-07-07</div>
+      </div>
+
+      <div class="academic-card fade-up stagger-1" data-category="lic">
+        <span class="card-level level-lic">Licenciatura</span>
+        <div class="card-name">Psicología Organizacional</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-icon">⏱</span>3-4 años</span>
+          <span class="meta-item"><span class="meta-icon">📍</span>Presencial / Virtual</span>
+        </div>
+        <p style="font-size:0.82rem;color:#6b7280;line-height:1.5;margin-bottom:12px;">Comportamiento humano en el trabajo, selección de personal y clima organizacional.</p>
+        <div class="card-rvoe"><span class="rvoe-badge">RVOE</span>20171704/2017-11-27</div>
+      </div>
+
+      <div class="academic-card fade-up stagger-2" data-category="lic">
+        <span class="card-level level-lic">Licenciatura</span>
+        <div class="card-name">Gestión Financiera y Alta Dirección</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-icon">⏱</span>3-4 años</span>
+          <span class="meta-item"><span class="meta-icon">📍</span>Presencial / Virtual</span>
+        </div>
+        <p style="font-size:0.82rem;color:#6b7280;line-height:1.5;margin-bottom:12px;">Finanzas corporativas, inversiones y formación de directivos de alto nivel.</p>
+        <div class="card-rvoe"><span class="rvoe-badge">RVOE</span>20211015/2021-06-10</div>
+      </div>
+
+      <div class="academic-card fade-up stagger-3" data-category="lic">
+        <span class="card-level level-lic">Licenciatura</span>
+        <div class="card-name">Redes Sociales y Mercadotecnia</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-icon">⏱</span>3-4 años</span>
+          <span class="meta-item"><span class="meta-icon">📍</span>Presencial / Virtual</span>
+        </div>
+        <p style="font-size:0.82rem;color:#6b7280;line-height:1.5;margin-bottom:12px;">Marketing digital, comunidades en línea y estrategias de contenido para plataformas sociales.</p>
+        <div class="card-rvoe"><span class="rvoe-badge">RVOE</span>20220857/2022-08-12</div>
+      </div>
+
+      <div class="academic-card fade-up" data-category="lic">
+        <span class="card-level level-lic">Licenciatura</span>
+        <div class="card-name">Ciencias de la Educación</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-icon">⏱</span>3-4 años</span>
+          <span class="meta-item"><span class="meta-icon">📍</span>Presencial / Virtual</span>
+        </div>
+        <p style="font-size:0.82rem;color:#6b7280;line-height:1.5;margin-bottom:12px;">Innovación educativa, investigación pedagógica y gestión de instituciones educativas.</p>
+        <div class="card-rvoe"><span class="rvoe-badge">RVOE</span>20211020/2021-06-10</div>
+      </div>
+
+      <!-- DUALES -->
+      <div class="academic-card fade-up" data-category="dual" style="border-color:rgba(74,144,217,0.2);">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <span class="card-level level-dual">⭐ Dual</span>
+          <span style="font-size:0.65rem;color:var(--accent);font-weight:600;">2 TÍTULOS + 2 CÉDULAS</span>
+        </div>
+        <div class="card-name">Administración y Contaduría</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-icon">⏱</span>3-4 años</span>
+          <span class="meta-item"><span class="meta-icon">📅</span>Sábados 7am-2pm</span>
+        </div>
+        <p style="font-size:0.82rem;color:#6b7280;line-height:1.5;margin-bottom:12px;">Domina la gestión empresarial Y la contabilidad. Perfil dual muy demandado en el mercado laboral.</p>
+        <div class="card-rvoe"><span class="rvoe-badge">DUAL</span>Kardex por generación</div>
+      </div>
+
+      <div class="academic-card fade-up stagger-1" data-category="dual" style="border-color:rgba(74,144,217,0.2);">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <span class="card-level level-dual">⭐ Dual</span>
+          <span style="font-size:0.65rem;color:var(--accent);font-weight:600;">2 TÍTULOS + 2 CÉDULAS</span>
+        </div>
+        <div class="card-name">Derecho y Criminología</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-icon">⏱</span>3-4 años</span>
+          <span class="meta-item"><span class="meta-icon">📅</span>Sábados 7am-2pm</span>
+        </div>
+        <p style="font-size:0.82rem;color:#6b7280;line-height:1.5;margin-bottom:12px;">Formación jurídica completa con especialidad en ciencias criminales.</p>
+        <div class="card-rvoe"><span class="rvoe-badge">DUAL</span>Kardex por generación</div>
+      </div>
+
+      <div class="academic-card fade-up stagger-2" data-category="dual" style="border-color:rgba(74,144,217,0.2);">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <span class="card-level level-dual">⭐ Dual</span>
+          <span style="font-size:0.65rem;color:var(--accent);font-weight:600;">2 TÍTULOS + 2 CÉDULAS</span>
+        </div>
+        <div class="card-name">Diseño Gráfico y Redes Sociales</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-icon">⏱</span>3-4 años</span>
+          <span class="meta-item"><span class="meta-icon">📅</span>Sábados 7am-2pm</span>
+        </div>
+        <p style="font-size:0.82rem;color:#6b7280;line-height:1.5;margin-bottom:12px;">Creatividad visual + estrategia digital. El perfil más solicitado en agencias de marketing.</p>
+        <div class="card-rvoe"><span class="rvoe-badge">DUAL</span>Kardex por generación</div>
+      </div>
+
+      <div class="academic-card fade-up stagger-3" data-category="dual" style="border-color:rgba(74,144,217,0.2);">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <span class="card-level level-dual">⭐ Dual</span>
+          <span style="font-size:0.65rem;color:var(--accent);font-weight:600;">2 TÍTULOS + 2 CÉDULAS</span>
+        </div>
+        <div class="card-name">Ing. Industrial y Arquitectura</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-icon">⏱</span>3-4 años</span>
+          <span class="meta-item"><span class="meta-icon">📅</span>Sábados 7am-2pm</span>
+        </div>
+        <p style="font-size:0.82rem;color:#6b7280;line-height:1.5;margin-bottom:12px;">Ingeniería de procesos y diseño arquitectónico. Perfil único en el sector construcción.</p>
+        <div class="card-rvoe"><span class="rvoe-badge">DUAL</span>Kardex por generación</div>
+      </div>
+
+      <div class="academic-card fade-up" data-category="dual" style="border-color:rgba(74,144,217,0.2);">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <span class="card-level level-dual">⭐ Dual</span>
+          <span style="font-size:0.65rem;color:var(--accent);font-weight:600;">2 TÍTULOS + 2 CÉDULAS</span>
+        </div>
+        <div class="card-name">Pedagogía y Ciencias de la Educación</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-icon">⏱</span>3-4 años</span>
+          <span class="meta-item"><span class="meta-icon">📅</span>Sábados 7am-2pm</span>
+        </div>
+        <p style="font-size:0.82rem;color:#6b7280;line-height:1.5;margin-bottom:12px;">Formación docente completa con investigación educativa avanzada.</p>
+        <div class="card-rvoe"><span class="rvoe-badge">DUAL</span>Kardex por generación</div>
+      </div>
+
+      <div class="academic-card fade-up stagger-1" data-category="dual" style="border-color:rgba(74,144,217,0.2);">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <span class="card-level level-dual">⭐ Dual</span>
+          <span style="font-size:0.65rem;color:var(--accent);font-weight:600;">2 TÍTULOS + 2 CÉDULAS</span>
+        </div>
+        <div class="card-name">Negocios Internacionales y Derecho</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-icon">⏱</span>3-4 años</span>
+          <span class="meta-item"><span class="meta-icon">📅</span>Sábados 7am-2pm</span>
+        </div>
+        <p style="font-size:0.82rem;color:#6b7280;line-height:1.5;margin-bottom:12px;">Comercio global con respaldo jurídico. Ideal para empresarios y exportadores.</p>
+        <div class="card-rvoe"><span class="rvoe-badge">DUAL</span>Kardex por generación</div>
+      </div>
+
+      <!-- POSGRADOS -->
+      <div class="academic-card fade-up" data-category="pos" style="border-color:rgba(46,204,113,0.2);">
+        <span class="card-level level-pos">Maestría</span>
+        <div class="card-name">Maestría en Educación</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-icon">⏱</span>2 años trim.</span>
+          <span class="meta-item"><span class="meta-icon">📅</span>Sábados 8am-2pm</span>
+        </div>
+        <p style="font-size:0.82rem;color:#6b7280;line-height:1.5;margin-bottom:12px;">Investigación educativa y gestión pedagógica de alto nivel.</p>
+        <div class="card-rvoe"><span class="rvoe-badge">RVOE</span>20160102/2016-02-05</div>
+      </div>
+
+      <div class="academic-card fade-up stagger-1" data-category="pos" style="border-color:rgba(46,204,113,0.2);">
+        <span class="card-level level-pos">Maestría</span>
+        <div class="card-name">Maestría en Administración</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-icon">⏱</span>2 años trim.</span>
+          <span class="meta-item"><span class="meta-icon">📅</span>Sábados 8am-2pm</span>
+        </div>
+        <p style="font-size:0.82rem;color:#6b7280;line-height:1.5;margin-bottom:12px;">Alta dirección empresarial, estrategia organizacional y liderazgo ejecutivo.</p>
+        <div class="card-rvoe"><span class="rvoe-badge">RVOE</span>20211392/2021-08-26</div>
+      </div>
+
+      <div class="academic-card fade-up stagger-2" data-category="pos" style="border-color:rgba(46,204,113,0.2);">
+        <span class="card-level level-pos">Maestría</span>
+        <div class="card-name">Maestría en Juicios Orales</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-icon">⏱</span>2 años trim.</span>
+          <span class="meta-item"><span class="meta-icon">📅</span>Sábados 8am-2pm</span>
+        </div>
+        <p style="font-size:0.82rem;color:#6b7280;line-height:1.5;margin-bottom:12px;">Sistema acusatorio-adversarial y litigación oral para abogados en ejercicio.</p>
+        <div class="card-rvoe"><span class="rvoe-badge">RVOE</span>20211452/2021-09-03</div>
+      </div>
+
+      <!-- PROGRAMAS FLEX -->
+      <div class="academic-card fade-up" data-category="flex" style="border-color:rgba(155,89,182,0.2);">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;flex-wrap:wrap;">
+          <span class="card-level level-flex">Prog. Flex</span>
+          <span style="font-size:0.65rem;background:rgba(155,89,182,0.1);color:#6a2f99;padding:2px 8px;border-radius:4px;font-weight:600;">Acuerdo 286 SEP</span>
+        </div>
+        <div class="card-name">Administración (Flex)</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-icon">⏱</span>12 meses</span>
+          <span class="meta-item"><span class="meta-icon">💻</span>Virtual</span>
+        </div>
+        <p style="font-size:0.82rem;color:#6b7280;line-height:1.5;margin-bottom:12px;">Para profesionales con experiencia laboral. Sin cursar materias tradicionales. Evaluación por saberes.</p>
+        <div class="card-rvoe"><span style="background:rgba(155,89,182,0.1);color:#6a2f99;padding:2px 8px;border-radius:4px;font-size:0.7rem;font-weight:700;">FLEX</span>Acuerdo 286 · Mín. 1 año exp.</div>
+      </div>
+
+      <div class="academic-card fade-up stagger-1" data-category="flex" style="border-color:rgba(155,89,182,0.2);">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;flex-wrap:wrap;">
+          <span class="card-level level-flex">Prog. Flex</span>
+          <span style="font-size:0.65rem;background:rgba(155,89,182,0.1);color:#6a2f99;padding:2px 8px;border-radius:4px;font-weight:600;">Acuerdo 286 SEP</span>
+        </div>
+        <div class="card-name">Contaduría (Flex)</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-icon">⏱</span>12 meses</span>
+          <span class="meta-item"><span class="meta-icon">💻</span>Virtual</span>
+        </div>
+        <p style="font-size:0.82rem;color:#6b7280;line-height:1.5;margin-bottom:12px;">Ideal para contadores sin título. Certificación oficial mediante evaluación diagnóstica.</p>
+        <div class="card-rvoe"><span style="background:rgba(155,89,182,0.1);color:#6a2f99;padding:2px 8px;border-radius:4px;font-size:0.7rem;font-weight:700;">FLEX</span>Acuerdo 286 · Mín. 2 años exp.</div>
+      </div>
+
+      <div class="academic-card fade-up stagger-2" data-category="flex" style="border-color:rgba(155,89,182,0.2);">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;flex-wrap:wrap;">
+          <span class="card-level level-flex">Prog. Flex</span>
+          <span style="font-size:0.65rem;background:rgba(155,89,182,0.1);color:#6a2f99;padding:2px 8px;border-radius:4px;font-weight:600;">Acuerdo 286 SEP</span>
+        </div>
+        <div class="card-name">Derecho (Flex)</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-icon">⏱</span>12 meses</span>
+          <span class="meta-item"><span class="meta-icon">💻</span>Virtual</span>
+        </div>
+        <p style="font-size:0.82rem;color:#6b7280;line-height:1.5;margin-bottom:12px;">Para personas con práctica jurídica. Titulación oficial sin cursar formalmente la carrera.</p>
+        <div class="card-rvoe"><span style="background:rgba(155,89,182,0.1);color:#6a2f99;padding:2px 8px;border-radius:4px;font-size:0.7rem;font-weight:700;">FLEX</span>Acuerdo 286 · Mín. 2 años exp.</div>
+      </div>
+
+      <div class="academic-card fade-up stagger-3" data-category="flex" style="border-color:rgba(155,89,182,0.2);">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;flex-wrap:wrap;">
+          <span class="card-level level-flex">Prog. Flex</span>
+          <span style="font-size:0.65rem;background:rgba(155,89,182,0.1);color:#6a2f99;padding:2px 8px;border-radius:4px;font-weight:600;">Acuerdo 286 SEP</span>
+        </div>
+        <div class="card-name">Pedagogía (Flex)</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-icon">⏱</span>12 meses</span>
+          <span class="meta-item"><span class="meta-icon">💻</span>Virtual</span>
+        </div>
+        <p style="font-size:0.82rem;color:#6b7280;line-height:1.5;margin-bottom:12px;">Para docentes con experiencia. Martes-Jueves 7-9pm y Sábados 9am-1pm por Meet.</p>
+        <div class="card-rvoe"><span style="background:rgba(155,89,182,0.1);color:#6a2f99;padding:2px 8px;border-radius:4px;font-size:0.7rem;font-weight:700;">FLEX</span>Acuerdo 286 · Mín. 1 año exp.</div>
+      </div>
+
+      <!-- EXACER COLBACH -->
+      <div class="academic-card fade-up" data-category="exacer" style="border-color:rgba(231,76,60,0.2);">
+        <span class="card-level level-exacer">Exacer Colbach</span>
+        <div class="card-name">Certificación de Bachillerato por Examen</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-icon">⏱</span>5 meses</span>
+          <span class="meta-item"><span class="meta-icon">💻</span>A distancia</span>
+        </div>
+        <p style="font-size:0.82rem;color:#6b7280;line-height:1.5;margin-bottom:12px;">Para mayores de 18 años. Certificado de bachillerato oficial por examen único. 4 convocatorias al año.</p>
+        <div class="card-rvoe"><span style="background:rgba(231,76,60,0.1);color:#c0392b;padding:2px 8px;border-radius:4px;font-size:0.7rem;font-weight:700;">COLBACH</span>Inscripción desde $500</div>
+      </div>
+
+      <!-- SISTEMA VIRTUAL -->
+      <div class="academic-card fade-up stagger-1" data-category="virtual" style="border-color:rgba(26,90,154,0.2);">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;flex-wrap:wrap;">
+          <span style="background:rgba(26,90,154,0.1);color:#1a5a9a;font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 10px;border-radius:100px;">Sistema Virtual</span>
+          <span style="font-size:0.65rem;background:rgba(26,90,154,0.08);color:#1a5a9a;padding:2px 8px;border-radius:4px;font-weight:600;">Plataforma NEO 24/7</span>
+        </div>
+        <div class="card-name">Bachillerato / Lic. / Maestría / Doc. Virtual</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-icon">⏱</span>Según nivel</span>
+          <span class="meta-item"><span class="meta-icon">💻</span>100% Online</span>
+        </div>
+        <p style="font-size:0.82rem;color:#6b7280;line-height:1.5;margin-bottom:12px;">Plataforma NEO autogestiva. 1 sesión sincrónica semanal. Sin exámenes. Mín. 6 hrs/semana. Abre con 8 alumnos.</p>
+        <div class="card-rvoe"><span style="background:rgba(26,90,154,0.1);color:#1a5a9a;padding:2px 8px;border-radius:4px;font-size:0.7rem;font-weight:700;">VIRTUAL</span>Gestión: $450 · Todos los niveles</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- COSTOS -->
+<section id="costos" class="pricing-section" style="padding:100px 0;">
+  <div class="max-w-7xl mx-auto px-6 relative z-10">
+    <div class="text-center mb-16 fade-up">
+      <div class="section-label" style="color:var(--gold-light);">Inversión 2026</div>
+      <h2 class="section-title light">Costos de Inscripción</h2>
+      <p style="color:rgba(248,249,252,0.6);max-width:560px;margin:14px auto 0;font-size:0.95rem;line-height:1.7;">
+        Modalidad Cuatrimestral. Costos transparentes para generar confianza en tu prospecto.
+      </p>
+    </div>
+
+    <!-- PRICING GRID -->
+    <div class="grid gap-6 pricing-grid" style="grid-template-columns:repeat(3,1fr);">
+
+      <!-- INSCRIPCIÓN -->
+      <div class="pricing-card fade-up">
+        <div class="price-label">💳 Inscripción</div>
+        <div class="price-amount">$390</div>
+        <div style="color:rgba(248,249,252,0.4);font-size:0.8rem;margin-top:4px;">.00 MXN</div>
+        <div style="height:1px;background:rgba(255,255,255,0.08);margin:20px 0;"></div>
+        <p style="font-size:0.82rem;color:rgba(248,249,252,0.55);line-height:1.6;">Cubre el proceso de registro y alta en el sistema escolar. Se paga una sola vez al ingresar al programa.</p>
+      </div>
+
+      <!-- SEGURO -->
+      <div class="pricing-card fade-up stagger-1">
+        <div class="price-label">🛡️ Seguro Escolar</div>
+        <div class="price-amount">$348</div>
+        <div style="color:rgba(248,249,252,0.4);font-size:0.8rem;margin-top:4px;">.00 MXN</div>
+        <div style="height:1px;background:rgba(255,255,255,0.08);margin:20px 0;"></div>
+        <p style="font-size:0.82rem;color:rgba(248,249,252,0.55);line-height:1.6;">Protección en caso de accidente dentro o fuera del plantel. Se paga al inicio de cada ciclo escolar.</p>
+        <div style="font-size:0.72rem;color:rgba(248,249,252,0.4);margin-top:10px;">⚠️ Los montos son más $14 de comisión</div>
+      </div>
+
+      <!-- TOTAL HIGHLIGHT -->
+      <div class="price-total fade-up stagger-2">
+        <div style="font-size:0.75rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--navy);margin-bottom:10px;">💰 Total del Alumno</div>
+        <div style="font-family:'Playfair Display',serif;font-size:3.5rem;font-weight:900;color:var(--navy);line-height:1;">$738</div>
+        <div style="font-size:0.85rem;color:rgba(13,27,62,0.6);margin-top:4px;">.00 MXN</div>
+        <div style="height:1px;background:rgba(13,27,62,0.15);margin:16px 0;"></div>
+        <div style="font-size:0.82rem;color:rgba(13,27,62,0.7);">$390 inscripción + $348 seguro</div>
+        <div class="commission-pill" style="margin-top:16px;justify-content:center;">
+          ✓ Tu comisión: <strong style="margin-left:4px;">$240.00</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- GESTIÓN EDUCATIVA TABLE -->
+    <div class="mt-14 fade-up">
+      <h3 style="font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--white);text-align:center;margin-bottom:20px;">Gestión Educativa (inicio de ciclo)</h3>
+      <div class="grid gap-3" style="grid-template-columns:repeat(auto-fill,minmax(200px,1fr));">
+        <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:16px;text-align:center;">
+          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(248,249,252,0.4);margin-bottom:6px;">Bachillerato</div>
+          <div style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:var(--gold);">$264</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:16px;text-align:center;">
+          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(248,249,252,0.4);margin-bottom:6px;">Licenciatura General</div>
+          <div style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:var(--gold);">$385</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:16px;text-align:center;">
+          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(248,249,252,0.4);margin-bottom:6px;">Posgrados</div>
+          <div style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:var(--gold);">$385</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:16px;text-align:center;">
+          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(248,249,252,0.4);margin-bottom:6px;">Virtual</div>
+          <div style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:var(--gold);">$450</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RECARGOS ALERTA -->
+    <div class="mt-10 fade-up" style="background:rgba(231,76,60,0.08);border:1px solid rgba(231,76,60,0.2);border-radius:14px;padding:20px 24px;">
+      <div style="font-weight:700;color:#ff6b6b;margin-bottom:8px;">⚠️ Política de Recargos en Colegiatura</div>
+      <div style="font-size:0.85rem;color:rgba(248,249,252,0.7);line-height:1.6;">
+        Fecha límite: <strong style="color:var(--white);">Día 10 de cada mes</strong> &nbsp;|&nbsp; 
+        Día 11: <strong style="color:#ff6b6b;">+$20.00</strong> &nbsp;|&nbsp; 
+        Día 12 en adelante: <strong style="color:#ff6b6b;">+$5.00 por día adicional</strong>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESO DE INSCRIPCIÓN -->
+<section id="proceso" style="padding:100px 0;background:#fff;">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid gap-16 items-start" style="grid-template-columns:1fr 1fr;">
+      <div class="fade-up">
+        <div class="section-label">Guía Paso a Paso</div>
+        <h2 class="section-title">Proceso de<br>Inscripción</h2>
+        <p style="color:#6b7280;margin-top:14px;margin-bottom:40px;font-size:0.95rem;line-height:1.7;">
+          Sigue esta ruta para formalizar al alumno correctamente. Sin examen de admisión: cualquier persona que solicita información es aspirante.
+        </p>
+
+        <div class="timeline-step">
+          <div class="step-circle">1</div>
+          <div class="step-content">
+            <div class="step-title">Solicitar Documentación</div>
+            <div class="step-desc">Reúne los documentos originales según el nivel académico del aspirante.</div>
+            <div class="step-docs">
+              <span class="doc-tag">Acta nacimiento original</span>
+              <span class="doc-tag">CURP original</span>
+              <span class="doc-tag">Certificado anterior</span>
+              <span class="doc-tag">INE (o tutor si es menor)</span>
+              <span class="doc-tag">Comprobante domicilio</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-step">
+          <div class="step-circle">2</div>
+          <div class="step-content">
+            <div class="step-title">Realizar el Pago</div>
+            <div class="step-desc">El alumno cubre: <strong>$390 inscripción + $348 seguro escolar = $738 total</strong>. Guardar comprobante legible (voucher físico o digital).</div>
+            <div class="step-docs">
+              <span class="doc-tag">Depósito bancario BANORTE</span>
+              <span class="doc-tag">Transferencia BBVA</span>
+              <span class="doc-tag">Voucher legible obligatorio</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-step">
+          <div class="step-circle">3</div>
+          <div class="step-content">
+            <div class="step-title">Llenar la Ficha de Inscripción</div>
+            <div class="step-desc">Completar la Ficha de Inscripción General con tinta azul comercial, escritura legible, sin tachaduras. Incluir folio del voucher, programa y ciclo escolar.</div>
+            <div class="step-docs">
+              <span class="doc-tag">Tinta azul comercial</span>
+              <span class="doc-tag">Sin tachaduras</span>
+              <span class="doc-tag">Ficha original + copia</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-step">
+          <div class="step-circle">4</div>
+          <div class="step-content">
+            <div class="step-title">Firma de Anexos Institucionales</div>
+            <div class="step-desc">Completar todos los documentos complementarios obligatorios.</div>
+            <div class="step-docs">
+              <span class="doc-tag">Carta Compromiso</span>
+              <span class="doc-tag">Carta de Bienvenida</span>
+              <span class="doc-tag">Carta Seguro Escolar</span>
+              <span class="doc-tag">Contrato de Servicios</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-step">
+          <div class="step-circle">5</div>
+          <div class="step-content" style="padding-bottom:0;">
+            <div class="step-title">Armar el Expediente</div>
+            <div class="step-desc">Integrar en folder con matrícula y nombre del alumno (apellido paterno, materno, nombre).</div>
+            <div class="step-docs">
+              <span class="doc-tag">1. Ficha + voucher</span>
+              <span class="doc-tag">2. Acta nacimiento</span>
+              <span class="doc-tag">3. CURP</span>
+              <span class="doc-tag">4. Copia INE</span>
+              <span class="doc-tag">5. Comprobante domicilio</span>
+              <span class="doc-tag">6. Certificado</span>
+              <span class="doc-tag">7. Anexos</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ROLES CARD -->
+      <div class="fade-up stagger-2" style="position:sticky;top:100px;">
+        <div style="background:var(--gray-soft);border-radius:20px;padding:32px;">
+          <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--navy);margin-bottom:20px;">👥 Roles y Responsables</h3>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div style="background:#fff;border-radius:12px;padding:16px;">
+              <div style="font-weight:700;color:var(--navy);font-size:0.9rem;margin-bottom:4px;">1. Asesor Educativo (Tú)</div>
+              <div style="font-size:0.8rem;color:#6b7280;line-height:1.5;">Recibe y valida documentos · Inscribe al alumno · Registra en CRM · Arma expediente</div>
+            </div>
+            <div style="background:#fff;border-radius:12px;padding:16px;">
+              <div style="font-weight:700;color:var(--navy);font-size:0.9rem;margin-bottom:4px;">2. Coordinador de Plantel</div>
+              <div style="font-size:0.8rem;color:#6b7280;line-height:1.5;">Valida expedientes · Genera matrícula · Envía expedientes a oficinas</div>
+            </div>
+            <div style="background:#fff;border-radius:12px;padding:16px;">
+              <div style="font-weight:700;color:var(--navy);font-size:0.9rem;margin-bottom:4px;">3. Área de Admisiones</div>
+              <div style="font-size:0.8rem;color:#6b7280;line-height:1.5;">Registra y valida expedientes · Notifica incidencias · Mantiene comunicación</div>
+            </div>
+            <div style="background:#fff;border-radius:12px;padding:16px;">
+              <div style="font-weight:700;color:var(--navy);font-size:0.9rem;margin-bottom:4px;">4. Área de Nóminas</div>
+              <div style="font-size:0.8rem;color:#6b7280;line-height:1.5;">Programa pago de comisiones. Días 1-15 → pago el 30. Días 16-30 → pago el 15 del siguiente mes.</div>
+            </div>
+          </div>
+
+          <!-- FICHAS DE INSCRIPCIÓN -->
+          <div style="margin-top:20px;background:#fff;border-radius:12px;padding:16px;">
+            <div style="font-weight:700;color:var(--navy);font-size:0.9rem;margin-bottom:12px;">📋 Distribución de Fichas</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div style="display:flex;align-items:center;gap:10px;font-size:0.82rem;">
+                <span style="width:16px;height:16px;background:#fff;border:2px solid #333;border-radius:3px;flex-shrink:0;"></span>
+                <span><strong>Original + Azul</strong> → Expediente del alumno</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;font-size:0.82rem;">
+                <span style="width:16px;height:16px;background:#ffb3c1;border-radius:3px;flex-shrink:0;"></span>
+                <span><strong>Rosa</strong> → Para el alumno (evidencia)</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;font-size:0.82rem;">
+                <span style="width:16px;height:16px;background:#fff9c4;border:1px solid #e0c800;border-radius:3px;flex-shrink:0;"></span>
+                <span><strong>Amarilla</strong> → Coord. de plantel (ingresos)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- CUENTAS BANCARIAS -->
+          <div style="margin-top:16px;">
+            <div style="font-weight:700;color:var(--navy);font-size:0.88rem;margin-bottom:12px;">🏦 Cuentas para Depósito</div>
+            <div style="display:grid;gap:8px;grid-template-columns:1fr 1fr;">
+              <div style="background:linear-gradient(135deg,#d32f2f,#b71c1c);border-radius:10px;padding:14px;color:#fff;">
+                <div style="font-size:0.65rem;opacity:0.7;margin-bottom:4px;font-weight:600;letter-spacing:0.08em;">BANORTE</div>
+                <div style="font-size:0.7rem;font-weight:700;">Asoc. Educativa Ropa A.C.</div>
+                <div style="font-size:0.68rem;opacity:0.8;margin-top:6px;">Cta: 0412434266</div>
+                <div style="font-size:0.6rem;opacity:0.65;margin-top:2px;">CLABE: 072225004124342660</div>
+              </div>
+              <div style="background:linear-gradient(135deg,#004481,#1565c0);border-radius:10px;padding:14px;color:#fff;">
+                <div style="font-size:0.65rem;opacity:0.7;margin-bottom:4px;font-weight:600;letter-spacing:0.08em;">BBVA</div>
+                <div style="font-size:0.7rem;font-weight:700;">Asoc. Educativa Ropa A.C.</div>
+                <div style="font-size:0.68rem;opacity:0.8;margin-top:6px;">Cta: 0120792446</div>
+                <div style="font-size:0.6rem;opacity:0.65;margin-top:2px;">CLABE: 012225001207924463</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REQUISITOS DOCUMENTALES -->
+<section id="requisitos" class="docs-section" style="padding:80px 0;">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-12 fade-up">
+      <div class="section-label">Checklist Oficial</div>
+      <h2 class="section-title">Documentos Requeridos</h2>
+    </div>
+    <div class="grid gap-8 fade-up" style="grid-template-columns:repeat(auto-fill,minmax(300px,1fr));">
+
+      <div>
+        <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.1rem;color:var(--navy);padding:12px 0;border-bottom:2px solid var(--gold);margin-bottom:14px;">🏫 Preparatoria General</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div class="doc-item"><div class="doc-icon">📄</div><span style="font-size:0.88rem;font-weight:500;">Acta de nacimiento <strong>original</strong></span></div>
+          <div class="doc-item"><div class="doc-icon">🆔</div><span style="font-size:0.88rem;font-weight:500;">CURP <strong>original</strong></span></div>
+          <div class="doc-item"><div class="doc-icon">📜</div><span style="font-size:0.88rem;font-weight:500;">Certificado de secundaria <strong>original</strong></span></div>
+          <div class="doc-item"><div class="doc-icon">🪪</div><span style="font-size:0.88rem;font-weight:500;">Copia INE (tutor si menor edad)</span></div>
+          <div class="doc-item"><div class="doc-icon">🏠</div><span style="font-size:0.88rem;font-weight:500;">Copia comprobante de domicilio</span></div>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.1rem;color:var(--navy);padding:12px 0;border-bottom:2px solid var(--navy-light);margin-bottom:14px;">🎓 Licenciaturas</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div class="doc-item"><div class="doc-icon">📄</div><span style="font-size:0.88rem;font-weight:500;">Acta de nacimiento <strong>original</strong></span></div>
+          <div class="doc-item"><div class="doc-icon">🆔</div><span style="font-size:0.88rem;font-weight:500;">CURP <strong>original</strong></span></div>
+          <div class="doc-item"><div class="doc-icon">📜</div><span style="font-size:0.88rem;font-weight:500;">Certificado de preparatoria <strong>original</strong></span></div>
+          <div class="doc-item"><div class="doc-icon">🪪</div><span style="font-size:0.88rem;font-weight:500;">Copia de INE</span></div>
+          <div class="doc-item"><div class="doc-icon">🏠</div><span style="font-size:0.88rem;font-weight:500;">Copia comprobante de domicilio</span></div>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.1rem;color:var(--navy);padding:12px 0;border-bottom:2px solid var(--success);margin-bottom:14px;">🎓 Maestrías</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div class="doc-item"><div class="doc-icon">📄</div><span style="font-size:0.88rem;font-weight:500;">Acta de nacimiento <strong>original</strong></span></div>
+          <div class="doc-item"><div class="doc-icon">🆔</div><span style="font-size:0.88rem;font-weight:500;">CURP <strong>original</strong></span></div>
+          <div class="doc-item"><div class="doc-icon">📜</div><span style="font-size:0.88rem;font-weight:500;">Certificado de licenciatura <strong>original</strong></span></div>
+          <div class="doc-item"><div class="doc-icon">📋</div><span style="font-size:0.88rem;font-weight:500;">Copia del título profesional</span></div>
+          <div class="doc-item"><div class="doc-icon">🏛️</div><span style="font-size:0.88rem;font-weight:500;">Copia de cédula profesional</span></div>
+          <div class="doc-item"><div class="doc-icon">🪪</div><span style="font-size:0.88rem;font-weight:500;">Copia de INE</span></div>
+          <div class="doc-item"><div class="doc-icon">🏠</div><span style="font-size:0.88rem;font-weight:500;">Copia comprobante de domicilio</span></div>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.1rem;color:var(--navy);padding:12px 0;border-bottom:2px solid var(--accent);margin-bottom:14px;">💻 Programas Flex</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div class="doc-item"><div class="doc-icon">📱</div><span style="font-size:0.88rem;font-weight:500;">Acta de nacimiento <strong>digital</strong> (QR)</span></div>
+          <div class="doc-item"><div class="doc-icon">🆔</div><span style="font-size:0.88rem;font-weight:500;">CURP <strong>digital</strong> legible</span></div>
+          <div class="doc-item"><div class="doc-icon">📜</div><span style="font-size:0.88rem;font-weight:500;">Certificado bachillerato <strong>digital</strong></span></div>
+          <div class="doc-item"><div class="doc-icon">🪪</div><span style="font-size:0.88rem;font-weight:500;">Identificación oficial <strong>digital</strong></span></div>
+          <div class="doc-item" style="background:#fef3c7;"><div class="doc-icon">⚖️</div><span style="font-size:0.82rem;color:#92400e;font-weight:500;">Derecho/Contaduría: Certificado parcial 50% o Currículum valorado por colegio</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- MAPA CURRICULAR BACHILLERATO -->
+<section id="mapa" class="scrollmap-section" style="padding:80px 0;">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-12 fade-up">
+      <div class="section-label">Plan de Estudios Oficial</div>
+      <h2 class="section-title">Mapa Curricular Bachillerato</h2>
+      <p style="color:#6b7280;max-width:560px;margin:14px auto 0;font-size:0.95rem;line-height:1.7;">
+        6 cuatrimestres · Modalidad cuatrimestral · 2 años de duración
+      </p>
+    </div>
+
+    <div class="fade-up">
+      <!-- 1er Cuatrimestre -->
+      <div class="curriculum-item">
+        <div class="curriculum-header" onclick="toggleCurriculum(this)">
+          <span>📚 1er Cuatrimestre <span style="color:var(--gray-mid);font-weight:400;">— 7 asignaturas · 18 horas · 11 créditos</span></span>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="curriculum-body">
+          <div class="subject-grid">
+            <div class="subject-item"><span class="subject-code">TC101</span><span class="subject-name">Matemáticas I</span></div>
+            <div class="subject-item"><span class="subject-code">TC102</span><span class="subject-name">Química I</span></div>
+            <div class="subject-item"><span class="subject-code">TC103</span><span class="subject-name">Ética y Valores I</span></div>
+            <div class="subject-item"><span class="subject-code">TC104</span><span class="subject-name">Introducción a las Ciencias Sociales</span></div>
+            <div class="subject-item"><span class="subject-code">TC105</span><span class="subject-name">Taller de Lectura y Redacción I</span></div>
+            <div class="subject-item"><span class="subject-code">TC106</span><span class="subject-name">Inglés I</span></div>
+            <div class="subject-item"><span class="subject-code">TC107</span><span class="subject-name">Informática I</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2do Cuatrimestre -->
+      <div class="curriculum-item">
+        <div class="curriculum-header" onclick="toggleCurriculum(this)">
+          <span>📚 2do Cuatrimestre <span style="color:var(--gray-mid);font-weight:400;">— 7 asignaturas · 18 horas · 11 créditos</span></span>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="curriculum-body">
+          <div class="subject-grid">
+            <div class="subject-item"><span class="subject-code">TC208</span><span class="subject-name">Matemáticas II</span></div>
+            <div class="subject-item"><span class="subject-code">TC209</span><span class="subject-name">Química II</span></div>
+            <div class="subject-item"><span class="subject-code">TC210</span><span class="subject-name">Ética y Valores II</span></div>
+            <div class="subject-item"><span class="subject-code">TC211</span><span class="subject-name">Historia de México I</span></div>
+            <div class="subject-item"><span class="subject-code">TC212</span><span class="subject-name">Taller de Lectura y Redacción II</span></div>
+            <div class="subject-item"><span class="subject-code">TC213</span><span class="subject-name">Inglés II</span></div>
+            <div class="subject-item"><span class="subject-code">TC214</span><span class="subject-name">Informática II</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3er Cuatrimestre -->
+      <div class="curriculum-item">
+        <div class="curriculum-header" onclick="toggleCurriculum(this)">
+          <span>📚 3er Cuatrimestre <span style="color:var(--gray-mid);font-weight:400;">— 8 asignaturas · 17 horas · 12 créditos</span></span>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="curriculum-body">
+          <div class="subject-grid">
+            <div class="subject-item"><span class="subject-code">TC315</span><span class="subject-name">Matemáticas III</span></div>
+            <div class="subject-item"><span class="subject-code">TC316</span><span class="subject-name">Biología I</span></div>
+            <div class="subject-item"><span class="subject-code">TC317</span><span class="subject-name">Física I</span></div>
+            <div class="subject-item"><span class="subject-code">TC318</span><span class="subject-name">Historia de México II</span></div>
+            <div class="subject-item"><span class="subject-code">TC319</span><span class="subject-name">Literatura I</span></div>
+            <div class="subject-item"><span class="subject-code">TC320</span><span class="subject-name">Inglés III</span></div>
+            <div class="subject-item"><span class="subject-code">FT321</span><span class="subject-name">Planeación Estratégica ⭐</span></div>
+            <div class="subject-item"><span class="subject-code">FT322</span><span class="subject-name">Calidad Empresarial ⭐</span></div>
+          </div>
+          <p style="font-size:0.75rem;color:var(--gray-mid);margin-top:8px;">⭐ Materias propedéuticas del área económico-administrativa</p>
+        </div>
+      </div>
+
+      <!-- 4to Cuatrimestre -->
+      <div class="curriculum-item">
+        <div class="curriculum-header" onclick="toggleCurriculum(this)">
+          <span>📚 4to Cuatrimestre <span style="color:var(--gray-mid);font-weight:400;">— 8 asignaturas · 17 horas · 12 créditos</span></span>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="curriculum-body">
+          <div class="subject-grid">
+            <div class="subject-item"><span class="subject-code">TC423</span><span class="subject-name">Matemáticas IV</span></div>
+            <div class="subject-item"><span class="subject-code">TC424</span><span class="subject-name">Biología II</span></div>
+            <div class="subject-item"><span class="subject-code">TC425</span><span class="subject-name">Física II</span></div>
+            <div class="subject-item"><span class="subject-code">TC426</span><span class="subject-name">Estructura Socioeconómica de México</span></div>
+            <div class="subject-item"><span class="subject-code">TC427</span><span class="subject-name">Literatura II</span></div>
+            <div class="subject-item"><span class="subject-code">TC428</span><span class="subject-name">Inglés IV</span></div>
+            <div class="subject-item"><span class="subject-code">FT429</span><span class="subject-name">Psicología Organizacional ⭐</span></div>
+            <div class="subject-item"><span class="subject-code">FT430</span><span class="subject-name">Formación en Gestión Empresarial ⭐</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5to Cuatrimestre -->
+      <div class="curriculum-item">
+        <div class="curriculum-header" onclick="toggleCurriculum(this)">
+          <span>📚 5to Cuatrimestre <span style="color:var(--gray-mid);font-weight:400;">— 9 asignaturas · 16 horas · 11 créditos · +$100 colegiatura</span></span>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="curriculum-body">
+          <div class="subject-grid">
+            <div class="subject-item"><span class="subject-code">TC531</span><span class="subject-name">Geografía</span></div>
+            <div class="subject-item"><span class="subject-code">TC532</span><span class="subject-name">Historia Universal Contemporánea</span></div>
+            <div class="subject-item"><span class="subject-code">TC533</span><span class="subject-name">Inglés V</span></div>
+            <div class="subject-item"><span class="subject-code">EA534</span><span class="subject-name">Administración I</span></div>
+            <div class="subject-item"><span class="subject-code">EA535</span><span class="subject-name">Economía I</span></div>
+            <div class="subject-item"><span class="subject-code">EA536</span><span class="subject-name">Matemáticas Financieras I</span></div>
+            <div class="subject-item"><span class="subject-code">TC537</span><span class="subject-name">Probabilidad y Estadística I</span></div>
+            <div class="subject-item"><span class="subject-code">FT538</span><span class="subject-name">Planeación Mercadotécnica I ⭐</span></div>
+            <div class="subject-item"><span class="subject-code">FT539</span><span class="subject-name">Programa Emprendedores I ⭐</span></div>
+          </div>
+          <p style="font-size:0.75rem;color:#d97706;margin-top:8px;">⚠️ En 5° y 6° cuatrimestre la colegiatura aumenta $100 pesos.</p>
+        </div>
+      </div>
+
+      <!-- 6to Cuatrimestre -->
+      <div class="curriculum-item">
+        <div class="curriculum-header" onclick="toggleCurriculum(this)">
+          <span>📚 6to Cuatrimestre <span style="color:var(--gray-mid);font-weight:400;">— 9 asignaturas · 16 horas · 12 créditos · +$100 colegiatura</span></span>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="curriculum-body">
+          <div class="subject-grid">
+            <div class="subject-item"><span class="subject-code">TC640</span><span class="subject-name">Filosofía</span></div>
+            <div class="subject-item"><span class="subject-code">TC641</span><span class="subject-name">Ecología y Medio Ambiente</span></div>
+            <div class="subject-item"><span class="subject-code">TC642</span><span class="subject-name">Metodología de la Investigación</span></div>
+            <div class="subject-item"><span class="subject-code">EA643</span><span class="subject-name">Administración II</span></div>
+            <div class="subject-item"><span class="subject-code">EA644</span><span class="subject-name">Economía II</span></div>
+            <div class="subject-item"><span class="subject-code">EA645</span><span class="subject-name">Matemáticas Financieras II</span></div>
+            <div class="subject-item"><span class="subject-code">TC646</span><span class="subject-name">Probabilidad y Estadística II</span></div>
+            <div class="subject-item"><span class="subject-code">FT647</span><span class="subject-name">Planeación Mercadotécnica II ⭐</span></div>
+            <div class="subject-item"><span class="subject-code">FT648</span><span class="subject-name">Programa Emprendedores II ⭐</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXACER COSTOS -->
+<section style="background:var(--gray-soft);padding:60px 0;">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-10 fade-up">
+      <div class="section-label">Programa Especial</div>
+      <h2 class="section-title">Exacer Colbach 2026 — Costos</h2>
+    </div>
+    <div class="grid gap-6 fade-up" style="grid-template-columns:repeat(auto-fill,minmax(200px,1fr));">
+      <div style="background:#fff;border-radius:14px;padding:20px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,0.06);">
+        <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--gray-mid);margin-bottom:6px;">Inscripción</div>
+        <div style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--navy);">$500</div>
+      </div>
+      <div style="background:#fff;border-radius:14px;padding:20px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,0.06);">
+        <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--gray-mid);margin-bottom:6px;">4 Pagos (por mes)</div>
+        <div style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--navy);">$1,495</div>
+      </div>
+      <div style="background:#fff;border-radius:14px;padding:20px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,0.06);">
+        <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--gray-mid);margin-bottom:6px;">Costo Certificado</div>
+        <div style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--navy);">$500</div>
+      </div>
+      <div style="background:#fff;border-radius:14px;padding:20px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,0.06);">
+        <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--gray-mid);margin-bottom:6px;">Gestión Educativa</div>
+        <div style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--navy);">$220</div>
+      </div>
+      <div style="background:linear-gradient(135deg,var(--navy),var(--navy-mid));border-radius:14px;padding:20px;text-align:center;box-shadow:0 4px 20px rgba(13,27,62,0.2);">
+        <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--gold-light);margin-bottom:6px;">Total con certificado</div>
+        <div style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--gold);">$7,200</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto" class="contact-section" style="padding:80px 0;">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-12 fade-up">
+      <div class="section-label" style="color:var(--gold-light);">Soporte Institucional</div>
+      <h2 class="section-title light">Contactos de Apoyo</h2>
+    </div>
+    <div class="grid gap-6 fade-up" style="grid-template-columns:repeat(auto-fill,minmax(300px,1fr));">
+
+      <div class="contact-card">
+        <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--gold-light);margin-bottom:8px;font-weight:700;">Prog. Flex y Colbach</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--white);margin-bottom:4px;">Lic. Jorge Sandoval</div>
+        <div style="font-size:0.8rem;color:rgba(248,249,252,0.5);margin-bottom:10px;">Departamento Comercial</div>
+        <div style="font-size:0.82rem;color:var(--accent-light);">✉️ jorge.sandoval@educem.mx</div>
+      </div>
+
+      <div class="contact-card">
+        <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--gold-light);margin-bottom:8px;font-weight:700;">Bachillerato, Lic. y Posgrados · Zona 1</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--white);margin-bottom:4px;">Lorena Sánchez</div>
+        <div style="font-size:0.8rem;color:rgba(248,249,252,0.5);margin-bottom:10px;">Admisiones</div>
+        <div style="font-size:0.82rem;color:var(--accent-light);">✉️ admisiones.zona.1@educem.mx</div>
+        <div style="font-size:0.82rem;color:rgba(248,249,252,0.6);margin-top:4px;">📞 477 850 4923</div>
+      </div>
+
+      <div class="contact-card">
+        <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--gold-light);margin-bottom:8px;font-weight:700;">Bachillerato, Lic. y Posgrados · Zona 2</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--white);margin-bottom:4px;">Carlos López</div>
+        <div style="font-size:0.8rem;color:rgba(248,249,252,0.5);margin-bottom:10px;">Admisiones</div>
+        <div style="font-size:0.82rem;color:var(--accent-light);">✉️ admisiones.zona.2@educem.mx</div>
+        <div style="font-size:0.82rem;color:rgba(248,249,252,0.6);margin-top:4px;">📞 477 846 1218</div>
+      </div>
+
+      <div class="contact-card">
+        <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--gold-light);margin-bottom:8px;font-weight:700;">Escuela Virtual, Diplomados y Talleres</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--white);margin-bottom:4px;">Dra. Reyna Badillo</div>
+        <div style="font-size:0.8rem;color:rgba(248,249,252,0.5);margin-bottom:10px;">Educación Continua</div>
+        <div style="font-size:0.82rem;color:var(--accent-light);">✉️ dir.educontinua@educem.mx</div>
+      </div>
+
+      <div class="contact-card">
+        <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--gold-light);margin-bottom:8px;font-weight:700;">Equivalencias, Revalidaciones y Documentos</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--white);margin-bottom:4px;">Lic. Francisco Serrano Juárez</div>
+        <div style="font-size:0.8rem;color:rgba(248,249,252,0.5);margin-bottom:10px;">Servicios Escolares</div>
+        <div style="font-size:0.82rem;color:var(--accent-light);">✉️ a.matriculacion.3@educem.mx</div>
+      </div>
+
+      <div class="contact-card">
+        <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--gold-light);margin-bottom:8px;font-weight:700;">Incidencias y Expedientes Enviados</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--white);margin-bottom:4px;">Lic. Miriam Luna</div>
+        <div style="font-size:0.8rem;color:rgba(248,249,252,0.5);margin-bottom:10px;">Admisiones</div>
+        <div style="font-size:0.82rem;color:var(--accent-light);">✉️ e.admisiones.1@educem.mx</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer style="background:#060f24;padding:40px 0;border-top:1px solid rgba(200,168,75,0.15);">
+  <div class="max-w-7xl mx-auto px-6 flex flex-wrap justify-between items-center gap-6">
+    <div>
+      <div style="font-family:'Playfair Display',serif;font-weight:700;color:var(--white);font-size:1.2rem;">EDUCEM</div>
+      <div style="font-size:0.75rem;color:var(--gray-mid);margin-top:4px;">Instituto Universitario del Centro de México · Campus Cancún</div>
+      <div style="font-size:0.72rem;color:rgba(248,249,252,0.3);margin-top:6px;">Herramienta para Asesores Comerciales 2026</div>
+    </div>
+    <div style="font-size:0.78rem;color:rgba(248,249,252,0.4);text-align:right;">
+      <div>RVOE Campus Cancún — Oferta Educativa Autorizada</div>
+      <div style="margin-top:4px;">Toda la información está basada en documentos oficiales institucionales</div>
+    </div>
+  </div>
+</footer>
+
+<!-- VOICEFLOW CHAT -->
+<div id="vf-chat-btn" onclick="toggleChat()" title="Asistente EDUCEM">
+  <span id="chat-icon">💬</span>
+</div>
+<div id="vf-chat-frame">
+  <iframe src="https://creator.voiceflow.com/share/69cfbf2dff1502929b69a83a/development" title="Asistente EDUCEM"></iframe>
+</div>
+<div class="chat-notification" id="chat-notification" onclick="toggleChat()" style="cursor:pointer;">
+  🤖 ¿Tienes dudas? ¡Pregúntame!
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal-box" id="modal-content">
+  </div>
+</div>
+
+<script>
+  // NAV SCROLL
+  window.addEventListener('scroll', () => {
+    const nav = document.getElementById('navbar');
+    nav.classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  // FADE UP OBSERVER
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // FILTER TABS
+  document.querySelectorAll('.filter-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const filter = tab.dataset.filter;
+      document.querySelectorAll('.academic-card').forEach(card => {
+        if (filter === 'all' || card.dataset.category === filter) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    });
+  });
+
+  // CURRICULUM ACCORDION
+  function toggleCurriculum(header) {
+    const body = header.nextElementSibling;
+    const icon = header.querySelector('.toggle-icon');
+    body.classList.toggle('open');
+    icon.textContent = body.classList.contains('open') ? '▲' : '▼';
+  }
+
+  // MODAL DATA
+  const modalData = {
+    'bach1': {
+      title: 'Bachillerato General Cuatrimestral',
+      level: 'Bachillerato',
+      rvoe: '16/1189 · 25/07/2016',
+      duration: '2 años (6 cuatrimestres)',
+      modality: 'Presencial y Virtual',
+      horarios: 'L-V: Matutino 7-11am / 8am-12pm · Diurno 11am-3pm · Vespertino 4-8pm · Nocturno 6:30-9pm\nMixto: Sábados 7am-2pm',
+      descripcion: 'Modelo de educación media superior que ofrece formación integral combinando conocimientos generales en materias del tronco común. Cuenta con 4 áreas propedéuticas: humanidades, químico-biológicas, físico-matemáticas y económico-administrativas.',
+      diferenciadores: ['Curso propedéutico 1 mes antes de clases', 'En 5° y 6° cuatrimestre colegiatura aumenta $100', 'Grupo inicia con 12 alumnos'],
+      docs: 'Acta de nacimiento original · CURP original · Certificado de secundaria original · Copia INE (tutor si es menor) · Comprobante domicilio'
+    },
+    'lic-adm': {
+      title: 'Licenciatura en Administración',
+      level: 'Licenciatura',
+      rvoe: '20160099/2016-02-05',
+      duration: '3-4 años (cuatrimestral)',
+      modality: 'Presencial y Virtual',
+      horarios: 'L-V: Matutino 7-10am · Diurno 11am-2pm · Vespertino 3-6pm · Nocturno 6-9pm\nMixto: Sábados 7am-2pm',
+      descripcion: 'Formación integral en gestión empresarial, liderazgo, planeación estratégica y recursos humanos. Prepara profesionales capaces de dirigir organizaciones en sectores público y privado.',
+      diferenciadores: ['Planes de estudio con materias básicas, instrumentales y profesionales', 'Doble salida como Licenciatura Dual con Contaduría', 'También disponible en modalidad Flex (Acuerdo 286)'],
+      docs: 'Acta de nacimiento original · CURP original · Certificado de preparatoria original · Copia INE · Comprobante domicilio'
+    },
+    'lic-crim': {
+      title: 'Licenciatura en Criminología',
+      level: 'Licenciatura',
+      rvoe: '20160100/2016-02-05',
+      duration: '3-4 años (cuatrimestral)',
+      modality: 'Presencial y Virtual',
+      horarios: 'L-V: Matutino 7-10am · Diurno 11am-2pm · Vespertino 3-6pm · Nocturno 6-9pm\nMixto: Sábados 7am-2pm',
+      descripcion: 'Estudio científico del crimen, el comportamiento delictivo y los métodos de prevención del delito. Forma especialistas en análisis criminalístico, victimología y política criminal.',
+      diferenciadores: ['Disponible como Licenciatura Dual con Derecho', 'Enfoque en criminología clínica y aplicada'],
+      docs: 'Acta de nacimiento original · CURP original · Certificado de preparatoria original · Copia INE · Comprobante domicilio'
+    }
+  };
+
+  function openModal(id) {
+    const data = modalData[id];
+    if (!data) return;
+    const content = document.getElementById('modal-content');
+    content.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:20px;">
+        <div>
+          <span style="background:rgba(13,27,62,0.08);color:var(--navy-mid);font-size:0.7rem;font-weight:700;padding:3px 10px;border-radius:100px;letter-spacing:0.08em;text-transform:uppercase;">${data.level}</span>
+          <h2 style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--navy);margin-top:8px;">${data.title}</h2>
+        </div>
+        <button onclick="document.getElementById('modal').classList.remove('open')" style="font-size:1.4rem;color:var(--gray-mid);background:none;border:none;cursor:pointer;padding:4px;">✕</button>
+      </div>
+      <div style="background:rgba(46,204,113,0.08);border:1px solid rgba(46,204,113,0.2);border-radius:10px;padding:12px 16px;margin-bottom:16px;">
+        <span style="font-size:0.7rem;font-weight:700;color:#1a7a45;text-transform:uppercase;letter-spacing:0.08em;">RVOE: </span>
+        <span style="font-size:0.88rem;font-weight:600;color:var(--navy);">${data.rvoe}</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+        <div style="background:var(--gray-soft);border-radius:10px;padding:12px;">
+          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--gray-mid);margin-bottom:4px;">Duración</div>
+          <div style="font-weight:600;font-size:0.9rem;">${data.duration}</div>
+        </div>
+        <div style="background:var(--gray-soft);border-radius:10px;padding:12px;">
+          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--gray-mid);margin-bottom:4px;">Modalidad</div>
+          <div style="font-weight:600;font-size:0.9rem;">${data.modality}</div>
+        </div>
+      </div>
+      <div style="margin-bottom:14px;">
+        <div style="font-weight:700;color:var(--navy);margin-bottom:6px;font-size:0.9rem;">📋 Descripción</div>
+        <p style="font-size:0.85rem;color:#4b5563;line-height:1.6;">${data.descripcion}</p>
+      </div>
+      <div style="margin-bottom:14px;">
+        <div style="font-weight:700;color:var(--navy);margin-bottom:8px;font-size:0.9rem;">⭐ Diferenciadores Clave</div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          ${data.diferenciadores.map(d => `<div style="display:flex;gap:8px;font-size:0.85rem;color:#4b5563;"><span style="color:var(--success);font-weight:700;">✓</span>${d}</div>`).join('')}
+        </div>
+      </div>
+      <div style="background:var(--gray-soft);border-radius:10px;padding:14px;">
+        <div style="font-weight:700;color:var(--navy);margin-bottom:8px;font-size:0.9rem;">📁 Documentos Requeridos</div>
+        <p style="font-size:0.82rem;color:#4b5563;line-height:1.6;">${data.docs}</p>
+      </div>
+    `;
+    document.getElementById('modal').classList.add('open');
+  }
+
+  function closeModal(e) {
+    if (e.target === document.getElementById('modal')) {
+      document.getElementById('modal').classList.remove('open');
+    }
+  }
+
+  // CHAT TOGGLE
+  let chatOpen = false;
+  setTimeout(() => {
+    const notif = document.getElementById('chat-notification');
+    if (notif) {
+      setTimeout(() => {
+        notif.style.opacity = '0';
+        notif.style.transition = 'opacity 0.5s';
+        setTimeout(() => notif.remove(), 500);
+      }, 5000);
+    }
+  }, 3000);
+
+  function toggleChat() {
+    chatOpen = !chatOpen;
+    document.getElementById('vf-chat-frame').classList.toggle('open', chatOpen);
+    document.getElementById('chat-icon').textContent = chatOpen ? '✕' : '💬';
+    const notif = document.getElementById('chat-notification');
+    if (notif) notif.remove();
+  }
+</script>
+</body>
+</html>
