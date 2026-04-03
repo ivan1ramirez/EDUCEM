@@ -592,6 +592,132 @@
 
   /* HIDDEN CARDS */
   .academic-card.hidden { display: none; }
+
+  /* =============================================
+     CENTRO DE MENSAJES RAPIDOS — ESTILOS
+  ============================================= */
+  .mensajes-section {
+    background: linear-gradient(160deg, #f0f4ff 0%, #e8ecf4 60%, #f8f9fc 100%);
+    padding: 100px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .mensajes-section::before {
+    content: '';
+    position: absolute;
+    top: -120px; right: -120px;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(13,27,62,0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .etapa-tabs {
+    display: flex; gap: 0;
+    background: #fff; border-radius: 14px; padding: 6px;
+    border: 1.5px solid var(--gray-soft); flex-wrap: wrap;
+    box-shadow: 0 2px 16px rgba(13,27,62,0.06);
+  }
+  .etapa-tab {
+    flex: 1; min-width: 110px;
+    padding: 10px 14px; border-radius: 10px;
+    font-size: 0.76rem; font-weight: 600;
+    cursor: pointer; border: none;
+    background: transparent; color: var(--gray-mid);
+    transition: all 0.22s; text-align: center; line-height: 1.3;
+  }
+  .etapa-tab:hover { color: var(--navy); background: var(--gray-soft); }
+  .etapa-tab.active {
+    background: var(--navy); color: #fff;
+    box-shadow: 0 4px 14px rgba(13,27,62,0.22);
+  }
+  .tpl-card {
+    background: #fff; border-radius: 20px;
+    border: 1.5px solid var(--gray-soft); overflow: hidden;
+    box-shadow: 0 4px 24px rgba(13,27,62,0.07);
+    transition: box-shadow 0.3s, transform 0.3s;
+  }
+  .tpl-card:hover {
+    box-shadow: 0 12px 40px rgba(13,27,62,0.13);
+    transform: translateY(-3px);
+  }
+  .tpl-card-header {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+    padding: 20px 24px; display: flex; align-items: center; gap: 14px;
+  }
+  .tpl-stage-badge {
+    width: 40px; height: 40px; flex-shrink: 0;
+    background: rgba(200,168,75,0.2); border: 1.5px solid rgba(200,168,75,0.4);
+    border-radius: 10px; display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+  }
+  .tpl-card-body { padding: 24px; }
+  .wa-preview {
+    background: #e9f7ef; border-radius: 0 14px 14px 14px;
+    padding: 16px 18px; font-size: 0.83rem; line-height: 1.7;
+    color: #1a2e1a; position: relative;
+    border: 1px solid rgba(37,211,102,0.2);
+    white-space: pre-wrap; word-break: break-word;
+    max-height: 200px; overflow-y: auto;
+    font-family: 'DM Sans', sans-serif; cursor: text;
+    transition: max-height 0.4s ease;
+  }
+  .wa-preview.expanded { max-height: 600px; }
+  .wa-preview::before {
+    content: '';
+    position: absolute; top: 0; left: -8px;
+    border-right: 8px solid #e9f7ef;
+    border-top: 8px solid transparent;
+  }
+  .wa-preview::-webkit-scrollbar { width: 4px; }
+  .wa-preview::-webkit-scrollbar-thumb { background: rgba(37,211,102,0.3); border-radius: 2px; }
+  .aida-label {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 100px; margin-bottom: 10px;
+  }
+  .aida-a { background: rgba(74,144,217,0.12); color: #1a5a9a; }
+  .aida-i { background: rgba(155,89,182,0.12); color: #6a2f99; }
+  .aida-d { background: rgba(231,76,60,0.1); color: #c0392b; }
+  .aida-ac { background: rgba(46,204,113,0.12); color: #1a7a45; }
+  .aida-c { background: rgba(200,168,75,0.15); color: #7a5500; }
+  .tpl-actions { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+  .btn-copy {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--navy); color: #fff;
+    font-size: 0.82rem; font-weight: 700;
+    padding: 10px 20px; border-radius: 10px;
+    border: none; cursor: pointer;
+    transition: all 0.22s; flex: 1; justify-content: center;
+  }
+  .btn-copy:hover { background: var(--navy-light); transform: translateY(-1px); }
+  .btn-copy.copied { background: #1a7a45; animation: pop-success 0.35s ease; }
+  @keyframes pop-success {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+  .btn-expand {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--gray-soft); color: var(--navy-mid);
+    font-size: 0.78rem; font-weight: 600;
+    padding: 10px 16px; border-radius: 10px;
+    border: none; cursor: pointer; transition: all 0.2s;
+  }
+  .btn-expand:hover { background: #d8dcea; }
+  .tpl-panel { display: none; }
+  .tpl-panel.active { display: block; }
+  .tips-box {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+    border-radius: 18px; padding: 28px 32px;
+    color: #fff; position: relative; overflow: hidden;
+  }
+  .tips-box::after {
+    content: 'PRO';
+    position: absolute; right: 24px; top: 20px;
+    font-size: 4rem; font-weight: 900; opacity: 0.05;
+    font-family: 'Playfair Display', serif;
+  }
 </style>
 </head>
 <body>
@@ -612,6 +738,7 @@
       <a href="#proceso" class="nav-link">Proceso</a>
       <a href="#requisitos" class="nav-link">Requisitos</a>
       <a href="#mapa" class="nav-link">Mapa Curr.</a>
+      <a href="#mensajes" class="nav-link" style="color:var(--gold-light);">💬 Mensajes</a>
       <a href="#contacto" class="nav-link">Contacto</a>
     </div>
     <a href="#proceso" class="btn-primary" style="padding:10px 22px;font-size:0.85rem;">
@@ -1610,6 +1737,890 @@
   </div>
 </section>
 
+<!-- =============================================
+     CENTRO DE MENSAJES RÁPIDOS PARA ASESORES
+============================================= -->
+<section id="mensajes" class="mensajes-section">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <!-- HEADER -->
+    <div class="text-center mb-14 fade-up">
+      <div class="section-label">Kit de Comunicación 2026</div>
+      <h2 class="section-title">Centro de Mensajes<br>Rápidos para Asesores</h2>
+      <p style="color:#6b7280;max-width:600px;margin:14px auto 0;font-size:0.95rem;line-height:1.7;">
+        Plantillas listas para WhatsApp redactadas con el marco <strong style="color:var(--navy);">AIDA</strong> (Atención · Interés · Deseo · Acción). Copia, personaliza las variables marcadas en <span style="background:rgba(200,168,75,0.25);color:#7a5500;border-radius:4px;padding:1px 6px;font-weight:600;font-size:0.85rem;">[corchetes]</span> y envía.
+      </p>
+    </div>
+
+    <!-- ETAPA TABS -->
+    <div class="etapa-tabs mb-10 fade-up" id="etapaTabs">
+      <button class="etapa-tab active" data-panel="p1">
+        <div style="font-size:1rem;margin-bottom:2px;">1️⃣</div>
+        Información<br>Inicial
+      </button>
+      <button class="etapa-tab" data-panel="p2">
+        <div style="font-size:1rem;margin-bottom:2px;">2️⃣</div>
+        Requisitos<br>Documentales
+      </button>
+      <button class="etapa-tab" data-panel="p3">
+        <div style="font-size:1rem;margin-bottom:2px;">3️⃣</div>
+        Costos<br>y Pago
+      </button>
+      <button class="etapa-tab" data-panel="p4">
+        <div style="font-size:1rem;margin-bottom:2px;">4️⃣</div>
+        Seguimiento<br>Follow-up
+      </button>
+      <button class="etapa-tab" data-panel="p5">
+        <div style="font-size:1rem;margin-bottom:2px;">5️⃣</div>
+        Bienvenida<br>y Cierre
+      </button>
+    </div>
+
+    <!-- ═══════════════════════════════════ -->
+    <!-- PANEL 1 — INFORMACIÓN INICIAL       -->
+    <!-- ═══════════════════════════════════ -->
+    <div class="tpl-panel active fade-up" id="p1">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;" class="tpl-grid">
+
+        <!-- CARD 1-A: General -->
+        <div class="tpl-card">
+          <div class="tpl-card-header">
+            <div class="tpl-stage-badge">🎓</div>
+            <div>
+              <div style="font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold-light);margin-bottom:3px;font-weight:600;">Etapa 1 · Primer Contacto</div>
+              <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:#fff;">Presentación General EDUCEM</div>
+            </div>
+          </div>
+          <div class="tpl-card-body">
+            <span class="aida-label aida-a">⚡ Atención</span>
+            <div style="font-size:0.75rem;color:var(--gray-mid);margin-bottom:10px;">Ideal para primer mensaje tras recibir una solicitud de información.</div>
+            <div class="wa-preview" id="msg-1a">¡Hola, [Nombre del Prospecto]! 👋
+
+Mi nombre es [Tu Nombre] y soy asesor educativo de *EDUCEM Campus Cancún* — Instituto Universitario del Centro de México.
+
+Recibí tu solicitud de información sobre *[Carrera de Interés]* y con gusto te acompaño en este proceso. 🎓
+
+✅ Tenemos RVOE oficial ante la SEP, lo que garantiza la validez de tu título en todo el territorio nacional.
+
+Algunas ventajas que hacen diferente a EDUCEM:
+
+📌 *Sin examen de admisión* — el proceso es accesible para todos.
+📌 Horarios *matutino, vespertino, nocturno y mixto* (sábados).
+📌 Modalidad *presencial y virtual* según tu disponibilidad.
+📌 Sistema cuatrimestral: resultados más rápidos.
+
+¿Te gustaría que te comparta los detalles del programa y los próximos pasos para formalizar tu inscripción?</div>
+            <div class="tpl-actions">
+              <button class="btn-copy" onclick="copyMsg('msg-1a', this)">📋 Copiar Mensaje</button>
+              <button class="btn-expand" onclick="expandMsg('msg-1a', this)">👁 Ver todo</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 1-B: Bachillerato -->
+        <div class="tpl-card">
+          <div class="tpl-card-header">
+            <div class="tpl-stage-badge">📚</div>
+            <div>
+              <div style="font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold-light);margin-bottom:3px;font-weight:600;">Etapa 1 · Bachillerato</div>
+              <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:#fff;">Oferta Bachillerato Cuatrimestral</div>
+            </div>
+          </div>
+          <div class="tpl-card-body">
+            <span class="aida-label aida-i">🔍 Interés</span>
+            <div style="font-size:0.75rem;color:var(--gray-mid);margin-bottom:10px;">Para prospectos que preguntan específicamente por el Bachillerato.</div>
+            <div class="wa-preview" id="msg-1b">¡Hola, [Nombre del Prospecto]! 😊
+
+Te cuento sobre nuestro *Bachillerato General Cuatrimestral* en EDUCEM Campus Cancún:
+
+🏛️ *RVOE:* 16/1189 otorgado el 25/07/2016 por la SEP — título 100% oficial.
+
+📋 *Características del programa:*
+• Duración: *2 años* (6 cuatrimestres)
+• 4 áreas propedéuticas: Humanidades, Químico-Biológicas, Físico-Matemáticas y Económico-Administrativa
+• Incluye curso propedéutico gratuito 1 mes antes de iniciar
+
+🕐 *Horarios disponibles (L-V):*
+• Matutino: 7:00 – 11:00 am
+• Vespertino: 4:00 – 8:00 pm
+• Nocturno: 6:30 – 9:00 pm
+• Mixto: Sábados 7:00 am – 2:00 pm
+
+💡 Al concluir tendrás un certificado de bachillerato con validez oficial para continuar estudios universitarios o integrarte al mercado laboral.
+
+¿Te puedo orientar sobre el horario que mejor se adapta a tu ritmo de vida?</div>
+            <div class="tpl-actions">
+              <button class="btn-copy" onclick="copyMsg('msg-1b', this)">📋 Copiar Mensaje</button>
+              <button class="btn-expand" onclick="expandMsg('msg-1b', this)">👁 Ver todo</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 1-C: Licenciatura -->
+        <div class="tpl-card">
+          <div class="tpl-card-header">
+            <div class="tpl-stage-badge">🎯</div>
+            <div>
+              <div style="font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold-light);margin-bottom:3px;font-weight:600;">Etapa 1 · Licenciatura</div>
+              <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:#fff;">Oferta de Licenciaturas</div>
+            </div>
+          </div>
+          <div class="tpl-card-body">
+            <span class="aida-label aida-i">🔍 Interés</span>
+            <div style="font-size:0.75rem;color:var(--gray-mid);margin-bottom:10px;">Para prospectos interesados en alguna licenciatura específica.</div>
+            <div class="wa-preview" id="msg-1c">¡Hola, [Nombre del Prospecto]! 👋
+
+Excelente elección interesarte en la *Licenciatura en [Carrera de Interés]* en EDUCEM Campus Cancún. Te comparto la información clave:
+
+🏛️ Programa con *RVOE oficial* ante la Secretaría de Educación Pública — tu título tendrá validez en todo México.
+
+🎓 *¿Qué obtienes al titularte?*
+• Título y cédula profesional
+• Formación cuatrimestral: *3 a 4 años*
+• Materias básicas, instrumentales y profesionales
+
+🕐 *Modalidad y horarios:*
+• Presencial (L-V) o Mixta (sábados)
+• Horarios: matutino, diurno, vespertino y nocturno
+• También disponible en *Sistema Virtual* (plataforma NEO)
+
+💼 Tenemos además la opción de *Licenciatura Dual*, donde puedes obtener *dos títulos en el mismo tiempo* si combinas con otra carrera afín.
+
+¿Te gustaría conocer el plan de estudios específico de tu carrera? Con gusto te lo comparto ahora mismo. 📄</div>
+            <div class="tpl-actions">
+              <button class="btn-copy" onclick="copyMsg('msg-1c', this)">📋 Copiar Mensaje</button>
+              <button class="btn-expand" onclick="expandMsg('msg-1c', this)">👁 Ver todo</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 1-D: Posgrado -->
+        <div class="tpl-card">
+          <div class="tpl-card-header">
+            <div class="tpl-stage-badge">🏆</div>
+            <div>
+              <div style="font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold-light);margin-bottom:3px;font-weight:600;">Etapa 1 · Posgrado</div>
+              <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:#fff;">Oferta de Maestrías</div>
+            </div>
+          </div>
+          <div class="tpl-card-body">
+            <span class="aida-label aida-d">🔥 Deseo</span>
+            <div style="font-size:0.75rem;color:var(--gray-mid);margin-bottom:10px;">Para profesionistas con licenciatura que buscan especializarse.</div>
+            <div class="wa-preview" id="msg-1d">¡Hola, [Nombre del Prospecto]!
+
+Entiendo que buscas dar el siguiente paso en tu carrera profesional. En *EDUCEM Campus Cancún* contamos con posgrados diseñados para profesionistas como tú. 🏆
+
+📌 *Programa:* Maestría en [Especialidad de Interés]
+🗓️ *Duración:* 2 años (modalidad trimestral)
+📆 *Horario:* Mixto — Sábados de 8:00 am a 2:00 pm
+💻 *También disponible en modalidad virtual*
+
+✅ *¿Por qué EDUCEM para tu maestría?*
+• RVOE oficial ante la SEP
+• Docentes con experiencia profesional activa
+• Grupos pequeños: atención personalizada
+• Inicia el grupo desde 12 alumnos
+
+🎯 Al concluir obtienes título de maestría y grado académico con reconocimiento nacional.
+
+¿Te cuento los requisitos de admisión y los costos del programa? Es un paso que transformará tu perfil profesional. 💼</div>
+            <div class="tpl-actions">
+              <button class="btn-copy" onclick="copyMsg('msg-1d', this)">📋 Copiar Mensaje</button>
+              <button class="btn-expand" onclick="expandMsg('msg-1d', this)">👁 Ver todo</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- PANEL 2 — REQUISITOS DOCUMENTALES      -->
+    <!-- ══════════════════════════════════════ -->
+    <div class="tpl-panel fade-up" id="p2">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;" class="tpl-grid">
+
+        <!-- CARD 2-A: Docs Estándar -->
+        <div class="tpl-card">
+          <div class="tpl-card-header">
+            <div class="tpl-stage-badge">📁</div>
+            <div>
+              <div style="font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold-light);margin-bottom:3px;font-weight:600;">Etapa 2 · Documentos</div>
+              <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:#fff;">Requisitos Generales (originales)</div>
+            </div>
+          </div>
+          <div class="tpl-card-body">
+            <span class="aida-label aida-ac">✅ Acción</span>
+            <div style="font-size:0.75rem;color:var(--gray-mid);margin-bottom:10px;">Para Bachillerato, Licenciaturas y Posgrados en modalidad presencial o virtual.</div>
+            <div class="wa-preview" id="msg-2a">¡Hola, [Nombre del Prospecto]! 😊
+
+Para formalizar tu inscripción en *EDUCEM Campus Cancún* necesitas reunir los siguientes documentos. ¡Son sencillos y los tienes en casa!
+
+📋 *Documentos necesarios en ORIGINAL:*
+
+1️⃣ *Acta de nacimiento* — original
+2️⃣ *CURP* — original
+3️⃣ *Certificado del nivel anterior* — original
+   • Bachillerato: certificado de secundaria
+   • Licenciatura: certificado de preparatoria
+   • Maestría/Doctorado: certificado de licenciatura o maestría
+4️⃣ *Identificación oficial (INE)* — copia
+   ⚠️ Si eres menor de edad, se solicita el INE del padre o tutor
+5️⃣ *Comprobante de domicilio* — copia
+
+📌 *Para Maestrías y Doctorados también se requiere:*
+• Copia del título profesional
+• Copia de la cédula profesional
+
+💡 *Tip:* Ten todos tus documentos listos desde el inicio para agilizar tu inscripción. ¡El proceso es muy sencillo y te acompaño en cada paso!
+
+¿Ya cuentas con todos estos documentos? 📄</div>
+            <div class="tpl-actions">
+              <button class="btn-copy" onclick="copyMsg('msg-2a', this)">📋 Copiar Mensaje</button>
+              <button class="btn-expand" onclick="expandMsg('msg-2a', this)">👁 Ver todo</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 2-B: Docs Flex -->
+        <div class="tpl-card">
+          <div class="tpl-card-header">
+            <div class="tpl-stage-badge">💻</div>
+            <div>
+              <div style="font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold-light);margin-bottom:3px;font-weight:600;">Etapa 2 · Programas Flex</div>
+              <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:#fff;">Requisitos Digitales (Acuerdo 286)</div>
+            </div>
+          </div>
+          <div class="tpl-card-body">
+            <span class="aida-label aida-ac">✅ Acción</span>
+            <div style="font-size:0.75rem;color:var(--gray-mid);margin-bottom:10px;">Exclusivo para Programas Flex (Administración, Contaduría, Derecho, Pedagogía).</div>
+            <div class="wa-preview" id="msg-2b">¡Hola, [Nombre del Prospecto]! 👋
+
+¡Buenas noticias! Para los *Programas Flex* (modalidad bajo Acuerdo 286 de la SEP), los documentos se presentan en *formato DIGITAL*. ¡Sin colas ni traslados!
+
+📱 *Documentos digitales requeridos (legibles y en buena calidad):*
+
+1️⃣ *Acta de nacimiento digital* — formato actual con código QR
+2️⃣ *CURP digital* — legible
+3️⃣ *Certificado de bachillerato digital* — legible
+4️⃣ *Identificación oficial digital* — INE u otra identificación vigente
+
+⚖️ *Si te inscribes a Contaduría o Derecho, adicionalmente necesitas UNA de estas opciones:*
+
+• Opción A: *Certificado parcial* que acredite al menos el 50% de los estudios de esa carrera
+• Opción B: *Currículum de experiencia laboral* (valorado por el Colegio de Abogados o de Contadores según aplique)
+
+🎯 *Mínimo de experiencia requerida:*
+• Administración y Pedagogía: *1 año*
+• Contaduría y Derecho: *2 años*
+
+¿Ya tienes tus documentos digitales listos? Si los tienes, podemos avanzar de inmediato al siguiente paso. 🚀</div>
+            <div class="tpl-actions">
+              <button class="btn-copy" onclick="copyMsg('msg-2b', this)">📋 Copiar Mensaje</button>
+              <button class="btn-expand" onclick="expandMsg('msg-2b', this)">👁 Ver todo</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 2-C: Docs Exacer -->
+        <div class="tpl-card">
+          <div class="tpl-card-header">
+            <div class="tpl-stage-badge">📝</div>
+            <div>
+              <div style="font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold-light);margin-bottom:3px;font-weight:600;">Etapa 2 · Exacer Colbach</div>
+              <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:#fff;">Requisitos Certificación Bachillerato</div>
+            </div>
+          </div>
+          <div class="tpl-card-body">
+            <span class="aida-label aida-ac">✅ Acción</span>
+            <div style="font-size:0.75rem;color:var(--gray-mid);margin-bottom:10px;">Para personas mayores de 18 años que no concluyeron el bachillerato.</div>
+            <div class="wa-preview" id="msg-2c">¡Hola, [Nombre del Prospecto]! 😊
+
+Para ingresar al programa *Exacer Colbach* y obtener tu certificado de bachillerato, necesitas los siguientes documentos:
+
+📋 *Documentos requeridos:*
+
+1️⃣ *Acta de nacimiento* — original
+2️⃣ *CURP* — original
+3️⃣ *Certificado de secundaria* — original
+4️⃣ *Copia del INE* — por ambos lados y a color
+5️⃣ *Comprobante de domicilio* — copia
+6️⃣ *2 fotografías* — tamaño infantil, a color
+
+⚠️ *Requisito de edad:* debes ser mayor de 18 años.
+
+💡 *Recuerda:*
+• El programa dura *5 meses* (17 semanas)
+• Clases a distancia por *Meet*: Martes y Jueves 6:00 – 8:00 pm y Sábados 11:00 am – 3:00 pm
+• Hay *4 fechas de examen* al año
+
+¿Ya tienes listos tus documentos? Con ellos podemos iniciar tu registro de inmediato. 📄</div>
+            <div class="tpl-actions">
+              <button class="btn-copy" onclick="copyMsg('msg-2c', this)">📋 Copiar Mensaje</button>
+              <button class="btn-expand" onclick="expandMsg('msg-2c', this)">👁 Ver todo</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 2-D: Checklist Visual -->
+        <div class="tpl-card" style="border-color:rgba(200,168,75,0.3);">
+          <div class="tpl-card-header" style="background:linear-gradient(135deg,#7a5500,#b8941e);">
+            <div class="tpl-stage-badge" style="background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.3);">💡</div>
+            <div>
+              <div style="font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.7);margin-bottom:3px;font-weight:600;">Consejo Pro · Etapa 2</div>
+              <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:#fff;">Recordatorio de Documentos</div>
+            </div>
+          </div>
+          <div class="tpl-card-body">
+            <span class="aida-label aida-c">💛 Cierre Suave</span>
+            <div style="font-size:0.75rem;color:var(--gray-mid);margin-bottom:10px;">Para enviar el día antes de la cita de entrega de documentos.</div>
+            <div class="wa-preview" id="msg-2d">Hola, [Nombre del Prospecto] 😊
+
+Solo paso a recordarte que *mañana es el día de entregar tus documentos* para formalizar tu inscripción en EDUCEM. 🎓
+
+✅ *Checklist rápido — lleva todo esto:*
+
+☐ Acta de nacimiento *original*
+☐ CURP *original*
+☐ Certificado de [nivel anterior] *original*
+☐ Copia de INE
+☐ Copia de comprobante de domicilio
+
+📍 *Lugar:* Campus EDUCEM Cancún
+🕐 *Hora de tu cita:* [Hora de la cita]
+
+💬 Si tienes alguna duda de último momento, escríbeme ahora y con gusto te ayudo.
+
+¡Nos vemos pronto! 🤝</div>
+            <div class="tpl-actions">
+              <button class="btn-copy" onclick="copyMsg('msg-2d', this)">📋 Copiar Mensaje</button>
+              <button class="btn-expand" onclick="expandMsg('msg-2d', this)">👁 Ver todo</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════ -->
+    <!-- PANEL 3 — COSTOS Y PAGO         -->
+    <!-- ════════════════════════════════ -->
+    <div class="tpl-panel fade-up" id="p3">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;" class="tpl-grid">
+
+        <!-- CARD 3-A: Desglose de Costos -->
+        <div class="tpl-card">
+          <div class="tpl-card-header">
+            <div class="tpl-stage-badge">💰</div>
+            <div>
+              <div style="font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold-light);margin-bottom:3px;font-weight:600;">Etapa 3 · Inversión</div>
+              <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:#fff;">Costos de Inscripción 2026</div>
+            </div>
+          </div>
+          <div class="tpl-card-body">
+            <span class="aida-label aida-d">🔥 Deseo</span>
+            <div style="font-size:0.75rem;color:var(--gray-mid);margin-bottom:10px;">Enviar cuando el prospecto pida información de costos. Transparencia genera confianza.</div>
+            <div class="wa-preview" id="msg-3a">¡Hola, [Nombre del Prospecto]! 💰
+
+Te comparto la información de costos para tu inscripción en *EDUCEM Campus Cancún* — ciclo 2026. Todo es muy transparente y accesible:
+
+💳 *Desglose de pagos de ingreso:*
+
+| Concepto         | Monto      |
+|-----------------|------------|
+| 📝 Inscripción   | $390.00    |
+| 🛡️ Seguro Escolar| $348.00    |
+| *TOTAL*         | *$738.00*  |
+
+🛡️ *¿Qué cubre el Seguro Escolar?*
+Protección en caso de accidente, tanto dentro como fuera del plantel durante tu ciclo escolar.
+
+🏦 *Formas de pago autorizadas:*
+
+🔵 *BANORTE* — Asociación Educativa Ropa A.C.
+• Cuenta: 0412434266
+• CLABE: 072225004124342660
+
+🔵 *BBVA* — Asociación Educativa Ropa A.C.
+• Cuenta: 0120792446
+• CLABE: 012225001207924463
+
+✅ Depósito en ventanilla o transferencia electrónica desde cualquier banco o app móvil.
+
+📌 *Importante:* guarda tu comprobante de pago (voucher físico o digital) — lo necesitarás para llenar tu ficha de inscripción.
+
+¿Tienes alguna pregunta sobre los montos? 😊</div>
+            <div class="tpl-actions">
+              <button class="btn-copy" onclick="copyMsg('msg-3a', this)">📋 Copiar Mensaje</button>
+              <button class="btn-expand" onclick="expandMsg('msg-3a', this)">👁 Ver todo</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 3-B: Confirmación de pago -->
+        <div class="tpl-card">
+          <div class="tpl-card-header">
+            <div class="tpl-stage-badge">✅</div>
+            <div>
+              <div style="font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold-light);margin-bottom:3px;font-weight:600;">Etapa 3 · Confirmación</div>
+              <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:#fff;">Recepción de Comprobante</div>
+            </div>
+          </div>
+          <div class="tpl-card-body">
+            <span class="aida-label aida-ac">✅ Acción</span>
+            <div style="font-size:0.75rem;color:var(--gray-mid);margin-bottom:10px;">Enviar inmediatamente después de que el alumno comparta su voucher de pago.</div>
+            <div class="wa-preview" id="msg-3b">¡Hola, [Nombre del Prospecto]! 🎉
+
+*Recibí tu comprobante de pago correctamente.* ¡Excelente decisión!
+
+📋 *Resumen de tu pago:*
+• Folio: [Número de folio del voucher]
+• Fecha: [Fecha del pago]
+• Monto: *$738.00*
+• Concepto: Inscripción + Seguro Escolar 2026
+
+El siguiente paso es llenar tu *Ficha de Inscripción General*. Para ello necesitaré algunos datos personales contigo o puedes acudir directamente al plantel.
+
+📝 *Al llenar la ficha recuerda:*
+✓ Usar tinta azul comercial
+✓ Escritura legible
+✓ Sin tachaduras
+
+¡Estamos a un paso de formalizarte como alumno de EDUCEM! 🚀 ¿Cuándo puedes pasar o quieres que te envíe la ficha digital?</div>
+            <div class="tpl-actions">
+              <button class="btn-copy" onclick="copyMsg('msg-3b', this)">📋 Copiar Mensaje</button>
+              <button class="btn-expand" onclick="expandMsg('msg-3b', this)">👁 Ver todo</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 3-C: Colegiaturas -->
+        <div class="tpl-card">
+          <div class="tpl-card-header">
+            <div class="tpl-stage-badge">📆</div>
+            <div>
+              <div style="font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold-light);margin-bottom:3px;font-weight:600;">Etapa 3 · Mensualidades</div>
+              <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:#fff;">Política de Colegiaturas</div>
+            </div>
+          </div>
+          <div class="tpl-card-body">
+            <span class="aida-label aida-d">🔥 Deseo</span>
+            <div style="font-size:0.75rem;color:var(--gray-mid);margin-bottom:10px;">Para explicar la política de pagos mensuales y evitar recargos desde el inicio.</div>
+            <div class="wa-preview" id="msg-3c">¡Hola, [Nombre del Prospecto]! 😊
+
+Quiero que desde el primer día tengas toda la información clara sobre *cómo funcionan los pagos mensuales* en EDUCEM:
+
+📅 *Fecha límite de pago:* día *10 de cada mes*
+
+⚠️ *Política de recargos:*
+• Pago el *día 11:* recargo de *+$20.00*
+• A partir del *día 12:* se suma *+$5.00 por cada día* adicional de retraso
+
+💡 *Mi recomendación:* programa un recordatorio en tu celular para el día 5 de cada mes, así nunca tendrás recargos.
+
+🏦 *¿Cómo pagar?*
+• Depósito en ventanilla BANORTE o BBVA
+• Transferencia electrónica desde cualquier banco o app
+• Guarda siempre tu comprobante de pago
+
+📌 *Nota especial para Bachillerato:* en los cuatrimestres 5° y 6° la colegiatura aumenta $100 pesos adicionales.
+
+¿Tienes alguna duda sobre los costos? Estoy aquí para aclarártela. 🤝</div>
+            <div class="tpl-actions">
+              <button class="btn-copy" onclick="copyMsg('msg-3c', this)">📋 Copiar Mensaje</button>
+              <button class="btn-expand" onclick="expandMsg('msg-3c', this)">👁 Ver todo</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 3-D: Flex Costos -->
+        <div class="tpl-card">
+          <div class="tpl-card-header">
+            <div class="tpl-stage-badge">⚡</div>
+            <div>
+              <div style="font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold-light);margin-bottom:3px;font-weight:600;">Etapa 3 · Programas Flex</div>
+              <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:#fff;">Costos Exacer Colbach 2026</div>
+            </div>
+          </div>
+          <div class="tpl-card-body">
+            <span class="aida-label aida-d">🔥 Deseo</span>
+            <div style="font-size:0.75rem;color:var(--gray-mid);margin-bottom:10px;">Para prospectos del programa Exacer Colbach que preguntan por el costo total.</div>
+            <div class="wa-preview" id="msg-3d">¡Hola, [Nombre del Prospecto]! 💰
+
+Te comparto el detalle de costos del programa *Exacer Colbach* — la forma más ágil de obtener tu certificado de bachillerato oficial:
+
+📊 *Desglose completo 2026:*
+
+| Concepto              | Monto      |
+|----------------------|------------|
+| 📝 Inscripción        | $500.00    |
+| 📚 4 pagos (por mes)  | $1,495.00  |
+| 📜 Costo certificado  | $500.00    |
+| 💻 Gestión educativa  | $220.00    |
+| *TOTAL*              | *$7,200.00*|
+
+⏱️ *Duración total:* solo *5 meses* (17 semanas)
+
+💡 *¿Por qué vale la pena?*
+✅ Certificado de bachillerato 100% oficial
+✅ Sin clases presenciales (Meet desde casa)
+✅ 4 oportunidades de examen por año
+✅ Programa avalado por el Colegio de Bachilleres
+
+¿Te gustaría que te indique las próximas fechas de inscripción disponibles? 📅</div>
+            <div class="tpl-actions">
+              <button class="btn-copy" onclick="copyMsg('msg-3d', this)">📋 Copiar Mensaje</button>
+              <button class="btn-expand" onclick="expandMsg('msg-3d', this)">👁 Ver todo</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════ -->
+    <!-- PANEL 4 — SEGUIMIENTO FOLLOW-UP -->
+    <!-- ════════════════════════════════ -->
+    <div class="tpl-panel fade-up" id="p4">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;" class="tpl-grid">
+
+        <!-- CARD 4-A: Follow-up Suave 24h -->
+        <div class="tpl-card">
+          <div class="tpl-card-header">
+            <div class="tpl-stage-badge">⏰</div>
+            <div>
+              <div style="font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold-light);margin-bottom:3px;font-weight:600;">Follow-up · 24 horas</div>
+              <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:#fff;">Seguimiento Amable</div>
+            </div>
+          </div>
+          <div class="tpl-card-body">
+            <span class="aida-label aida-i">🔍 Interés</span>
+            <div style="font-size:0.75rem;color:var(--gray-mid);margin-bottom:10px;">Para prospectos que no han respondido en 24 horas. Tono cálido, sin presión.</div>
+            <div class="wa-preview" id="msg-4a">¡Hola, [Nombre del Prospecto]! 😊
+
+Solo paso a saludarte y ver si pudiste revisar la información que te compartí sobre *[Carrera de Interés]* en EDUCEM Campus Cancún.
+
+Entiendo que los tiempos son ocupados, por eso quiero que sepas que estoy disponible para resolver cualquier duda que tengas, ya sea sobre:
+
+❓ *El plan de estudios*
+❓ *Los horarios disponibles*
+❓ *La modalidad presencial o virtual*
+❓ *Los costos y formas de pago*
+
+No hay examen de admisión en EDUCEM — el proceso es sencillo y te acompaño en cada paso. 🤝
+
+¿Hay algún punto específico en el que pueda orientarte mejor? Con gusto te ayudo hoy mismo. 💬</div>
+            <div class="tpl-actions">
+              <button class="btn-copy" onclick="copyMsg('msg-4a', this)">📋 Copiar Mensaje</button>
+              <button class="btn-expand" onclick="expandMsg('msg-4a', this)">👁 Ver todo</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 4-B: Follow-up Dudas Sistema Virtual -->
+        <div class="tpl-card">
+          <div class="tpl-card-header">
+            <div class="tpl-stage-badge">💻</div>
+            <div>
+              <div style="font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold-light);margin-bottom:3px;font-weight:600;">Follow-up · Sistema Virtual</div>
+              <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:#fff;">Resolviendo Dudas sobre NEO</div>
+            </div>
+          </div>
+          <div class="tpl-card-body">
+            <span class="aida-label aida-d">🔥 Deseo</span>
+            <div style="font-size:0.75rem;color:var(--gray-mid);margin-bottom:10px;">Para prospectos que expresaron dudas sobre cómo funciona la modalidad virtual.</div>
+            <div class="wa-preview" id="msg-4b">¡Hola, [Nombre del Prospecto]! 👋
+
+Sé que a veces la *modalidad virtual* genera dudas, así que quiero explicarte cómo funciona nuestro sistema para que lo veas como la ventaja que es. 💻
+
+🖥️ *Sistema Virtual EDUCEM — Plataforma NEO:*
+
+✅ *Acceso 24/7* — estudias en el horario que mejor te acomode
+✅ *1 sesión sincrónica por semana* con tu docente (vía Meet) — se graba para que la veas cuando puedas
+✅ *Sin exámenes* — evaluación por actividades y participación
+✅ *Biblioteca virtual* incluida
+✅ *Tutor asignado* que te apoya con trámites y acceso a plataforma
+✅ *Docente por materia* — revisión de actividades y calificaciones
+
+📌 *¿Qué necesitas técnicamente?*
+• Computadora o laptop (procesador mín. 2.0 GHz, 4 GB RAM)
+• Conexión a internet estable
+• Teléfono inteligente (procesador mín. 1.0 GHz, 2 GB RAM)
+
+⏱️ Dedicación recomendada: *mínimo 6 horas semanales* en el horario que tú elijas.
+
+¿Te animas a dar el paso? ¡El acceso al sistema es inmediato tras tu inscripción! 🚀</div>
+            <div class="tpl-actions">
+              <button class="btn-copy" onclick="copyMsg('msg-4b', this)">📋 Copiar Mensaje</button>
+              <button class="btn-expand" onclick="expandMsg('msg-4b', this)">👁 Ver todo</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 4-C: Follow-up 72h (Urgencia) -->
+        <div class="tpl-card">
+          <div class="tpl-card-header">
+            <div class="tpl-stage-badge">🔔</div>
+            <div>
+              <div style="font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold-light);margin-bottom:3px;font-weight:600;">Follow-up · 72 horas</div>
+              <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:#fff;">Cierre de Ciclo (Urgencia Real)</div>
+            </div>
+          </div>
+          <div class="tpl-card-body">
+            <span class="aida-label aida-ac">✅ Acción</span>
+            <div style="font-size:0.75rem;color:var(--gray-mid);margin-bottom:10px;">Cuando el ciclo escolar está próximo a cerrar inscripciones. Urgencia genuina.</div>
+            <div class="wa-preview" id="msg-4c">¡Hola, [Nombre del Prospecto]! 🎓
+
+Quería avisarte un dato importante: *las inscripciones para el próximo ciclo de [mes/año] están próximas a cerrar.*
+
+Los grupos en EDUCEM abren con *12 alumnos*, por lo que los lugares son limitados. Una vez lleno el grupo, el siguiente ciclo podría ser hasta [próximo periodo].
+
+¿Qué te impide dar el paso hoy?
+
+Si es por los *documentos* — podemos adelantar el proceso con los que ya tienes.
+Si es por los *costos* — hablemos, quizás hay una solución que se adapte a ti.
+Si es por *dudas del programa* — 10 minutos de llamada los resolvemos todos.
+
+💬 Escríbeme ahora o dime si prefieres que te llame. Estoy aquí para ayudarte a tomar la mejor decisión para tu futuro. 🤝
+
+¡Reserva tu lugar hoy mismo! 🚀</div>
+            <div class="tpl-actions">
+              <button class="btn-copy" onclick="copyMsg('msg-4c', this)">📋 Copiar Mensaje</button>
+              <button class="btn-expand" onclick="expandMsg('msg-4c', this)">👁 Ver todo</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 4-D: Reactivación Fría -->
+        <div class="tpl-card">
+          <div class="tpl-card-header">
+            <div class="tpl-stage-badge">🔄</div>
+            <div>
+              <div style="font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold-light);margin-bottom:3px;font-weight:600;">Follow-up · Prospecto Frío</div>
+              <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:#fff;">Reactivación de Contacto</div>
+            </div>
+          </div>
+          <div class="tpl-card-body">
+            <span class="aida-label aida-a">⚡ Atención</span>
+            <div style="font-size:0.75rem;color:var(--gray-mid);margin-bottom:10px;">Para prospectos con los que no has tenido contacto por más de 2 semanas.</div>
+            <div class="wa-preview" id="msg-4d">¡Hola, [Nombre del Prospecto]! 😊
+
+Hace un tiempo platicamos sobre la posibilidad de que estudiaras *[Carrera de Interés]* en EDUCEM Campus Cancún y quería ver cómo estás.
+
+A veces el momento no es el correcto… pero quizás ahora sí lo sea. 🎓
+
+Tenemos nuevas fechas de inicio y sé que EDUCEM puede adaptarse a tu situación:
+
+📌 *Sin examen de admisión*
+📌 Horarios *flexibles* para personas que trabajan
+📌 Modalidad *presencial, virtual o mixta*
+📌 Grupos pequeños con atención personalizada
+
+Si sigues interesado o tienes dudas que antes no te había resuelto, escríbeme. No hay ningún compromiso — solo quiero ayudarte a tomar la mejor decisión.
+
+¿Cómo te puedo apoyar hoy? 🤝</div>
+            <div class="tpl-actions">
+              <button class="btn-copy" onclick="copyMsg('msg-4d', this)">📋 Copiar Mensaje</button>
+              <button class="btn-expand" onclick="expandMsg('msg-4d', this)">👁 Ver todo</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════ -->
+    <!-- PANEL 5 — BIENVENIDA Y CIERRE   -->
+    <!-- ════════════════════════════════ -->
+    <div class="tpl-panel fade-up" id="p5">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;" class="tpl-grid">
+
+        <!-- CARD 5-A: Bienvenida Oficial -->
+        <div class="tpl-card" style="border-color:rgba(46,204,113,0.3);">
+          <div class="tpl-card-header" style="background:linear-gradient(135deg,#1a7a45,#2ecc71);">
+            <div class="tpl-stage-badge" style="background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.3);">🎉</div>
+            <div>
+              <div style="font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.7);margin-bottom:3px;font-weight:600;">Etapa 5 · Cierre</div>
+              <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:#fff;">Bienvenida Oficial al Alumno</div>
+            </div>
+          </div>
+          <div class="tpl-card-body">
+            <span class="aida-label aida-c">💛 Cierre Exitoso</span>
+            <div style="font-size:0.75rem;color:var(--gray-mid);margin-bottom:10px;">Enviar tras recibir y validar el expediente completo del alumno.</div>
+            <div class="wa-preview" id="msg-5a">¡Felicidades, [Nombre del Alumno]! 🎉🎓
+
+Tu inscripción en *EDUCEM Campus Cancún* ha quedado *formalmente registrada*. ¡Ya eres parte de la familia EDUCEM!
+
+✅ *Resumen de tu inscripción:*
+• Programa: *[Carrera / Nivel]*
+• Modalidad: *[Presencial / Virtual / Mixto]*
+• Turno: *[Horario seleccionado]*
+• Inicio de clases: *[Fecha de inicio]*
+
+📋 *Próximos pasos:*
+1. Recibirás tu matrícula oficial en los próximos días
+2. Se te asignará acceso a la plataforma institucional
+3. Te compartiremos el calendario escolar 2025-2026
+
+🏛️ *Instituto Universitario del Centro de México* — EDUCEM es una institución con RVOE oficial que lleva años formando profesionales de alto impacto en todo el país.
+
+¡Tu camino hacia el éxito profesional comienza ahora! Estoy a tus órdenes para cualquier duda durante todo tu trayecto. 💪
+
+*¡Bienvenido(a) a EDUCEM!* 🎓✨</div>
+            <div class="tpl-actions">
+              <button class="btn-copy" onclick="copyMsg('msg-5a', this)">📋 Copiar Mensaje</button>
+              <button class="btn-expand" onclick="expandMsg('msg-5a', this)">👁 Ver todo</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 5-B: Confirmación Expediente -->
+        <div class="tpl-card" style="border-color:rgba(46,204,113,0.3);">
+          <div class="tpl-card-header" style="background:linear-gradient(135deg,#1a5a9a,#4a90d9);">
+            <div class="tpl-stage-badge" style="background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.3);">📦</div>
+            <div>
+              <div style="font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.7);margin-bottom:3px;font-weight:600;">Etapa 5 · Expediente</div>
+              <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:#fff;">Recepción de Expediente Completo</div>
+            </div>
+          </div>
+          <div class="tpl-card-body">
+            <span class="aida-label aida-c">💛 Cierre Exitoso</span>
+            <div style="font-size:0.75rem;color:var(--gray-mid);margin-bottom:10px;">Para confirmar al alumno que su expediente fue recibido y enviado correctamente.</div>
+            <div class="wa-preview" id="msg-5b">¡Hola, [Nombre del Alumno]! 📦
+
+Quiero confirmarte que tu *expediente de inscripción fue recibido y está completo*. ✅
+
+📋 *Documentos recibidos:*
+☑ Ficha de inscripción + voucher de pago
+☑ Acta de nacimiento
+☑ CURP
+☑ Certificado de estudios
+☑ Copia de INE
+☑ Comprobante de domicilio
+☑ Anexos institucionales firmados
+
+*Próximo paso:* tu expediente será enviado al área de Admisiones en oficinas centrales para validación y generación de tu matrícula oficial.
+
+📅 *Tiempo estimado:* recibirás tu matrícula en los próximos días hábiles.
+
+Si en algún momento necesitas un seguimiento o tienes alguna duda sobre el estado de tu expediente, no dudes en escribirme. ¡Fue un placer acompañarte en este proceso! 🤝
+
+*¡Mucho éxito en tu nueva etapa académica en EDUCEM!* 🎓</div>
+            <div class="tpl-actions">
+              <button class="btn-copy" onclick="copyMsg('msg-5b', this)">📋 Copiar Mensaje</button>
+              <button class="btn-expand" onclick="expandMsg('msg-5b', this)">👁 Ver todo</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 5-C: Referidos -->
+        <div class="tpl-card">
+          <div class="tpl-card-header">
+            <div class="tpl-stage-badge">🌟</div>
+            <div>
+              <div style="font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold-light);margin-bottom:3px;font-weight:600;">Etapa 5 · Referidos</div>
+              <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:#fff;">Solicitud de Recomendaciones</div>
+            </div>
+          </div>
+          <div class="tpl-card-body">
+            <span class="aida-label aida-c">💛 Expansión</span>
+            <div style="font-size:0.75rem;color:var(--gray-mid);margin-bottom:10px;">Enviar 2-3 días después de la bienvenida, cuando el alumno ya está satisfecho.</div>
+            <div class="wa-preview" id="msg-5c">¡Hola, [Nombre del Alumno]! 😊
+
+¡Espero que estés muy contento(a) con tu decisión de unirte a EDUCEM! 🎓
+
+Tengo una pequeña petición: si tienes *amigos, familiares o compañeros de trabajo* que también quieran estudiar o retomar sus estudios, me encantaría poder apoyarlos igual que a ti.
+
+🎯 *EDUCEM tiene opciones para todos:*
+• Bachillerato, Licenciaturas, Maestrías
+• Programas Flex (para quien ya trabaja)
+• Exacer Colbach (certificar bachillerato rápido)
+• Sistema Virtual 100% en línea
+• Sin examen de admisión en ningún nivel
+
+Simplemente comparte mi contacto con quien creas que puede beneficiarse. Yo me encargo del resto. 🤝
+
+¡Gracias de antemano y mucho éxito en tu nuevo ciclo! 💪✨</div>
+            <div class="tpl-actions">
+              <button class="btn-copy" onclick="copyMsg('msg-5c', this)">📋 Copiar Mensaje</button>
+              <button class="btn-expand" onclick="expandMsg('msg-5c', this)">👁 Ver todo</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- TIPS BOX -->
+        <div class="tips-box fade-up" style="display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div style="font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold-light);font-weight:700;margin-bottom:10px;">💡 Consejos de Copywriting</div>
+            <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:16px;">Tips para<br>Asesores Pro</h3>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div style="display:flex;gap:10px;align-items:start;">
+                <span style="background:rgba(200,168,75,0.2);color:var(--gold);font-size:0.75rem;font-weight:700;padding:2px 8px;border-radius:6px;flex-shrink:0;margin-top:1px;">A</span>
+                <p style="font-size:0.82rem;color:rgba(248,249,252,0.75);line-height:1.5;"><strong style="color:#fff;">Atención:</strong> Personaliza siempre con el nombre. Un mensaje con tu nombre es 40% más efectivo.</p>
+              </div>
+              <div style="display:flex;gap:10px;align-items:start;">
+                <span style="background:rgba(200,168,75,0.2);color:var(--gold);font-size:0.75rem;font-weight:700;padding:2px 8px;border-radius:6px;flex-shrink:0;margin-top:1px;">I</span>
+                <p style="font-size:0.82rem;color:rgba(248,249,252,0.75);line-height:1.5;"><strong style="color:#fff;">Interés:</strong> Menciona el programa específico que pidieron. Nunca envíes plantillas genéricas.</p>
+              </div>
+              <div style="display:flex;gap:10px;align-items:start;">
+                <span style="background:rgba(200,168,75,0.2);color:var(--gold);font-size:0.75rem;font-weight:700;padding:2px 8px;border-radius:6px;flex-shrink:0;margin-top:1px;">D</span>
+                <p style="font-size:0.82rem;color:rgba(248,249,252,0.75);line-height:1.5;"><strong style="color:#fff;">Deseo:</strong> El RVOE y la validez oficial son tus mejores argumentos. Úsalos siempre.</p>
+              </div>
+              <div style="display:flex;gap:10px;align-items:start;">
+                <span style="background:rgba(200,168,75,0.2);color:var(--gold);font-size:0.75rem;font-weight:700;padding:2px 8px;border-radius:6px;flex-shrink:0;margin-top:1px;">AC</span>
+                <p style="font-size:0.82rem;color:rgba(248,249,252,0.75);line-height:1.5;"><strong style="color:#fff;">Acción:</strong> Cierra con una pregunta concreta. Evita mensajes que no inviten a responder.</p>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:20px;background:rgba(200,168,75,0.1);border:1px solid rgba(200,168,75,0.25);border-radius:12px;padding:14px;">
+            <div style="font-size:0.75rem;color:var(--gold-light);font-weight:700;margin-bottom:4px;">⏱ Regla de los tiempos</div>
+            <div style="font-size:0.8rem;color:rgba(248,249,252,0.65);line-height:1.5;">Follow-up 1: 24h · Follow-up 2: 72h · Follow-up 3: 1 semana · Reactivación: 2+ semanas</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- VARIABLE GUIDE -->
+    <div class="mt-12 fade-up" style="background:#fff;border-radius:18px;border:1.5px solid var(--gray-soft);padding:28px 32px;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+        <div style="width:38px;height:38px;background:rgba(200,168,75,0.12);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;">🔧</div>
+        <div>
+          <div style="font-weight:700;color:var(--navy);font-size:1rem;">Guía de Variables</div>
+          <div style="font-size:0.78rem;color:var(--gray-mid);">Reemplaza estos marcadores antes de enviar el mensaje</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;">
+        <div style="background:var(--gray-soft);border-radius:10px;padding:12px 14px;">
+          <div style="background:rgba(200,168,75,0.25);color:#7a5500;border-radius:5px;padding:2px 8px;font-size:0.72rem;font-weight:700;display:inline-block;margin-bottom:6px;">[Nombre del Prospecto]</div>
+          <div style="font-size:0.78rem;color:#4b5563;">Nombre completo o de pila del prospecto</div>
+        </div>
+        <div style="background:var(--gray-soft);border-radius:10px;padding:12px 14px;">
+          <div style="background:rgba(200,168,75,0.25);color:#7a5500;border-radius:5px;padding:2px 8px;font-size:0.72rem;font-weight:700;display:inline-block;margin-bottom:6px;">[Carrera de Interés]</div>
+          <div style="font-size:0.78rem;color:#4b5563;">Ej: Administración, Derecho, Bachillerato</div>
+        </div>
+        <div style="background:var(--gray-soft);border-radius:10px;padding:12px 14px;">
+          <div style="background:rgba(200,168,75,0.25);color:#7a5500;border-radius:5px;padding:2px 8px;font-size:0.72rem;font-weight:700;display:inline-block;margin-bottom:6px;">[Tu Nombre]</div>
+          <div style="font-size:0.78rem;color:#4b5563;">Tu nombre como asesor educativo</div>
+        </div>
+        <div style="background:var(--gray-soft);border-radius:10px;padding:12px 14px;">
+          <div style="background:rgba(200,168,75,0.25);color:#7a5500;border-radius:5px;padding:2px 8px;font-size:0.72rem;font-weight:700;display:inline-block;margin-bottom:6px;">[Hora de la cita]</div>
+          <div style="font-size:0.78rem;color:#4b5563;">Ej: 10:00 am, 3:00 pm</div>
+        </div>
+        <div style="background:var(--gray-soft);border-radius:10px;padding:12px 14px;">
+          <div style="background:rgba(200,168,75,0.25);color:#7a5500;border-radius:5px;padding:2px 8px;font-size:0.72rem;font-weight:700;display:inline-block;margin-bottom:6px;">[Fecha de inicio]</div>
+          <div style="font-size:0.78rem;color:#4b5563;">Fecha de inicio del ciclo escolar</div>
+        </div>
+        <div style="background:var(--gray-soft);border-radius:10px;padding:12px 14px;">
+          <div style="background:rgba(200,168,75,0.25);color:#7a5500;border-radius:5px;padding:2px 8px;font-size:0.72rem;font-weight:700;display:inline-block;margin-bottom:6px;">[Especialidad de Interés]</div>
+          <div style="font-size:0.78rem;color:#4b5563;">Ej: Educación, Administración, Juicios Orales</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
 <!-- CONTACTO -->
 <section id="contacto" class="contact-section" style="padding:80px 0;">
   <div class="max-w-7xl mx-auto px-6">
@@ -1623,14 +2634,14 @@
         <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--gold-light);margin-bottom:8px;font-weight:700;">Prog. Flex y Colbach</div>
         <div style="font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--white);margin-bottom:4px;">Lic. Jorge Sandoval</div>
         <div style="font-size:0.8rem;color:rgba(248,249,252,0.5);margin-bottom:10px;">Departamento Comercial</div>
-        <div style="font-size:0.82rem;color:var(--accent-light);">✉️ jorge.sandoval@educem.mx</div>
+        <div style="font-size:0.82rem;color:var(--accent-light);">✉️ <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ff95908d989ad18c9e919b90899e93bf9a9b8a9c9a92d19287">[email&#160;protected]</a></div>
       </div>
 
       <div class="contact-card">
         <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--gold-light);margin-bottom:8px;font-weight:700;">Bachillerato, Lic. y Posgrados · Zona 1</div>
         <div style="font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--white);margin-bottom:4px;">Lorena Sánchez</div>
         <div style="font-size:0.8rem;color:rgba(248,249,252,0.5);margin-bottom:10px;">Admisiones</div>
-        <div style="font-size:0.82rem;color:var(--accent-light);">✉️ admisiones.zona.1@educem.mx</div>
+        <div style="font-size:0.82rem;color:var(--accent-light);">✉️ <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="38595c55514b5157565d4b16425756591609785d5c4d5b5d55165540">[email&#160;protected]</a></div>
         <div style="font-size:0.82rem;color:rgba(248,249,252,0.6);margin-top:4px;">📞 477 850 4923</div>
       </div>
 
@@ -1638,7 +2649,7 @@
         <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--gold-light);margin-bottom:8px;font-weight:700;">Bachillerato, Lic. y Posgrados · Zona 2</div>
         <div style="font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--white);margin-bottom:4px;">Carlos López</div>
         <div style="font-size:0.8rem;color:rgba(248,249,252,0.5);margin-bottom:10px;">Admisiones</div>
-        <div style="font-size:0.82rem;color:var(--accent-light);">✉️ admisiones.zona.2@educem.mx</div>
+        <div style="font-size:0.82rem;color:var(--accent-light);">✉️ <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2342474e4a504a4c4d46500d594c4d420d116346475640464e0d4e5b">[email&#160;protected]</a></div>
         <div style="font-size:0.82rem;color:rgba(248,249,252,0.6);margin-top:4px;">📞 477 846 1218</div>
       </div>
 
@@ -1646,21 +2657,21 @@
         <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--gold-light);margin-bottom:8px;font-weight:700;">Escuela Virtual, Diplomados y Talleres</div>
         <div style="font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--white);margin-bottom:4px;">Dra. Reyna Badillo</div>
         <div style="font-size:0.8rem;color:rgba(248,249,252,0.5);margin-bottom:10px;">Educación Continua</div>
-        <div style="font-size:0.82rem;color:var(--accent-light);">✉️ dir.educontinua@educem.mx</div>
+        <div style="font-size:0.82rem;color:var(--accent-light);">✉️ <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="bedad7cc90dbdacbddd1d0cad7d0cbdffedbdacbdddbd390d3c6">[email&#160;protected]</a></div>
       </div>
 
       <div class="contact-card">
         <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--gold-light);margin-bottom:8px;font-weight:700;">Equivalencias, Revalidaciones y Documentos</div>
         <div style="font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--white);margin-bottom:4px;">Lic. Francisco Serrano Juárez</div>
         <div style="font-size:0.8rem;color:rgba(248,249,252,0.5);margin-bottom:10px;">Servicios Escolares</div>
-        <div style="font-size:0.82rem;color:var(--accent-light);">✉️ a.matriculacion.3@educem.mx</div>
+        <div style="font-size:0.82rem;color:var(--accent-light);">✉️ <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1c7d32717d686e757f69707d7f757372322f5c7978697f7971327164">[email&#160;protected]</a></div>
       </div>
 
       <div class="contact-card">
         <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--gold-light);margin-bottom:8px;font-weight:700;">Incidencias y Expedientes Enviados</div>
         <div style="font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--white);margin-bottom:4px;">Lic. Miriam Luna</div>
         <div style="font-size:0.8rem;color:rgba(248,249,252,0.5);margin-bottom:10px;">Admisiones</div>
-        <div style="font-size:0.82rem;color:var(--accent-light);">✉️ e.admisiones.1@educem.mx</div>
+        <div style="font-size:0.82rem;color:var(--accent-light);">✉️ <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2f4a014e4b42465c4640414a5c011e6f4a4b5a4c4a42014257">[email&#160;protected]</a></div>
       </div>
 
     </div>
@@ -1699,7 +2710,7 @@
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // NAV SCROLL
   window.addEventListener('scroll', () => {
     const nav = document.getElementById('navbar');
@@ -1846,6 +2857,76 @@
     const notif = document.getElementById('chat-notification');
     if (notif) notif.remove();
   }
+
+  // ─── MENSAJES RÁPIDOS ────────────────────────────────────
+  // Tab switching
+  document.querySelectorAll('.etapa-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.etapa-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tpl-panel').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      const panelId = tab.dataset.panel;
+      const panel = document.getElementById(panelId);
+      if (panel) {
+        panel.classList.add('active');
+        panel.querySelectorAll('.tpl-card').forEach((card, i) => {
+          card.style.opacity = '0';
+          card.style.transform = 'translateY(24px)';
+          setTimeout(() => {
+            card.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+          }, i * 80);
+        });
+      }
+    });
+  });
+
+  // Copy message to clipboard
+  function copyMsg(id, btn) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const text = el.innerText;
+    const orig = btn.innerHTML;
+    const doSuccess = () => {
+      btn.innerHTML = '✅ ¡Copiado!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.innerHTML = orig; btn.classList.remove('copied'); }, 2200);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(doSuccess).catch(() => fallbackCopy(text, doSuccess));
+    } else {
+      fallbackCopy(text, doSuccess);
+    }
+  }
+
+  function fallbackCopy(text, cb) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0;';
+    document.body.appendChild(ta);
+    ta.focus(); ta.select();
+    try { document.execCommand('copy'); cb(); } catch(e) { alert('Por favor copia el texto manualmente.'); }
+    document.body.removeChild(ta);
+  }
+
+  // Expand/collapse message preview
+  function expandMsg(id, btn) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const expanded = el.classList.toggle('expanded');
+    btn.innerHTML = expanded ? '🔼 Colapsar' : '👁 Ver todo';
+  }
+
+  // Responsive grid for template cards
+  function applyTplGrid() {
+    document.querySelectorAll('.tpl-grid').forEach(grid => {
+      grid.style.gridTemplateColumns = window.innerWidth < 768 ? '1fr' : '1fr 1fr';
+    });
+  }
+  applyTplGrid();
+  window.addEventListener('resize', applyTplGrid);
+
 </script>
 </body>
 </html>
