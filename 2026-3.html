@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EDUCEM — Centro Docente 2026-3</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --magenta: #9B1D6E;
+      --magenta-light: #C2347F;
+      --magenta-pale: #F5E6F0;
+      --blue-dark: #0F2557;
+      --blue-mid: #1B3A8C;
+      --teal: #00A99D;
+      --white: #FFFFFF;
+      --gray-100: #F8F9FB;
+      --gray-200: #EFF1F5;
+      --gray-400: #9CA3AF;
+      --gray-600: #4B5563;
+      --gray-800: #1F2937;
+      --shadow-soft: 0 4px 24px rgba(15,37,87,0.08);
+      --shadow-hover: 0 12px 40px rgba(155,29,110,0.18);
+      --radius: 16px;
+      --radius-sm: 8px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Manrope', sans-serif;
+      background: var(--white);
+      color: var(--gray-800);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--gray-200);
+      padding: 0 2rem;
+    }
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+    .nav-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      color: var(--blue-dark);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+    .nav-brand span { color: var(--magenta); }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--gray-600);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--magenta); }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue-mid) 45%, #1D2F6F 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 8rem 2rem 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      right: -10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(155,29,110,0.35) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -15%;
+      left: -8%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(0,169,157,0.2) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(155,29,110,0.25);
+      border: 1px solid rgba(155,29,110,0.5);
+      color: #f0b6d8;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.4rem 1.2rem;
+      border-radius: 100px;
+      margin-bottom: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      color: var(--white);
+      line-height: 1.2;
+      max-width: 760px;
+      margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: #f0b6d8;
+    }
+    .hero-quote {
+      max-width: 600px;
+      color: rgba(255,255,255,0.65);
+      font-size: 0.95rem;
+      font-weight: 400;
+      border-left: 3px solid var(--magenta-light);
+      padding-left: 1.2rem;
+      text-align: left;
+      position: relative;
+      z-index: 1;
+      margin-bottom: 2.5rem;
+    }
+    .hero-quote strong { color: rgba(255,255,255,0.85); font-weight: 600; }
+    .hero-meta {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-pill {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.85);
+      padding: 0.5rem 1.3rem;
+      border-radius: 100px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+    .hero-scroll {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1;
+    }
+    .scroll-dot {
+      width: 28px;
+      height: 44px;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-radius: 14px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding-top: 6px;
+    }
+    .scroll-dot::before {
+      content: '';
+      width: 4px;
+      height: 8px;
+      background: rgba(255,255,255,0.7);
+      border-radius: 2px;
+      animation: scrollDot 1.8s infinite;
+    }
+    @keyframes scrollDot {
+      0% { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(14px); }
+    }
+
+    /* ─── SECTIONS ─── */
+    section { padding: 5rem 2rem; }
+    .container { max-width: 1200px; margin: 0 auto; }
+
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--magenta);
+      margin-bottom: 0.75rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      color: var(--blue-dark);
+      line-height: 1.25;
+      margin-bottom: 1rem;
+    }
+    .section-sub {
+      color: var(--gray-600);
+      font-size: 1rem;
+      max-width: 560px;
+      margin-bottom: 3rem;
+    }
+
+    /* ─── PILLARS ─── */
+    #filosofia { background: var(--gray-100); }
+    .role-strip {
+      background: var(--blue-dark);
+      border-radius: var(--radius);
+      padding: 2rem 2.5rem;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+    .role-strip-icon {
+      font-size: 2.5rem;
+      flex-shrink: 0;
+    }
+    .role-strip p { font-size: 1rem; line-height: 1.7; opacity: 0.85; }
+    .role-strip strong { color: #f0b6d8; font-weight: 700; }
+
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+    .pillar-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 2rem;
+      box-shadow: var(--shadow-soft);
+      border-top: 4px solid transparent;
+      transition: transform 0.3s, box-shadow 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .pillar-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-hover);
+    }
+    .pillar-card:nth-child(1) { border-top-color: var(--magenta); }
+    .pillar-card:nth-child(2) { border-top-color: var(--teal); }
+    .pillar-card:nth-child(3) { border-top-color: var(--blue-mid); }
+    .pillar-card:nth-child(4) { border-top-color: #F59E0B; }
+    .pillar-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    .pillar-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      color: var(--blue-dark);
+      margin-bottom: 0.5rem;
+    }
+    .pillar-tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.25rem 0.7rem;
+      border-radius: 100px;
+      margin-bottom: 0.75rem;
+    }
+    .pillar-card:nth-child(1) .pillar-tag { background: var(--magenta-pale); color: var(--magenta); }
+    .pillar-card:nth-child(2) .pillar-tag { background: #E6F7F6; color: var(--teal); }
+    .pillar-card:nth-child(3) .pillar-tag { background: #E8EDFA; color: var(--blue-mid); }
+    .pillar-card:nth-child(4) .pillar-tag { background: #FEF3C7; color: #92400E; }
+    .pillar-card p { font-size: 0.9rem; color: var(--gray-600); line-height: 1.65; }
+
+    /* ─── ECOSYSTEM ─── */
+    #ecosistema { background: var(--white); }
+    .platform-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 1.25rem;
+    }
+    .platform-card {
+      border: 1.5px solid var(--gray-200);
+      border-radius: var(--radius);
+      padding: 1.75rem 1.5rem;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .platform-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--magenta-pale), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .platform-card:hover {
+      border-color: var(--magenta-light);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+    }
+    .platform-card:hover::before { opacity: 1; }
+    .platform-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      position: relative;
+      z-index: 1;
+    }
+    .platform-name {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--blue-dark);
+      position: relative;
+      z-index: 1;
+    }
+    .platform-desc {
+      font-size: 0.82rem;
+      color: var(--gray-600);
+      position: relative;
+      z-index: 1;
+      flex: 1;
+    }
+    .platform-link {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--magenta);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    /* ─── CRONOGRAMA ─── */
+    #cronograma { background: var(--gray-100); }
+    .schedule-table-wrap { overflow-x: auto; border-radius: var(--radius); box-shadow: var(--shadow-soft); }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--white);
+      font-size: 0.88rem;
+    }
+    thead tr { background: var(--blue-dark); color: white; }
+    thead th {
+      padding: 1rem 1.25rem;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    tbody tr {
+      border-bottom: 1px solid var(--gray-200);
+      transition: background 0.2s;
+    }
+    tbody tr:hover { background: var(--gray-100); }
+    tbody td {
+      padding: 0.9rem 1.25rem;
+      color: var(--gray-700);
+      vertical-align: middle;
+    }
+    .badge-urgente {
+      display: inline-block;
+      background: #FEE2E2;
+      color: #B91C1C;
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 0.2rem 0.6rem;
+      border-radius: 100px;
+      margin-left: 0.4rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .badge-info {
+      display: inline-block;
+      background: #DBEAFE;
+      color: #1E40AF;
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 0.2rem 0.6rem;
+      border-radius: 100px;
+      margin-left: 0.4rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .badge-ok {
+      display: inline-block;
+      background: #D1FAE5;
+      color: #065F46;
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 0.2rem 0.6rem;
+      border-radius: 100px;
+      margin-left: 0.4rem;
+    }
+    .date-range {
+      font-weight: 600;
+      color: var(--blue-dark);
+      white-space: nowrap;
+    }
+
+    /* ─── GUÍAS / TABS ─── */
+    #guias { background: var(--white); }
+    .tabs-nav {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+    .tab-btn {
+      padding: 0.6rem 1.4rem;
+      border: 1.5px solid var(--gray-200);
+      border-radius: 100px;
+      background: transparent;
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--gray-600);
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+    .tab-btn.active, .tab-btn:hover {
+      background: var(--magenta);
+      border-color: var(--magenta);
+      color: white;
+    }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    .steps-list { counter-reset: steps; list-style: none; display: flex; flex-direction: column; gap: 1rem; }
+    .steps-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.2rem;
+      background: var(--gray-100);
+      border-radius: var(--radius-sm);
+      padding: 1.25rem 1.5rem;
+      counter-increment: steps;
+    }
+    .steps-list li::before {
+      content: counter(steps);
+      min-width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--magenta);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .steps-list li .step-text { font-size: 0.92rem; line-height: 1.6; color: var(--gray-700); }
+    .steps-list li .step-text strong { color: var(--blue-dark); }
+
+    .note-box {
+      margin-top: 1.5rem;
+      background: #EFF6FF;
+      border-left: 4px solid var(--blue-mid);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 1rem 1.5rem;
+      font-size: 0.88rem;
+      color: var(--gray-700);
+    }
+    .note-box strong { color: var(--blue-mid); }
+
+    .warning-box {
+      margin-top: 1.5rem;
+      background: #FFF7ED;
+      border-left: 4px solid #F59E0B;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 1rem 1.5rem;
+      font-size: 0.88rem;
+      color: var(--gray-700);
+    }
+    .warning-box strong { color: #92400E; }
+
+    /* ─── POLICIES ─── */
+    #politicas { background: var(--gray-100); }
+    .policies-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .policy-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 2rem;
+      box-shadow: var(--shadow-soft);
+    }
+    .policy-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .policy-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      color: var(--blue-dark);
+      margin-bottom: 1rem;
+    }
+    .policy-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+    .policy-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      font-size: 0.88rem;
+      color: var(--gray-600);
+      line-height: 1.5;
+    }
+    .policy-list li::before {
+      content: '→';
+      color: var(--magenta);
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 0.05rem;
+    }
+
+    /* ─── INFO STRIP ─── */
+    .info-strip {
+      background: linear-gradient(135deg, var(--magenta) 0%, #7B0D54 100%);
+      padding: 3rem 2rem;
+      color: white;
+    }
+    .info-strip-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      align-items: start;
+    }
+    .info-item h4 {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.7;
+      margin-bottom: 0.5rem;
+    }
+    .info-item .info-val {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      line-height: 1.3;
+    }
+    .info-item p { font-size: 0.82rem; opacity: 0.75; margin-top: 0.3rem; }
+
+    /* ─── REFERENCES ─── */
+    #referencias { background: var(--white); }
+    .ref-list { list-style: none; display: flex; flex-direction: column; gap: 1.25rem; }
+    .ref-list li {
+      padding: 1.25rem 1.5rem;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-sm);
+      font-size: 0.88rem;
+      color: var(--gray-700);
+      line-height: 1.7;
+    }
+    .ref-list li span { color: var(--magenta); font-weight: 700; margin-right: 0.5rem; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--blue-dark);
+      color: rgba(255,255,255,0.6);
+      text-align: center;
+      padding: 2.5rem 2rem;
+      font-size: 0.83rem;
+    }
+    footer strong { color: white; }
+    footer a { color: #f0b6d8; text-decoration: none; }
+
+    /* ─── CONTACT ROW ─── */
+    .contact-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 1.5rem;
+    }
+    .contact-chip {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.8);
+      padding: 0.5rem 1.2rem;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .contact-chip:hover { background: rgba(155,29,110,0.35); color: white; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .role-strip { flex-direction: column; gap: 1rem; }
+      .hero-meta { gap: 0.75rem; }
+    }
+
+    /* ─── ANIMATIONS ─── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: none; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="#"><span>EDU</span>CEM · 2026-3</a>
+    <ul class="nav-links">
+      <li><a href="#filosofia">Filosofía</a></li>
+      <li><a href="#ecosistema">Plataformas</a></li>
+      <li><a href="#cronograma">Cronograma</a></li>
+      <li><a href="#guias">Guías</a></li>
+      <li><a href="#politicas">Políticas</a></li>
+      <li><a href="#referencias">Referencias</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">Ciclo Académico · Mayo – Agosto 2026</div>
+  <h1>Centro de Recursos<br>para Docentes <em>EDUCEM</em></h1>
+  <div class="hero-quote">
+    "La educación es el arma más poderosa que puedes usar para cambiar el mundo."<br>
+    <strong>— Nelson Mandela</strong>
+  </div>
+  <div class="hero-meta">
+    <div class="hero-pill">📅 Ciclo 2026-3</div>
+    <div class="hero-pill">🎓 Bachillerato &amp; Licenciatura</div>
+    <div class="hero-pill">⭐ Mínimo aprobatorio: 8.5</div>
+    <div class="hero-pill">💰 Corte nómina: día 08 · Pago: día 15</div>
+  </div>
+  <div class="hero-scroll"><div class="scroll-dot"></div></div>
+</section>
+
+<!-- FILOSOFIA -->
+<section id="filosofia">
+  <div class="container fade-in">
+    <div class="section-label">Perfil Institucional</div>
+    <h2 class="section-title">Filosofía y Rol Docente</h2>
+    <p class="section-sub">El docente de EDUCEM es el eje del proceso formativo. Más que impartir clases, acompaña, media y facilita la construcción de conocimiento.</p>
+
+    <div class="role-strip">
+      <div class="role-strip-icon">🎯</div>
+      <div>
+        <p>En EDUCEM, el docente actúa como <strong>guía, mediador y facilitador</strong> del aprendizaje. Su labor va más allá de la transmisión de contenidos: implica acompañar al estudiante en su desarrollo integral, fomentar la <strong>reflexión crítica</strong>, la <strong>colaboración activa</strong> y el uso <strong>estratégico de la tecnología educativa</strong>. El cumplimiento de los entregables obligatorios y la participación en los procesos de evaluación son parte esencial del desempeño docente y condición para la <strong>continuidad en el siguiente ciclo</strong>.</p>
+      </div>
+    </div>
+
+    <div class="pillars-grid">
+      <div class="pillar-card fade-in">
+        <div class="pillar-icon">📘</div>
+        <span class="pillar-tag">Saber Conocer</span>
+        <h3 class="pillar-title">Dominio Disciplinar</h3>
+        <p>El docente mantiene un conocimiento actualizado y riguroso de su área, garantizando que los contenidos impartidos sean pertinentes, precisos y articulados con el perfil de egreso del programa.</p>
+      </div>
+      <div class="pillar-card fade-in">
+        <div class="pillar-icon">⚙️</div>
+        <span class="pillar-tag">Saber Hacer</span>
+        <h3 class="pillar-title">Práctica Profesional</h3>
+        <p>Aplica metodologías activas y herramientas digitales para conectar los contenidos con escenarios reales, diseñando actividades que desarrollen competencias transferibles en el estudiante.</p>
+      </div>
+      <div class="pillar-card fade-in">
+        <div class="pillar-icon">🌟</div>
+        <span class="pillar-tag">Saber Ser</span>
+        <h3 class="pillar-title">Ética y Compromiso</h3>
+        <p>Actúa con integridad, puntualidad y respeto en todo momento. Su comportamiento es modelo para los estudiantes y reflejo de los valores institucionales de EDUCEM en cada interacción.</p>
+      </div>
+      <div class="pillar-card fade-in">
+        <div class="pillar-icon">🤝</div>
+        <span class="pillar-tag">Saber Convivir</span>
+        <h3 class="pillar-title">Comunidad de Aprendizaje</h3>
+        <p>Promueve un entorno inclusivo, colaborativo y empático. Fomenta el trabajo en equipo, el diálogo académico y la corresponsabilidad entre estudiantes y colegas docentes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ECOSISTEMA -->
+<section id="ecosistema">
+  <div class="container fade-in">
+    <div class="section-label">Acceso Rápido</div>
+    <h2 class="section-title">Ecosistema Digital Institucional</h2>
+    <p class="section-sub">Todas las plataformas que necesitas para el ciclo 2026-3. Ante cualquier problema de acceso, levanta un ticket en la mesa de ayuda.</p>
+
+    <div class="platform-grid">
+      <a class="platform-card" href="#" target="_blank">
+        <div class="platform-icon" style="background:#F5E6F0;">🖥️</div>
+        <div class="platform-name">NEO 2.0</div>
+        <div class="platform-desc">Gestión de clases, actividades, calificaciones, tareas y comunicación con estudiantes.</div>
+        <div class="platform-link">Ingresar →</div>
+      </a>
+      <a class="platform-card" href="#" target="_blank">
+        <div class="platform-icon" style="background:#E8EDFA;">📊</div>
+        <div class="platform-name">SAM</div>
+        <div class="platform-desc">Sistema de Administración Múltiple. Incluye el aplicativo KIOSKO para bitácora y firma de calificaciones.</div>
+        <div class="platform-link">Ingresar →</div>
+      </a>
+      <a class="platform-card" href="#" target="_blank">
+        <div class="platform-icon" style="background:#E6F7F6;">🏫</div>
+        <div class="platform-name">Power Campus</div>
+        <div class="platform-desc">Plataforma de gestión académica institucional e información del historial del estudiante.</div>
+        <div class="platform-link">Ingresar →</div>
+      </a>
+      <a class="platform-card" href="#" target="_blank">
+        <div class="platform-icon" style="background:#FEF3C7;">📚</div>
+        <div class="platform-name">Biblioteca Virtual</div>
+        <div class="platform-desc">Bases de datos académicas, libros digitales, revistas científicas y recursos de investigación.</div>
+        <div class="platform-link">Ingresar →</div>
+      </a>
+      <a class="platform-card" href="#" target="_blank">
+        <div class="platform-icon" style="background:#F0FFF4;">🔬</div>
+        <div class="platform-name">Laboratorios Virtuales</div>
+        <div class="platform-desc">Simuladores y entornos de práctica virtual para actividades experimentales y de laboratorio.</div>
+        <div class="platform-link">Ingresar →</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- CRONOGRAMA -->
+<section id="cronograma">
+  <div class="container fade-in">
+    <div class="section-label">Fechas Críticas · Ciclo 2026-3</div>
+    <h2 class="section-title">Cronograma de Actividades Obligatorias</h2>
+    <p class="section-sub">Aplica para Bachillerato y Licenciatura Tetramestral. El incumplimiento de entregables impacta directamente en tu evaluación docente y en la continuidad del siguiente ciclo.</p>
+
+    <div class="schedule-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Actividad / Entregable</th>
+            <th>Fecha Inicio</th>
+            <th>Fecha Límite</th>
+            <th>Medio / Plataforma</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>01</td>
+            <td><strong>Cursos de Formación Docente</strong></td>
+            <td class="date-range">27 Abr 2026</td>
+            <td class="date-range">15 Jun 2026</td>
+            <td>NEO 2.0 / Talento Educativo</td>
+            <td><span class="badge-urgente">Obligatorio</span></td>
+          </tr>
+          <tr>
+            <td>02</td>
+            <td><strong>Dosificación de Contenidos</strong></td>
+            <td class="date-range">27 Abr 2026</td>
+            <td class="date-range">23 May 2026</td>
+            <td>Google Forms (Plantel)</td>
+            <td><span class="badge-urgente">Obligatorio</span></td>
+          </tr>
+          <tr>
+            <td>03</td>
+            <td><strong>Banco de Preguntas</strong> (25 reactivos / materia)</td>
+            <td class="date-range">27 Abr 2026</td>
+            <td class="date-range">23 May 2026</td>
+            <td>Google Forms (Plantel)</td>
+            <td><span class="badge-urgente">Obligatorio</span></td>
+          </tr>
+          <tr>
+            <td>04</td>
+            <td><strong>Evaluación 1er Parcial</strong></td>
+            <td class="date-range">06 Jun 2026</td>
+            <td class="date-range">14 Jun 2026</td>
+            <td>NEO 2.0 / SAM KIOSKO</td>
+            <td><span class="badge-info">Parcial</span></td>
+          </tr>
+          <tr>
+            <td>05</td>
+            <td><strong>Autoevaluación Docente</strong></td>
+            <td class="date-range">08 Jun 2026</td>
+            <td class="date-range">27 Jun 2026</td>
+            <td>Plataforma Institucional</td>
+            <td><span class="badge-urgente">Obligatorio</span></td>
+          </tr>
+          <tr>
+            <td>06</td>
+            <td><strong>Evaluación del Coordinador</strong></td>
+            <td class="date-range">08 Jun 2026</td>
+            <td class="date-range">22 Jun 2026</td>
+            <td>Plataforma Institucional</td>
+            <td><span class="badge-info">Coordinación</span></td>
+          </tr>
+          <tr>
+            <td>07</td>
+            <td><strong>Evaluación 2do Parcial</strong></td>
+            <td class="date-range">11 Jul 2026</td>
+            <td class="date-range">19 Jul 2026</td>
+            <td>NEO 2.0 / SAM KIOSKO</td>
+            <td><span class="badge-info">Parcial</span></td>
+          </tr>
+          <tr>
+            <td>08</td>
+            <td><strong>Evaluación Final</strong></td>
+            <td class="date-range">08 Ago 2026</td>
+            <td class="date-range">16 Ago 2026</td>
+            <td>NEO 2.0 / SAM KIOSKO</td>
+            <td><span class="badge-ok">Final</span></td>
+          </tr>
+          <tr>
+            <td>09</td>
+            <td><strong>Opinión Estudiantil</strong></td>
+            <td class="date-range">A confirmar</td>
+            <td class="date-range">A confirmar</td>
+            <td>NEO 2.0</td>
+            <td><span class="badge-urgente">Obligatorio</span></td>
+          </tr>
+          <tr>
+            <td>10</td>
+            <td><strong>Carga de Documentos — Talento Educativo</strong></td>
+            <td class="date-range">Inicio de periodo</td>
+            <td class="date-range">A confirmar</td>
+            <td>Talento Educativo</td>
+            <td><span class="badge-urgente">Obligatorio</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- GUÍAS -->
+<section id="guias">
+  <div class="container fade-in">
+    <div class="section-label">Tutoriales Rápidos</div>
+    <h2 class="section-title">Guías de Proceso en NEO 2.0</h2>
+    <p class="section-sub">Consulta el paso a paso para las tareas más frecuentes de la gestión académica digital.</p>
+
+    <div class="tabs-nav">
+      <button class="tab-btn active" onclick="showTab('asignar', this)">Asignar Actividades</button>
+      <button class="tab-btn" onclick="showTab('calificar', this)">Calificar Tareas</button>
+      <button class="tab-btn" onclick="showTab('materias', this)">Buscar Materias</button>
+      <button class="tab-btn" onclick="showTab('calificaciones', this)">Libro de Calificaciones</button>
+    </div>
+
+    <!-- Asignar -->
+    <div class="tab-panel active" id="tab-asignar">
+      <ol class="steps-list">
+        <li><div class="step-text">En la pantalla de inicio, coloca el cursor sobre el ícono <strong>"Clases"</strong> en la barra lateral izquierda y selecciona la materia que deseas gestionar.</div></li>
+        <li><div class="step-text">Da clic en el ícono <strong>"Tareas"</strong> para ver el listado completo de actividades de la materia.</div></li>
+        <li><div class="step-text">Identifica las actividades con la <strong>"X" roja</strong> en la columna <em>Asignado</em>: estas aún no tienen fecha ni están visibles para el alumno.</div></li>
+        <li><div class="step-text">Da clic sobre la actividad que deseas calendarizar y luego en <strong>"Editar"</strong> (recuadro superior derecho).</div></li>
+        <li><div class="step-text">Configura: <strong>Fecha y hora de inicio</strong> (Comenzar), <strong>Fecha y hora límite</strong>, número de <strong>intentos permitidos</strong> y si se permitirán <strong>entregas fuera de fecha</strong>.</div></li>
+        <li><div class="step-text">Da clic en <strong>"Guardar"</strong>. La actividad aparecerá con sus fechas configuradas en el listado.</div></li>
+        <li><div class="step-text">Selecciona la actividad con el cuadro de verificación y presiona el botón <strong>"Asignar"</strong>. La actividad quedará visible para los estudiantes al llegar la fecha de inicio.</div></li>
+      </ol>
+      <div class="note-box">
+        <strong>⚠️ Nota importante:</strong> El alumno solo podrá enviar su trabajo dentro del rango de fechas configurado. La habilitación es automática al llegar la fecha y hora de inicio establecida — no es necesaria ninguna acción adicional del docente.
+      </div>
+    </div>
+
+    <!-- Calificar -->
+    <div class="tab-panel" id="tab-calificar">
+      <ol class="steps-list">
+        <li><div class="step-text">Accede a la materia desde <strong>"Clases"</strong> en la barra lateral izquierda.</div></li>
+        <li><div class="step-text">Da clic en el ícono <strong>"Tareas"</strong> y localiza la actividad a evaluar. Puedes dar clic directamente en el <strong>ícono de lápiz ✏️</strong> para ir directo a la lista de entregas.</div></li>
+        <li><div class="step-text">Si no usaste el lápiz, entra a la actividad y selecciona la pestaña <strong>"Calificar"</strong> para ver el listado de estudiantes que han enviado su trabajo.</div></li>
+        <li><div class="step-text">Da clic en el <strong>lápiz</strong> junto al nombre del alumno para visualizar su entrega y abrir el panel de evaluación.</div></li>
+        <li><div class="step-text">Usa la <strong>rúbrica / escala de calificaciones</strong> del panel derecho para evaluar cada criterio establecido en la actividad.</div></li>
+        <li><div class="step-text">Agrega <strong>comentarios de retroalimentación</strong> en el apartado de comentarios y da clic en <strong>"Guardar"</strong>.</div></li>
+      </ol>
+      <div class="warning-box">
+        <strong>📎 Nota sobre archivos:</strong> En ocasiones no habrá vista previa del archivo (Word, Excel, PDF). En ese caso, da clic en el enlace del archivo para abrirlo en una nueva ventana o descargarlo.
+      </div>
+    </div>
+
+    <!-- Buscar Materias -->
+    <div class="tab-panel" id="tab-materias">
+      <ol class="steps-list">
+        <li><div class="step-text">En la pantalla de inicio, da clic en tu <strong>nombre de usuario</strong> (esquina superior derecha) para acceder a tu perfil docente.</div></li>
+        <li><div class="step-text">En tu perfil encontrarás cuatro pestañas: <strong>Inscrito en</strong> (cursos a completar), <strong>Impartiendo</strong> (materias activas), <strong>Completada</strong> (materias finalizadas) y <strong>Archivado</strong> (sin acceso ni modificación).</div></li>
+        <li><div class="step-text">Alternativamente, coloca el cursor sobre <strong>"Clases"</strong> en la barra lateral → da clic en <strong>"Listado"</strong> para ver todas tus materias organizadas por categoría.</div></li>
+        <li><div class="step-text">Para buscar alumnos específicos, usa el ícono de <strong>búsqueda</strong> en la barra superior e ingresa matrícula, nombre o correo institucional.</div></li>
+      </ol>
+      <div class="note-box">
+        <strong>💡 Acceso a materias completadas:</strong> Si necesitas consultar el libro de calificaciones de una materia ya finalizada, es necesario levantar un <strong>ticket a la mesa de ayuda</strong>.
+      </div>
+    </div>
+
+    <!-- Libro Calificaciones -->
+    <div class="tab-panel" id="tab-calificaciones">
+      <ol class="steps-list">
+        <li><div class="step-text">Desde la pantalla de inicio, coloca el cursor en <strong>"Clases"</strong> y selecciona la materia de la que necesitas el libro de calificaciones.</div></li>
+        <li><div class="step-text">Dentro de la materia, da clic en el ícono <strong>"Libro de calificaciones"</strong> en la barra lateral izquierda.</div></li>
+        <li><div class="step-text">Se mostrará el registro de todos los alumnos inscritos con sus calificaciones desglosadas por actividad y parcial.</div></li>
+        <li><div class="step-text">Para la firma de parciales: accede al aplicativo <strong>KIOSKO en SAM</strong>, descarga la <strong>bitácora de calificaciones</strong> y preséntala al alumno para su firma.</div></li>
+        <li><div class="step-text">Puedes filtrar la vista del libro por categorías, fechas o tipo de actividad usando los menús desplegables superiores de la tabla.</div></li>
+      </ol>
+      <div class="warning-box">
+        <strong>📋 Recuerda:</strong> La bitácora de calificaciones descargada desde <strong>SAM KIOSKO</strong> es el documento oficial para la firma del estudiante en cada corte parcial. Guarda una copia digital como respaldo.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INFO STRIP -->
+<div class="info-strip">
+  <div class="info-strip-inner">
+    <div class="info-item">
+      <h4>Calificación mínima para continuidad</h4>
+      <div class="info-val">8.5</div>
+      <p>Promedio requerido para la asignación en el siguiente ciclo académico.</p>
+    </div>
+    <div class="info-item">
+      <h4>Corte de nómina</h4>
+      <div class="info-val">Día 08</div>
+      <p>Fecha límite de registro de asistencias y validaciones administrativas.</p>
+    </div>
+    <div class="info-item">
+      <h4>Fecha de pago</h4>
+      <div class="info-val">Día 15</div>
+      <p>Depósito correspondiente al periodo de nómina cerrado el día 08.</p>
+    </div>
+    <div class="info-item">
+      <h4>Banco de Preguntas</h4>
+      <div class="info-val">25 reactivos</div>
+      <p>Por materia impartida. Entrega obligatoria antes del 23 de mayo de 2026.</p>
+    </div>
+  </div>
+</div>
+
+<!-- POLÍTICAS -->
+<section id="politicas">
+  <div class="container fade-in">
+    <div class="section-label">Reglamento Institucional</div>
+    <h2 class="section-title">Políticas y Normas Docentes</h2>
+    <p class="section-sub">El cumplimiento de estas políticas forma parte del Saber Ser del perfil docente EDUCEM y es evaluado en cada ciclo académico.</p>
+
+    <div class="policies-grid">
+      <div class="policy-card fade-in">
+        <div class="policy-icon">🕐</div>
+        <h3 class="policy-title">Puntualidad y Asistencia</h3>
+        <ul class="policy-list">
+          <li>El docente debe estar presente antes del inicio de cada sesión, presencial o virtual.</li>
+          <li>Las inasistencias deben justificarse y notificarse al coordinador/a con anticipación.</li>
+          <li>El registro puntual de calificaciones y entregables es obligatorio y evaluado.</li>
+          <li>El ausentismo injustificado impacta directamente en la evaluación de desempeño.</li>
+        </ul>
+      </div>
+      <div class="policy-card fade-in">
+        <div class="policy-icon">👔</div>
+        <h3 class="policy-title">Código de Vestimenta</h3>
+        <ul class="policy-list">
+          <li>Vestimenta formal o semiformal en todo momento dentro del plantel.</li>
+          <li>La imagen personal es parte de la identidad institucional de EDUCEM.</li>
+          <li>El ejemplo en la presentación personal refuerza el modelamiento al estudiante.</li>
+          <li>No se permite ropa informal, deportiva o con mensajes inapropiados.</li>
+        </ul>
+      </div>
+      <div class="policy-card fade-in">
+        <div class="policy-icon">📜</div>
+        <h3 class="policy-title">Reglamento y Trato</h3>
+        <ul class="policy-list">
+          <li>El trato hacia los estudiantes debe ser siempre respetuoso, empático y profesional.</li>
+          <li>Cualquier situación disciplinaria debe seguir los canales institucionales establecidos.</li>
+          <li>El uso de dispositivos móviles con fines personales está prohibido durante clase.</li>
+          <li>El docente conoce y respeta el Reglamento Interno vigente de EDUCEM.</li>
+        </ul>
+      </div>
+      <div class="policy-card fade-in">
+        <div class="policy-icon">📝</div>
+        <h3 class="policy-title">Entregables y Desempeño</h3>
+        <ul class="policy-list">
+          <li>La Dosificación y el Banco de Preguntas son obligatorios e impactan la evaluación.</li>
+          <li>La Autoevaluación Docente y la Evaluación del Coordinador son procesos obligatorios.</li>
+          <li>La carga de documentos en Talento Educativo debe realizarse al inicio del periodo.</li>
+          <li>El no cumplimiento puede afectar la continuidad docente en el siguiente ciclo.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REFERENCIAS -->
+<section id="referencias">
+  <div class="container fade-in">
+    <div class="section-label">APA 7ª Edición</div>
+    <h2 class="section-title">Referencias</h2>
+    <p class="section-sub">Fuentes institucionales que sustentan el contenido de este centro de recursos docente.</p>
+
+    <ul class="ref-list">
+      <li>
+        <span>[1]</span>
+        Instituto Universitario del Centro de México. (2024). <em>Manual de usuario: Plataforma NEO 2.0</em> [Documento institucional]. EDUCEM. Departamento de Tecnología Educativa.
+      </li>
+      <li>
+        <span>[2]</span>
+        Instituto Universitario del Centro de México. (2026). <em>Junta de arranque docente 2026-3: Guía operativa del periodo</em> [Presentación institucional]. EDUCEM. Coordinación Académica Nacional.
+      </li>
+      <li>
+        <span>[3]</span>
+        Instituto Universitario del Centro de México. (2026). <em>Perfil del docente EDUCEM: Pilares del desempeño académico</em> [Documento normativo interno]. Dirección de Recursos Humanos y Talento Educativo.
+      </li>
+      <li>
+        <span>[4]</span>
+        Mandela, N. (1990, febrero 10). <em>Discurso en el mitin del Ayuntamiento de Durban</em>. ANC Archives. Recuperado de https://www.anc.org.za
+      </li>
+      <li>
+        <span>[5]</span>
+        Instituto Universitario del Centro de México. (2026). <em>Políticas y reglamento institucional para docentes, ciclo 2026-3</em> [Documento normativo]. EDUCEM. Secretaría Académica.
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div style="margin-bottom:1rem;">
+    <strong>Instituto Universitario del Centro de México — EDUCEM</strong><br>
+    Ciclo Académico 2026-3 &nbsp;·&nbsp; Mayo – Agosto 2026 &nbsp;·&nbsp; <em>"Formamos personas que transforman su entorno."</em>
+  </div>
+  <div class="contact-row">
+    <a class="contact-chip" href="#">👩‍💼 Coordinador/a de Área</a>
+    <a class="contact-chip" href="#">🛠️ Mesa de Ayuda Técnica</a>
+    <a class="contact-chip" href="#">📂 Talento Educativo</a>
+    <a class="contact-chip" href="#">📧 Soporte NEO 2.0</a>
+  </div>
+  <div style="margin-top:1.5rem; font-size:0.75rem; opacity:0.5;">
+    Desarrollado para uso interno institucional · EDUCEM 2026
+  </div>
+</footer>
+
+<script>
+  // ─── TABS
+  function showTab(id, btn) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  // ─── FADE-IN ON SCROLL
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        // Staggered children
+        e.target.querySelectorAll('.pillar-card, .platform-card, .policy-card').forEach((el, i) => {
+          setTimeout(() => el.classList.add('visible'), i * 100);
+        });
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // ─── NAV ACTIVE HIGHLIGHT on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 120) current = s.getAttribute('id');
+    });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--magenta)' : '';
+    });
+  });
+</script>
+</body>
+</html>
