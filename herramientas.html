@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Centro de Recursos Docente · EDUCEM 2027-1</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          navy:   { 950:'#070F22', 900:'#0B1F3A', 800:'#12305C', 700:'#173A66', 600:'#20507F', 500:'#2E6699', 100:'#E4EBF5' },
+          magenta:{ 700:'#8F0E68', 600:'#A6127A', 500:'#C2168A', 400:'#D6329E', 300:'#E97FC1', 100:'#FBE6F3' },
+          paper: '#F6F7FB',
+          ink: '#141A2E'
+        },
+        fontFamily: {
+          display: ['Sora','sans-serif'],
+          body: ['Inter','sans-serif']
+        }
+      }
+    }
+  }
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', sans-serif; }
+  h1,h2,h3,h4,.font-display { font-family: 'Sora', sans-serif; }
+ 
+  .grad-text {
+    background: linear-gradient(100deg, #0B1F3A 0%, #173A66 35%, #A6127A 75%, #C2168A 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+ 
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #C7CEDD; border-radius: 8px; }
+ 
+  :focus-visible { outline: 3px solid #C2168A; outline-offset: 2px; border-radius: 4px; }
+ 
+  /* Timeline spine */
+  .spine-line { background: linear-gradient(90deg, #0B1F3A 0%, #17376B 45%, #A6127A 75%, #C2168A 100%); }
+  .spine-node { transition: transform .18s ease, box-shadow .18s ease; }
+  .spine-node:hover { transform: translateY(-3px); }
+  .spine-node.active { box-shadow: 0 0 0 6px rgba(194,22,138,0.15); }
+ 
+  /* Cards */
+  .res-card { transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease; }
+  .res-card:hover { transform: translateY(-4px); box-shadow: 0 18px 40px -18px rgba(11,31,58,0.35); border-color: #C2168A; }
+ 
+  .pill { transition: background .15s ease, color .15s ease, border-color .15s ease; }
+  .pill.active { background: #0B1F3A; color: #fff; border-color: #0B1F3A; }
+ 
+  .fade-in { animation: fadeIn .25s ease both; }
+  @keyframes fadeIn { from { opacity:0; transform: translateY(6px);} to { opacity:1; transform: translateY(0);} }
+ 
+  #modal-backdrop { transition: opacity .2s ease; }
+  #modal-panel { transition: transform .22s cubic-bezier(.2,.8,.2,1), opacity .22s ease; }
+ 
+  .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+ 
+  .badge-file {
+    background: #E4EBF5; color: #12305C; border: 1px solid #C7D3E8;
+  }
+  .badge-file:hover { background: #0B1F3A; color: #fff; border-color: #0B1F3A; }
+ 
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body class="bg-paper text-ink antialiased">
+ 
+<!-- ============ HEADER ============ -->
+<header class="sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-navy-100">
+  <div class="max-w-7xl mx-auto px-5 md:px-8 py-3 flex items-center justify-between gap-4">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-navy-900 to-magenta-600 flex items-center justify-center text-white font-display font-bold text-sm">EC</div>
+      <div class="leading-tight">
+        <p class="font-display font-bold text-navy-900 text-sm md:text-base">EDUCEM · Centro de Recursos Docente</p>
+        <p class="text-[11px] md:text-xs text-navy-600">Periodo 2027-1</p>
+      </div>
+    </div>
+    <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-navy-700">
+      <a href="#linea-tiempo" class="hover:text-magenta-600">Línea de tiempo</a>
+      <a href="#alertas" class="hover:text-magenta-600">Continuidad docente</a>
+      <a href="#asistente" class="hover:text-magenta-600">Asistente de flujo</a>
+      <a href="#recursos" class="hover:text-magenta-600">Recursos</a>
+    </nav>
+    <button onclick="document.getElementById('buscador').focus(); document.getElementById('recursos').scrollIntoView({behavior:'smooth'});" class="flex items-center gap-2 text-xs md:text-sm font-semibold bg-navy-900 text-white px-3 md:px-4 py-2 rounded-full hover:bg-magenta-600 transition-colors">
+      <i data-lucide="search" class="w-4 h-4"></i> <span class="hidden sm:inline">Buscar recurso</span>
+    </button>
+  </div>
+</header>
+ 
+<!-- ============ HERO ============ -->
+<section class="max-w-7xl mx-auto px-5 md:px-8 pt-12 md:pt-16 pb-8">
+  <p class="inline-flex items-center gap-2 text-xs font-semibold tracking-wide uppercase text-magenta-600 bg-magenta-100 px-3 py-1 rounded-full mb-5">
+    <i data-lucide="compass" class="w-3.5 h-3.5"></i> Guía operativa docente
+  </p>
+  <h1 class="font-display font-extrabold text-3xl sm:text-4xl md:text-5xl leading-tight max-w-3xl grad-text">
+    Para qué, cuándo y cómo usar cada plataforma y formato institucional
+  </h1>
+  <p class="mt-4 text-navy-700 text-base md:text-lg max-w-2xl">
+    Un solo lugar para resolver la duda antes de que se vuelva incidencia: 10 recursos oficiales de EDUCEM, sus plazos, sus formatos y los documentos exactos que debes descargar de la carpeta institucional.
+  </p>
+ 
+  <div class="mt-8 flex flex-col sm:flex-row gap-3 sm:items-center">
+    <div class="relative flex-1 max-w-xl">
+      <i data-lucide="search" class="w-4 h-4 text-navy-500 absolute left-4 top-1/2 -translate-y-1/2"></i>
+      <input id="buscador" type="text" placeholder="Busca por nombre, categoría o palabra clave… ej. 'calificaciones', 'MECAP', 'dosificación'"
+        class="w-full pl-11 pr-4 py-3.5 rounded-2xl border border-navy-100 bg-white shadow-sm text-sm focus:border-magenta-500 focus:ring-2 focus:ring-magenta-100 outline-none" />
+    </div>
+    <a href="#asistente" class="shrink-0 inline-flex items-center justify-center gap-2 text-sm font-semibold text-white bg-gradient-to-r from-navy-900 to-magenta-600 px-5 py-3.5 rounded-2xl hover:opacity-90 transition-opacity">
+      <i data-lucide="wand-2" class="w-4 h-4"></i> ¿Qué necesito hacer hoy?
+    </a>
+  </div>
+ 
+  <div class="mt-8 grid grid-cols-3 gap-3 max-w-xl">
+    <div class="bg-white border border-navy-100 rounded-2xl px-4 py-3">
+      <p class="font-display font-bold text-xl text-navy-900">10</p>
+      <p class="text-xs text-navy-600">recursos oficiales</p>
+    </div>
+    <div class="bg-white border border-navy-100 rounded-2xl px-4 py-3">
+      <p class="font-display font-bold text-xl text-navy-900">3</p>
+      <p class="text-xs text-navy-600">fases del cuatrimestre</p>
+    </div>
+    <div class="bg-white border border-navy-100 rounded-2xl px-4 py-3">
+      <p class="font-display font-bold text-xl text-magenta-600">8.5</p>
+      <p class="text-xs text-navy-600">mínimo de desempeño</p>
+    </div>
+  </div>
+</section>
+ 
+<!-- ============ TIMELINE (signature element) ============ -->
+<section id="linea-tiempo" class="max-w-7xl mx-auto px-5 md:px-8 py-10">
+  <div class="flex items-center justify-between mb-6">
+    <h2 class="font-display font-bold text-xl md:text-2xl text-navy-900">¿En qué momento del ciclo estás?</h2>
+    <button onclick="setPhase('todas')" id="btn-reset-phase" class="text-xs font-semibold text-magenta-600 hover:underline hidden">Ver todas las fases ✕</button>
+  </div>
+ 
+  <div class="relative pt-4 pb-2">
+    <div class="absolute left-0 right-0 top-9 h-1.5 rounded-full spine-line"></div>
+    <div class="relative grid grid-cols-3 gap-4">
+      <button class="spine-node text-left" data-phase="inicio" onclick="setPhase('inicio')">
+        <div class="w-6 h-6 rounded-full bg-navy-900 border-4 border-white shadow mx-auto md:mx-0"></div>
+        <div class="mt-3 bg-white border border-navy-100 rounded-2xl p-4">
+          <p class="text-[11px] font-semibold text-navy-500 uppercase tracking-wide">Fase 1</p>
+          <p class="font-display font-bold text-navy-900 text-sm md:text-base">Al inicio del ciclo</p>
+          <p class="text-xs text-navy-600 mt-1">Contratación, planeación y evaluación diagnóstica.</p>
+        </div>
+      </button>
+      <button class="spine-node text-left" data-phase="durante" onclick="setPhase('durante')">
+        <div class="w-6 h-6 rounded-full bg-navy-600 border-4 border-white shadow mx-auto md:mx-0"></div>
+        <div class="mt-3 bg-white border border-navy-100 rounded-2xl p-4">
+          <p class="text-[11px] font-semibold text-navy-500 uppercase tracking-wide">Fase 2</p>
+          <p class="font-display font-bold text-navy-900 text-sm md:text-base">Durante el cuatrimestre</p>
+          <p class="text-xs text-navy-600 mt-1">Seguimiento en NEO, soporte y comunicación diaria.</p>
+        </div>
+      </button>
+      <button class="spine-node text-left" data-phase="cierre" onclick="setPhase('cierre')">
+        <div class="w-6 h-6 rounded-full bg-magenta-600 border-4 border-white shadow mx-auto md:mx-0"></div>
+        <div class="mt-3 bg-white border border-navy-100 rounded-2xl p-4">
+          <p class="text-[11px] font-semibold text-navy-500 uppercase tracking-wide">Fase 3</p>
+          <p class="font-display font-bold text-navy-900 text-sm md:text-base">Cierre de evaluación</p>
+          <p class="text-xs text-navy-600 mt-1">Captura de notas y entrega de actas probatorias.</p>
+        </div>
+      </button>
+    </div>
+  </div>
+</section>
+ 
+<!-- ============ FILTROS DE CATEGORÍA ============ -->
+<section class="max-w-7xl mx-auto px-5 md:px-8">
+  <div class="flex flex-wrap gap-2" id="category-pills"></div>
+</section>
+ 
+<!-- ============ ALERTAS DE CONTINUIDAD ============ -->
+<section id="alertas" class="max-w-7xl mx-auto px-5 md:px-8 py-12">
+  <div class="flex items-center gap-2 mb-1">
+    <i data-lucide="shield-alert" class="w-5 h-5 text-magenta-600"></i>
+    <h2 class="font-display font-bold text-xl md:text-2xl text-navy-900">Condiciones para tu continuidad docente</h2>
+  </div>
+  <p class="text-sm text-navy-600 mb-6 max-w-2xl">Estas cuatro condiciones se evalúan de forma permanente y determinan tu recontratación para el siguiente periodo.</p>
+  <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4" id="alertas-grid"></div>
+</section>
+ 
+<!-- ============ ASISTENTE DE FLUJO ============ -->
+<section id="asistente" class="bg-navy-900 py-14">
+  <div class="max-w-7xl mx-auto px-5 md:px-8">
+    <div class="flex items-center gap-2 mb-1">
+      <i data-lucide="wand-2" class="w-5 h-5 text-magenta-300"></i>
+      <h2 class="font-display font-bold text-xl md:text-2xl text-white">¿Qué necesitas hacer hoy?</h2>
+    </div>
+    <p class="text-sm text-navy-100/80 mb-6 max-w-2xl">Elige la acción que estás por realizar y te mostramos el paso a paso exacto: qué plataformas usar, en qué orden, qué documentos necesitas y qué pasa si no se cumple el lineamiento.</p>
+ 
+    <select id="flow-select" onchange="renderFlow(this.value)"
+      class="w-full md:w-[520px] bg-white text-navy-900 text-sm font-medium rounded-2xl px-4 py-3.5 outline-none focus:ring-2 focus:ring-magenta-400">
+      <option value="">Selecciona una acción común…</option>
+    </select>
+ 
+    <div id="flow-result" class="mt-8"></div>
+  </div>
+</section>
+ 
+<!-- ============ GRID PRINCIPAL ============ -->
+<section id="recursos" class="max-w-7xl mx-auto px-5 md:px-8 py-14">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h2 class="font-display font-bold text-xl md:text-2xl text-navy-900">Recursos y plataformas oficiales</h2>
+      <p class="text-sm text-navy-600 mt-1" id="results-count"></p>
+    </div>
+  </div>
+  <div id="cards-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+  <div id="no-results" class="hidden text-center py-16 text-navy-500">
+    <i data-lucide="search-x" class="w-8 h-8 mx-auto mb-3"></i>
+    <p class="font-medium">No encontramos recursos con ese filtro.</p>
+    <p class="text-sm">Prueba con otra palabra clave o quita los filtros de fase/categoría.</p>
+  </div>
+</section>
+ 
+<!-- ============ DOCUMENTOS SIN CATEGORÍA CONFIRMADA ============ -->
+<section class="max-w-7xl mx-auto px-5 md:px-8 pb-16">
+  <div class="bg-white border border-dashed border-navy-200 rounded-2xl p-6">
+    <div class="flex items-center gap-2 mb-2">
+      <i data-lucide="folder-open" class="w-4 h-4 text-navy-500"></i>
+      <h3 class="font-display font-semibold text-navy-900 text-sm">Otros documentos en la carpeta institucional</h3>
+    </div>
+    <p class="text-xs text-navy-600 mb-3">Estos 4 archivos están en la carpeta compartida pero Drive no permitió leer su nombre automáticamente (están en formato Word/edición). Ábrelos desde el enlace y, si gustas, comunica el nombre para asignarlos al recurso correcto.</p>
+    <div class="grid sm:grid-cols-2 gap-2 text-xs" id="pending-docs"></div>
+  </div>
+</section>
+ 
+<!-- ============ FOOTER ============ -->
+<footer class="border-t border-navy-100 bg-white">
+  <div class="max-w-7xl mx-auto px-5 md:px-8 py-8 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-navy-500">
+    <p>© EDUCEM · Recursos Docentes 2027-1. Uso interno.</p>
+    <p>Ante dudas, contacta a tu Coordinación de Plantel.</p>
+  </div>
+</footer>
+ 
+<!-- ============ MODAL ============ -->
+<div id="modal-backdrop" class="fixed inset-0 bg-navy-950/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4" onclick="if(event.target===this) closeModal()">
+  <div id="modal-panel" class="bg-white w-full max-w-2xl max-h-[88vh] overflow-y-auto rounded-3xl shadow-2xl">
+    <div id="modal-content"></div>
+  </div>
+</div>
+ 
+<script>
+/* ================= DATA ================= */
+const RESOURCES = [
+  {
+    id: 'mecap',
+    nombre: 'Plataforma Talento Educativo (MECAP)',
+    categoria: 'administrativo',
+    momentoLabel: 'Inicio de ciclo / Recontratación',
+    fases: ['inicio'],
+    icono: 'file-check-2',
+    paraQueSirve: 'Es la plataforma obligatoria para cargar los documentos de docentes de Nuevo Ingreso (NI) y Reingreso (RI), garantizando el cumplimiento normativo institucional.',
+    cuandoSeUsa: 'Al inicio del ciclo y en cualquier recontratación o actualización de datos personales o bancarios.',
+    requisitos: [
+      'Carga de información personal y formación educativa.',
+      'Registro de disponibilidad horaria.',
+      'Firma del contrato de Prestación de Servicios Profesionales.',
+      'Para actualizar cuenta de pago: INE, CURP y Constancia de Situación Fiscal (CSF) con vigencia menor a 3 meses (régimen de Sueldos y Salarios o Asimilados).',
+      'Carátula bancaria + carta de motivos firmada, con huella en tinta azul.'
+    ],
+    restricciones: [
+      'Documentos incompletos o vencidos retrasan la dispersión de nómina.',
+      'La CSF debe tener una vigencia estricta menor a 3 meses.'
+    ],
+    archivos: [],
+    acceso: 'https://mecap.educem.mx (acceso simulado)'
+  },
+  {
+    id: 'neo',
+    nombre: 'Plataforma NEO 2.0 (LMS)',
+    categoria: 'planeacion',
+    momentoLabel: 'Durante todo el cuatrimestre',
+    fases: ['inicio','durante'],
+    icono: 'graduation-cap',
+    paraQueSirve: 'Es el entorno virtual de aprendizaje obligatorio para todas las asignaturas; facilita la interacción con el alumnado y el seguimiento de horas de estudio independiente.',
+    cuandoSeUsa: 'Desde el inicio del cuatrimestre y de forma continua. Su uso es obligatorio para el 2º y 3er parcial.',
+    requisitos: [
+      'Publicar mensaje de bienvenida/presentación.',
+      'Cargar la Dosificación de contenidos aprobada.',
+      'Calendarizar las actividades de aprendizaje.',
+      'Cargar la Bitácora de Calificaciones.'
+    ],
+    restricciones: [
+      'El uso de NEO es obligatorio a partir del 2º parcial; su omisión afecta la evaluación docente.'
+    ],
+    archivos: [
+      { nombre: 'Manual NEO para DOCENTES (1) (1).pdf', url: 'https://drive.google.com/file/d/1xbSKq-UlpuglQ_SKgLgHc-L3BeZuoyog/view?usp=drive_link' }
+    ],
+    acceso: 'https://neo.educem.mx (acceso simulado)'
+  },
+  {
+    id: 'powercampus',
+    nombre: 'Power Campus',
+    categoria: 'evaluacion',
+    momentoLabel: 'Evaluaciones Parciales y Finales',
+    fases: ['durante','cierre'],
+    icono: 'clipboard-check',
+    paraQueSirve: 'Sistema de control escolar oficial para la captura de calificaciones de los estudiantes.',
+    cuandoSeUsa: 'Inmediatamente después de cada aplicación parcial y de la evaluación final.',
+    requisitos: [
+      'Capturar las calificaciones oficiales de cada estudiante.',
+      'Verificar que los datos coincidan con la bitácora aplicada.'
+    ],
+    restricciones: [
+      'Límite estricto: máximo 03 días hábiles tras finalizar las aplicaciones parciales para registrar notas.',
+      'No incluir participación o asistencia como criterios dentro de la ponderación de calificación.'
+    ],
+    archivos: [],
+    acceso: 'https://powercampus.educem.mx (acceso simulado)'
+  },
+  {
+    id: 'sam',
+    nombre: 'SAM (Sistema de Administración Múltiple) EDUCEM',
+    categoria: 'soporte',
+    momentoLabel: 'Durante todo el cuatrimestre',
+    fases: ['inicio','durante','cierre'],
+    icono: 'layout-grid',
+    paraQueSirve: 'Portal centralizado de acceso a las herramientas del docente mediante la cuenta de correo institucional de Google.',
+    cuandoSeUsa: 'Es el punto de entrada diario al correo institucional y a los aplicativos del sistema, como el Kiosko Informativo.',
+    requisitos: [
+      'Ingresar con la cuenta institucional de Google.',
+      'Desde aquí se accede al Kiosko Informativo y demás aplicativos.'
+    ],
+    restricciones: [
+      'El acceso depende de mantener activa y vigente la cuenta institucional.'
+    ],
+    archivos: [],
+    acceso: 'https://sam.educem.mx (acceso simulado)'
+  },
+  {
+    id: 'kiosko',
+    nombre: 'Kiosko Informativo (dentro de SAM)',
+    categoria: 'evaluacion',
+    momentoLabel: 'Cierre de Parciales y Cuatrimestre',
+    fases: ['cierre'],
+    icono: 'download',
+    paraQueSirve: 'Aplicativo dentro de SAM que permite gestionar y descargar los documentos probatorios de las calificaciones.',
+    cuandoSeUsa: 'Al cierre de cada parcial y al cierre del cuatrimestre.',
+    requisitos: [
+      'Descargar la "Bitácora de Calificación de Parcial" para firma autógrafa de los alumnos que valida su conformidad.',
+      'Descargar el "Acta de Calificación Final" para entrega física en la Coordinación de Plantel.'
+    ],
+    restricciones: [
+      'La entrega física del Acta de Calificación Final en Coordinación es obligatoria y no sustituible por copia digital.'
+    ],
+    archivos: [],
+    acceso: 'https://sam.educem.mx/kiosko (acceso simulado)'
+  },
+  {
+    id: 'dosificacion',
+    nombre: 'Formato de Dosificación de Contenidos (Planeación Didáctica)',
+    categoria: 'planeacion',
+    momentoLabel: 'Inicio de ciclo',
+    fases: ['inicio'],
+    icono: 'calendar-check',
+    paraQueSirve: 'Instrumento de dosificación didáctica que guía la planificación del proceso de enseñanza-aprendizaje y la evaluación del progreso estudiantil.',
+    cuandoSeUsa: 'Antes de iniciar clases, como base de toda la planeación del cuatrimestre.',
+    requisitos: [
+      'Llenar en formato Word respetando mayúsculas/minúsculas según el Instructivo de Llenado.',
+      'Definir momentos clave: sesión de inducción, parciales y evaluación final.',
+      'Redactar el objetivo en infinitivo.',
+      'Incluir secuenciación didáctica.',
+      'Actividades cargadas en NEO: mínimo 10%.',
+      'Incorporar proyectos integradores.',
+      'Bibliografía en formato APA 7.'
+    ],
+    restricciones: [
+      'El formato se regresa para corrección si no respeta el instructivo de llenado (mayúsculas/minúsculas, estructura).'
+    ],
+    archivos: [
+      { nombre: 'Instructivo de Llenado para Dosificación Cuatrimestral Superior (1) (1)-1.pdf', url: 'https://drive.google.com/file/d/112rHbdbbEqlLR7XpnyC1IZsQTjtjpsGf/view?usp=drive_link' },
+      { nombre: '1o. CUATRIMESTRE (2).pdf', url: 'https://drive.google.com/file/d/1qBpKMA01j0mDJSr1LuO_Xxa2m_1Leo0A/view?usp=drive_link' },
+      { nombre: '2º CUATRIMESTRE BACHILLERATO (3).pdf', url: 'https://drive.google.com/file/d/17XcIdsSXpiXM_IGdLCLcuPNrhwLMUwmH/view?usp=drive_link' },
+      { nombre: '4o. CUATRIMESTRE (1) (1).pdf', url: 'https://drive.google.com/file/d/1Nj14LiNg4ikVBkvui4Ju-wfU0zA9JJ9-/view?usp=drive_link' },
+      { nombre: 'ING. INDUSTRIAL Y ARQUITECTURA 1ER CICLO.pdf', url: 'https://drive.google.com/file/d/1p6fkQtvPvPG-dDKkbnex26lrwdcLRyM8/view?usp=drive_link' },
+      { nombre: 'LIC. PSICOLOGÍA CLÍNICA 2020 (2) (1).pdf', url: 'https://drive.google.com/file/d/1SLuqmYGzzsPk-7X69AE-c55CbkRiT9TZ/view?usp=drive_link' },
+      { nombre: 'PEDAGOGIA Y CIENCIAS DE LA EDUCACION 3ER CICLO.pdf', url: 'https://drive.google.com/file/d/1uoX6EjosIVHQF4AFEU3eTQJ6dU9WUds_/view?usp=drive_link' },
+      { nombre: 'PEDAGOGIA Y CIENCIAS DE LA EDUCACION 10MO CICLO.pdf', url: 'https://drive.google.com/file/d/13az3M3QeoUd58zW8N64kB6cvULGT2PNu/view?usp=drive_link' }
+    ],
+    acceso: 'Carpeta institucional de plantillas (ver archivos abajo)'
+  },
+  {
+    id: 'banco',
+    nombre: 'Banco de Preguntas (Reactivos de Calidad)',
+    categoria: 'evaluacion',
+    momentoLabel: 'Inicio de ciclo',
+    fases: ['inicio'],
+    icono: 'list-checks',
+    paraQueSirve: 'Herramienta obligatoria de evaluación diagnóstica y sumativa alineada a los contenidos oficiales.',
+    cuandoSeUsa: 'Se elabora al inicio del ciclo, junto con la dosificación de contenidos.',
+    requisitos: [
+      'Elaborar exactamente 25 reactivos tipo CENEVAL y/o College Board.',
+      '7 preguntas directas, cada opción (correcta e incorrectas) con su justificación/comentario.',
+      '6 preguntas de ordenamiento.',
+      '6 preguntas de relación de columnas.',
+      '6 preguntas de elección de elementos.'
+    ],
+    restricciones: [
+      'La distribución de reactivos (7/6/6/6) es estricta y no debe alterarse.'
+    ],
+    archivos: [],
+    acceso: 'Se entrega junto con la Dosificación (ver Coordinación de Plantel)'
+  },
+  {
+    id: 'suplencia',
+    nombre: 'Formato de Suplencia o Permuta de Clases',
+    categoria: 'administrativo',
+    momentoLabel: 'Casos extraordinarios',
+    fases: ['durante'],
+    icono: 'repeat',
+    paraQueSirve: 'Trámite obligatorio ante cualquier ausencia docente, para garantizar la continuidad académica del alumnado.',
+    cuandoSeUsa: 'Únicamente ante casos de fuerza mayor que impidan impartir una sesión.',
+    requisitos: [
+      'Aplica solo por causa de fuerza mayor.',
+      'Limitado a 1 evento por cuatrimestre.',
+      'El docente suplente debe tener un perfil similar.',
+      'Informar previamente al Coordinador de Plantel.',
+      'Entregar el formato firmado junto con la nómina para su validación administrativa.'
+    ],
+    restricciones: [
+      'Superar 1 evento por cuatrimestre queda fuera del lineamiento y puede afectar la continuidad docente.'
+    ],
+    archivos: [],
+    acceso: 'Solicitar en Coordinación de Plantel'
+  },
+  {
+    id: 'biblioteca',
+    nombre: 'Biblioteca Virtual y Laboratorios Virtuales',
+    categoria: 'soporte',
+    momentoLabel: 'Durante todo el cuatrimestre',
+    fases: ['inicio','durante','cierre'],
+    icono: 'library',
+    paraQueSirve: 'Espacios y software interactivo de apoyo para enriquecer los contenidos temáticos y realizar prácticas guiadas.',
+    cuandoSeUsa: 'De forma continua, integrados en la planeación y en las actividades independientes de NEO.',
+    requisitos: [
+      'Acceder desde el portal digital de plataformas EDUCEM.',
+      'Vincular su uso dentro de la dosificación y las actividades de NEO.'
+    ],
+    restricciones: [],
+    archivos: [],
+    acceso: 'https://biblioteca.educem.mx (acceso simulado)'
+  },
+  {
+    id: 'correo',
+    nombre: 'Correo Institucional (Google Workspace)',
+    categoria: 'soporte',
+    momentoLabel: 'Uso diario',
+    fases: ['inicio','durante','cierre'],
+    icono: 'mail',
+    paraQueSirve: 'Medio de comunicación oficial, obligatorio y exclusivo entre docentes, alumnos y coordinaciones académicas.',
+    cuandoSeUsa: 'Todos los días del cuatrimestre.',
+    requisitos: [
+      'Uso exclusivo para envío/recepción de información, formularios de entrega y soporte técnico.'
+    ],
+    restricciones: [
+      'No se permite el uso de correos personales para asuntos institucionales.'
+    ],
+    archivos: [],
+    acceso: 'https://mail.google.com (cuenta institucional)'
+  }
+];
+ 
+const CATEGORIES = [
+  { id: 'todas', label: 'Todas', color: 'navy' },
+  { id: 'planeacion', label: 'Académico y Planeación', color: 'navy' },
+  { id: 'administrativo', label: 'Administrativo y Contratación', color: 'magenta' },
+  { id: 'evaluacion', label: 'Evaluación y Calificaciones', color: 'navy' },
+  { id: 'soporte', label: 'Soporte y Herramientas', color: 'magenta' }
+];
+ 
+const ALERTS = [
+  { icon: 'trending-up', title: 'Desempeño ≥ 8.5', text: 'Puntaje mínimo de evaluación de desempeño docente para mantener continuidad.', file: { nombre: 'Matriz_Observacion_Docente_EDUCEM.pdf', url: 'https://drive.google.com/file/d/1Nb42lU5W8anU5rBouC3KsQ09Qsx-AfJS/view?usp=drive_link' } },
+  { icon: 'calendar-check-2', title: 'Asistencia puntual', text: 'Entrega puntual de asistencia diaria, sin excepciones.' },
+  { icon: 'shirt', title: 'Vestimenta formal', text: 'Apego estricto al código de vestimenta formal ejecutiva.' },
+  { icon: 'book-check', title: 'Apego al reglamento', text: 'Cumplimiento estricto del reglamento institucional en todo momento.' }
+];
+ 
+const PENDING_DOCS = [
+  { label: 'Documento A (carpeta Talento/Administrativo — nombre pendiente)', url: 'https://docs.google.com/document/d/14tif3Zn7ylMELfYwhH_z8nOqZecQ6D8d/edit?usp=drive_link' },
+  { label: 'Documento B (nombre pendiente)', url: 'https://docs.google.com/document/d/1GvH452lXFNv-IFHLsU8ccSFaEM3YaoF4/edit?usp=drive_link' },
+  { label: 'Documento C (nombre pendiente)', url: 'https://docs.google.com/document/d/1Hi2LfFHXX_wmkKMK1oFYC3JWFozdGQw2/edit?usp=drive_link' },
+  { label: 'Documento D (nombre pendiente)', url: 'https://docs.google.com/document/d/1h7kAC_tMtvruYsJj3vrEJ2_iaaZQ-dUa/edit?usp=drive_link' }
+];
+ 
+const FLOWS = {
+  calificaciones: {
+    label: 'Tengo que reportar calificaciones parciales',
+    icon: 'clipboard-check',
+    steps: [
+      { tool: 'Power Campus', text: 'Captura las calificaciones oficiales de tus alumnos dentro del límite de 3 días hábiles posteriores al cierre de aplicaciones del parcial.' },
+      { tool: 'Kiosko Informativo (SAM)', text: 'Descarga la "Bitácora de Calificación de Parcial" para recabar la firma autógrafa de los alumnos que valida su conformidad.' },
+      { tool: 'Resguardo', text: 'Conserva la bitácora firmada como evidencia ante cualquier aclaración posterior.' }
+    ],
+    warning: 'Si excedes los 3 días hábiles, quedas fuera del plazo normativo y esto impacta tu evaluación de desempeño.'
+  },
+  ausencia: {
+    label: 'Voy a faltar a una sesión de clase',
+    icon: 'repeat',
+    steps: [
+      { tool: 'Coordinación de Plantel', text: 'Notifica de inmediato al Coordinador de Plantel, antes de la ausencia siempre que sea posible.' },
+      { tool: 'Formato de Suplencia o Permuta', text: 'Verifica que la causa sea de fuerza mayor (aplica máximo 1 evento por cuatrimestre) y llena el formato con un docente de perfil similar.' },
+      { tool: 'Entrega administrativa', text: 'Entrega el formato firmado junto con la nómina para su validación.' }
+    ],
+    warning: 'Sin este trámite, la ausencia no queda justificada institucionalmente y afecta tu continuidad docente.'
+  },
+  cuenta: {
+    label: 'Tengo un nuevo número de cuenta bancaria',
+    icon: 'file-check-2',
+    steps: [
+      { tool: 'MECAP', text: 'Ingresa a la sección de actualización de cuenta de pago.' },
+      { tool: 'Documentos requeridos', text: 'Reúne INE, CURP, Constancia de Situación Fiscal (CSF) con vigencia menor a 3 meses (régimen de Sueldos y Salarios o Asimilados) y carátula bancaria.' },
+      { tool: 'Carta de motivos', text: 'Redacta y firma la carta de motivos, con huella en tinta azul.' },
+      { tool: 'Carga en MECAP', text: 'Sube todos los documentos a la plataforma.' }
+    ],
+    warning: 'Documentación incompleta o con CSF vencida retrasa la dispersión de tu nómina.'
+  },
+  planeacion: {
+    label: 'Voy a iniciar la planeación de mi materia',
+    icon: 'calendar-check',
+    steps: [
+      { tool: 'Formato de Dosificación + Instructivo', text: 'Descarga el Formato de Dosificación de Contenidos y su Instructivo de Llenado correspondiente a tu programa/ciclo.' },
+      { tool: 'Llenado normativo', text: 'Define objetivo en infinitivo, momentos clave, secuenciación, mínimo 10% de actividades en NEO, proyectos integradores y bibliografía en APA 7.' },
+      { tool: 'Banco de Preguntas', text: 'Elabora los 25 reactivos (7 directas con comentario, 6 de ordenamiento, 6 de relación de columnas, 6 de elección de elementos).' },
+      { tool: 'NEO 2.0', text: 'Sube la dosificación aprobada, publica tu mensaje de bienvenida y calendariza las actividades.' }
+    ],
+    warning: 'Un formato que no respeta el instructivo de llenado (mayúsculas/minúsculas, estructura) se regresa para corrección.'
+  }
+};
+ 
+/* ================= STATE ================= */
+let state = { search: '', category: 'todas', phase: 'todas' };
+ 
+/* ================= RENDER: CATEGORY PILLS ================= */
+function renderPills() {
+  const wrap = document.getElementById('category-pills');
+  wrap.innerHTML = CATEGORIES.map(c => {
+    const active = state.category === c.id ? 'active' : '';
+    return '<button class="pill ' + active + ' text-xs md:text-sm font-medium border border-navy-200 text-navy-700 px-4 py-2 rounded-full bg-white" onclick="setCategory(\'' + c.id + '\')">' + c.label + '</button>';
+  }).join('');
+}
+ 
+function setCategory(id) { state.category = id; renderPills(); renderCards(); }
+function setSearch(v) { state.search = v.toLowerCase(); renderCards(); }
+ 
+function setPhase(phase) {
+  state.phase = phase;
+  document.querySelectorAll('.spine-node').forEach(n => n.classList.toggle('active', n.dataset.phase === phase));
+  document.getElementById('btn-reset-phase').classList.toggle('hidden', phase === 'todas');
+  document.getElementById('recursos').scrollIntoView({ behavior: 'smooth' });
+  renderCards();
+}
+ 
+/* ================= RENDER: ALERTS ================= */
+function renderAlerts() {
+  const wrap = document.getElementById('alertas-grid');
+  wrap.innerHTML = ALERTS.map(a => {
+    const fileHtml = a.file
+      ? '<a href="' + a.file.url + '" target="_blank" rel="noopener" class="badge-file mt-3 inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1.5 rounded-lg"><i data-lucide="file-text" class="w-3 h-3"></i>' + a.file.nombre + '</a>'
+      : '';
+    return '<div class="bg-white border border-navy-100 rounded-2xl p-5">' +
+      '<div class="w-9 h-9 rounded-xl bg-magenta-100 text-magenta-600 flex items-center justify-center mb-3"><i data-lucide="' + a.icon + '" class="w-4.5 h-4.5"></i></div>' +
+      '<p class="font-display font-semibold text-navy-900 text-sm">' + a.title + '</p>' +
+      '<p class="text-xs text-navy-600 mt-1">' + a.text + '</p>' +
+      fileHtml +
+      '</div>';
+  }).join('');
+  lucide.createIcons();
+}
+ 
+/* ================= RENDER: PENDING DOCS ================= */
+function renderPending() {
+  const wrap = document.getElementById('pending-docs');
+  wrap.innerHTML = PENDING_DOCS.map(d =>
+    '<a href="' + d.url + '" target="_blank" rel="noopener" class="flex items-center gap-2 text-navy-700 hover:text-magenta-600 border border-navy-100 rounded-xl px-3 py-2">' +
+    '<i data-lucide="file-question" class="w-3.5 h-3.5 shrink-0"></i>' + d.label + '</a>'
+  ).join('');
+  lucide.createIcons();
+}
+ 
+/* ================= RENDER: FLOW SELECT ================= */
+function renderFlowOptions() {
+  const sel = document.getElementById('flow-select');
+  Object.keys(FLOWS).forEach(key => {
+    const opt = document.createElement('option');
+    opt.value = key; opt.textContent = FLOWS[key].label;
+    sel.appendChild(opt);
+  });
+}
+ 
+function renderFlow(key) {
+  const wrap = document.getElementById('flow-result');
+  if (!key) { wrap.innerHTML = ''; return; }
+  const f = FLOWS[key];
+  wrap.innerHTML = '<div class="fade-in bg-white rounded-3xl p-6 md:p-7">' +
+    '<div class="flex items-center gap-2 mb-5"><i data-lucide="' + f.icon + '" class="w-5 h-5 text-magenta-600"></i><p class="font-display font-bold text-navy-900">' + f.label + '</p></div>' +
+    '<ol class="space-y-4">' +
+      f.steps.map((s, i) =>
+        '<li class="flex gap-4">' +
+          '<span class="shrink-0 w-7 h-7 rounded-full bg-navy-900 text-white text-xs font-bold flex items-center justify-center">' + (i+1) + '</span>' +
+          '<div><p class="text-xs font-semibold text-magenta-600 uppercase tracking-wide">' + s.tool + '</p><p class="text-sm text-navy-700 mt-0.5">' + s.text + '</p></div>' +
+        '</li>'
+      ).join('') +
+    '</ol>' +
+    '<div class="mt-6 flex gap-3 bg-magenta-100 text-magenta-700 rounded-2xl px-4 py-3 text-sm">' +
+      '<i data-lucide="alert-triangle" class="w-4.5 h-4.5 shrink-0 mt-0.5"></i><p><span class="font-semibold">Si no lo cumples: </span>' + f.warning + '</p>' +
+    '</div>' +
+  '</div>';
+  lucide.createIcons();
+}
+ 
+/* ================= RENDER: CARDS ================= */
+function categoryStyle(cat) {
+  const map = {
+    planeacion:    { bg: 'bg-navy-100',    text: 'text-navy-800',    icon: 'bg-navy-900' },
+    administrativo:{ bg: 'bg-magenta-100', text: 'text-magenta-700', icon: 'bg-magenta-600' },
+    evaluacion:    { bg: 'bg-navy-100',    text: 'text-navy-700',    icon: 'bg-navy-600' },
+    soporte:       { bg: 'bg-magenta-100', text: 'text-magenta-600', icon: 'bg-magenta-400' }
+  };
+  return map[cat];
+}
+ 
+function catLabel(id) { return CATEGORIES.find(c => c.id === id).label; }
+ 
+function renderCards() {
+  const grid = document.getElementById('cards-grid');
+  const noResults = document.getElementById('no-results');
+  const filtered = RESOURCES.filter(r => {
+    const matchCat = state.category === 'todas' || r.categoria === state.category;
+    const matchPhase = state.phase === 'todas' || r.fases.includes(state.phase);
+    const haystack = (r.nombre + ' ' + r.paraQueSirve + ' ' + catLabel(r.categoria)).toLowerCase();
+    const matchSearch = !state.search || haystack.includes(state.search);
+    return matchCat && matchPhase && matchSearch;
+  });
+ 
+  document.getElementById('results-count').textContent = filtered.length + ' de ' + RESOURCES.length + ' recursos mostrados';
+ 
+  if (filtered.length === 0) {
+    grid.innerHTML = ''; noResults.classList.remove('hidden'); return;
+  }
+  noResults.classList.add('hidden');
+ 
+  grid.innerHTML = filtered.map(r => {
+    const style = categoryStyle(r.categoria);
+    return '<button onclick="openModal(\'' + r.id + '\')" class="res-card text-left bg-white border border-navy-100 rounded-3xl p-5 flex flex-col">' +
+      '<div class="flex items-start justify-between mb-4">' +
+        '<div class="w-11 h-11 rounded-2xl ' + style.icon + ' text-white flex items-center justify-center"><i data-lucide="' + r.icono + '" class="w-5 h-5"></i></div>' +
+        '<span class="' + style.bg + ' ' + style.text + ' text-[10px] font-semibold px-2.5 py-1 rounded-full">' + catLabel(r.categoria) + '</span>' +
+      '</div>' +
+      '<p class="font-display font-bold text-navy-900 text-sm leading-snug mb-2">' + r.nombre + '</p>' +
+      '<p class="text-xs text-navy-600 line-clamp-3 flex-1">' + r.paraQueSirve + '</p>' +
+      '<div class="mt-4 flex items-center justify-between text-[11px]">' +
+        '<span class="inline-flex items-center gap-1 text-navy-500"><i data-lucide="clock" class="w-3 h-3"></i>' + r.momentoLabel + '</span>' +
+        '<span class="text-magenta-600 font-semibold inline-flex items-center gap-1">Ver ficha <i data-lucide="arrow-right" class="w-3 h-3"></i></span>' +
+      '</div>' +
+    '</button>';
+  }).join('');
+  lucide.createIcons();
+}
+ 
+/* ================= MODAL ================= */
+function openModal(id) {
+  const r = RESOURCES.find(x => x.id === id);
+  const style = categoryStyle(r.categoria);
+  const filesHtml = r.archivos.length
+    ? '<div class="mt-2 space-y-2">' + r.archivos.map(f =>
+        '<a href="' + f.url + '" target="_blank" rel="noopener" class="badge-file flex items-center gap-2 text-xs font-medium px-3 py-2 rounded-xl">' +
+        '<i data-lucide="file-text" class="w-3.5 h-3.5 shrink-0"></i>' + f.nombre + '</a>'
+      ).join('') + '</div>'
+    : '<p class="text-xs text-navy-400 italic mt-1">Sin documento descargable asociado; se gestiona directamente en la plataforma.</p>';
+ 
+  document.getElementById('modal-content').innerHTML =
+    '<div class="p-6 md:p-8">' +
+      '<div class="flex items-start justify-between gap-4 mb-6">' +
+        '<div class="flex items-center gap-3">' +
+          '<div class="w-12 h-12 rounded-2xl ' + style.icon + ' text-white flex items-center justify-center"><i data-lucide="' + r.icono + '" class="w-5 h-5"></i></div>' +
+          '<div>' +
+            '<span class="' + style.bg + ' ' + style.text + ' text-[10px] font-semibold px-2.5 py-1 rounded-full">' + catLabel(r.categoria) + '</span>' +
+            '<p class="font-display font-bold text-navy-900 text-lg leading-snug mt-1">' + r.nombre + '</p>' +
+          '</div>' +
+        '</div>' +
+        '<button onclick="closeModal()" class="shrink-0 w-8 h-8 rounded-full hover:bg-navy-100 flex items-center justify-center"><i data-lucide="x" class="w-4 h-4 text-navy-600"></i></button>' +
+      '</div>' +
+ 
+      '<div class="grid sm:grid-cols-2 gap-5 mb-6">' +
+        '<div><p class="text-[11px] font-semibold text-magenta-600 uppercase tracking-wide mb-1">¿Para qué sirve?</p><p class="text-sm text-navy-700">' + r.paraQueSirve + '</p></div>' +
+        '<div><p class="text-[11px] font-semibold text-magenta-600 uppercase tracking-wide mb-1">¿Cuándo se usa?</p><p class="text-sm text-navy-700">' + r.cuandoSeUsa + '</p></div>' +
+      '</div>' +
+ 
+      '<div class="mb-6">' +
+        '<p class="text-[11px] font-semibold text-navy-500 uppercase tracking-wide mb-2">Datos y entregables obligatorios</p>' +
+        '<ul class="space-y-1.5">' + r.requisitos.map(req =>
+          '<li class="flex gap-2 text-sm text-navy-700"><i data-lucide="check" class="w-4 h-4 text-navy-500 mt-0.5 shrink-0"></i>' + req + '</li>'
+        ).join('') + '</ul>' +
+      '</div>' +
+ 
+      (r.restricciones.length ? '<div class="mb-6 bg-magenta-100 rounded-2xl p-4">' +
+        '<p class="text-[11px] font-semibold text-magenta-700 uppercase tracking-wide mb-2 flex items-center gap-1.5"><i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i>Restricciones institucionales</p>' +
+        '<ul class="space-y-1">' + r.restricciones.map(res =>
+          '<li class="text-sm text-magenta-700">• ' + res + '</li>'
+        ).join('') + '</ul>' +
+      '</div>' : '') +
+ 
+      '<div class="mb-6">' +
+        '<p class="text-[11px] font-semibold text-navy-500 uppercase tracking-wide mb-2">Documento(s) de referencia en la carpeta institucional</p>' +
+        filesHtml +
+      '</div>' +
+ 
+      '<div class="flex items-center gap-2 text-xs text-navy-500 border-t border-navy-100 pt-4">' +
+        '<i data-lucide="link" class="w-3.5 h-3.5"></i> Acceso: ' + r.acceso +
+      '</div>' +
+    '</div>';
+ 
+  document.getElementById('modal-backdrop').classList.remove('hidden');
+  document.getElementById('modal-backdrop').classList.add('flex');
+  lucide.createIcons();
+}
+ 
+function closeModal() {
+  document.getElementById('modal-backdrop').classList.add('hidden');
+  document.getElementById('modal-backdrop').classList.remove('flex');
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+ 
+/* ================= INIT ================= */
+document.getElementById('buscador').addEventListener('input', e => setSearch(e.target.value));
+renderPills();
+renderAlerts();
+renderPending();
+renderFlowOptions();
+renderCards();
+lucide.createIcons();
+</script>
+</body>
+</html>
+ 
