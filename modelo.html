@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diseñador de Objetos de Aprendizaje · ADDIE + Jonassen</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F7F7F3;
+    --ink:#1B2340;
+    --blueprint:#2B4C7E;
+    --blueprint-dark:#17263F;
+    --violet:#6B5CA5;
+    --amber:#B9832E;
+    --amber-light:#F0D9AC;
+    --slate:#667085;
+    --line:rgba(43,76,126,0.14);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background-color:var(--paper);
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 28px 28px;
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+  }
+  .font-display{font-family:'Space Grotesk', sans-serif;}
+  .font-mono{font-family:'IBM Plex Mono', monospace;}
+
+  .sheet{
+    background:#fff;
+    border:1px solid var(--line);
+    box-shadow: 0 1px 0 rgba(27,35,64,0.03), 0 12px 30px -18px rgba(27,35,64,0.25);
+  }
+  .corner-mark{position:relative;}
+  .corner-mark::before,.corner-mark::after{
+    content:"";position:absolute;width:10px;height:10px;
+    border-top:2px solid var(--blueprint);border-left:2px solid var(--blueprint);
+    top:-1px;left:-1px;
+  }
+  .corner-mark::after{
+    top:auto;left:auto;bottom:-1px;right:-1px;
+    border-top:none;border-left:none;
+    border-bottom:2px solid var(--blueprint);border-right:2px solid var(--blueprint);
+  }
+
+  /* Ruler / ADDIE tracker */
+  .ruler{position:relative;height:56px;}
+  .ruler-line{position:absolute;left:0;right:0;top:27px;height:2px;background:var(--line);}
+  .ruler-fill{position:absolute;left:0;top:27px;height:2px;background:var(--blueprint);transition:width .5s cubic-bezier(.65,0,.35,1);}
+  .ruler-tick{position:absolute;top:14px;transform:translateX(-50%);text-align:center;width:110px;}
+  .ruler-dot{width:14px;height:14px;border-radius:999px;background:#fff;border:2px solid var(--slate);margin:0 auto 6px;transition:.35s;}
+  .ruler-dot.active{border-color:var(--blueprint);background:var(--blueprint);box-shadow:0 0 0 4px rgba(43,76,126,0.15);}
+  .ruler-dot.done{border-color:var(--blueprint);background:#fff;}
+  .ruler-label{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.06em;color:var(--slate);text-transform:uppercase;}
+  .ruler-label.active{color:var(--blueprint);font-weight:600;}
+
+  .opt-card{
+    border:1.5px solid var(--line);
+    transition:.15s;cursor:pointer;background:#fff;
+  }
+  .opt-card:hover{border-color:var(--blueprint);}
+  .opt-card.selected{
+    border-color:var(--blueprint);
+    background:linear-gradient(180deg,#EEF3FA, #ffffff);
+    box-shadow: inset 0 0 0 1px var(--blueprint);
+  }
+
+  .step-panel{display:none;}
+  .step-panel.active{display:block;animation:fadeIn .4s ease;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+  .badge-seal{
+    border:2px dashed var(--amber);
+    border-radius:999px;
+    background:#FFFDF7;
+    transform:rotate(-2deg);
+  }
+  .badge-seal:nth-child(2){transform:rotate(1.5deg);}
+  .badge-seal:nth-child(3){transform:rotate(-1deg);}
+
+  .dim-tag{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;letter-spacing:.05em;
+    color:var(--blueprint);
+    border:1px solid var(--line);
+    background:#EEF3FA;
+  }
+
+  ::selection{background:var(--amber-light);}
+  textarea, input[type=text]{font-family:'IBM Plex Sans',sans-serif;}
+  textarea:focus, input:focus{outline:none;border-color:var(--blueprint);box-shadow:0 0 0 3px rgba(43,76,126,0.12);}
+
+  .btn-primary{
+    background:var(--blueprint); color:#fff;
+    transition:.15s;
+  }
+  .btn-primary:hover{background:var(--blueprint-dark);}
+  .btn-primary:disabled{opacity:.4;cursor:not-allowed;}
+  .btn-ghost{border:1.5px solid var(--line);background:#fff;transition:.15s;}
+  .btn-ghost:hover{border-color:var(--blueprint);color:var(--blueprint);}
+
+  .hidden-init{display:none;}
+
+  @media (max-width: 640px){
+    .ruler-tick{width:64px;}
+    .ruler-label{font-size:8.5px;}
+  }
+</style>
+</head>
+<body class="min-h-screen pb-20">
+
+<!-- ============ HEADER ============ -->
+<header class="border-b border-[var(--line)] bg-white/70 backdrop-blur sticky top-0 z-30">
+  <div class="max-w-5xl mx-auto px-5 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-md flex items-center justify-center font-mono text-xs" style="background:var(--blueprint);color:#fff;">OA</div>
+      <div>
+        <p class="font-display font-semibold text-[15px] leading-tight">Diseñador de Objetos de Aprendizaje</p>
+        <p class="font-mono text-[10.5px] text-[var(--slate)] tracking-wide">PLANO PEDAGÓGICO · ADDIE + JONASSEN</p>
+      </div>
+    </div>
+    <span class="hidden sm:inline-block font-mono text-[10.5px] px-2.5 py-1 rounded border border-[var(--line)] text-[var(--slate)]">rev. 01 — sin backend</span>
+  </div>
+</header>
+
+<!-- ============ ADDIE RULER ============ -->
+<div class="max-w-5xl mx-auto px-5 pt-8">
+  <div class="ruler" id="ruler">
+    <div class="ruler-line"></div>
+    <div class="ruler-fill" id="rulerFill" style="width:0%"></div>
+    <div class="ruler-tick" style="left:2%;"><div class="ruler-dot" data-phase="0"></div><div class="ruler-label" data-phase="0">Análisis</div></div>
+    <div class="ruler-tick" style="left:26%;"><div class="ruler-dot" data-phase="1"></div><div class="ruler-label" data-phase="1">Diseño</div></div>
+    <div class="ruler-tick" style="left:50%;"><div class="ruler-dot" data-phase="2"></div><div class="ruler-label" data-phase="2">Desarrollo</div></div>
+    <div class="ruler-tick" style="left:74%;"><div class="ruler-dot" data-phase="3"></div><div class="ruler-label" data-phase="3">Implementación</div></div>
+    <div class="ruler-tick" style="left:98%;"><div class="ruler-dot" data-phase="4"></div><div class="ruler-label" data-phase="4">Evaluación</div></div>
+  </div>
+</div>
+
+<main class="max-w-5xl mx-auto px-5">
+
+  <!-- ============ INTRO ============ -->
+  <section class="mt-6 mb-10">
+    <h1 class="font-display text-3xl sm:text-[2.35rem] font-semibold leading-tight max-w-2xl">Traza el plano de tu próximo objeto de aprendizaje.</h1>
+    <p class="mt-3 text-[var(--slate)] max-w-xl leading-relaxed">Responde el diagnóstico del docente. Con cada dato, el motor pedagógico levanta un objeto de aprendizaje completo: reto auténtico, andamiaje, evaluación e insignias — listo para Moodle, Classroom o tu salón.</p>
+  </section>
+
+  <!-- ============ WIZARD ============ -->
+  <section id="wizardSection" class="sheet corner-mark rounded-xl p-6 sm:p-9">
+
+    <!-- STEP 1 -->
+    <div class="step-panel active" id="panel-0">
+      <p class="dim-tag inline-block px-2 py-1 rounded mb-4">PASO 1 — ANÁLISIS DEL CONTEXTO</p>
+
+      <label class="block font-medium mb-2 text-sm">Nivel educativo</label>
+      <div id="nivelOptions" class="grid grid-cols-2 sm:grid-cols-5 gap-2 mb-6"></div>
+
+      <div class="grid sm:grid-cols-2 gap-5 mb-5">
+        <div>
+          <label class="block font-medium mb-2 text-sm">Materia o asignatura</label>
+          <input type="text" id="materia" placeholder="Ej. Ciencias Naturales" class="w-full rounded-lg border border-[var(--line)] px-3.5 py-2.5 text-sm">
+        </div>
+        <div>
+          <label class="block font-medium mb-2 text-sm">Tema central o concepto complejo</label>
+          <input type="text" id="tema" placeholder="Ej. El ciclo del agua" class="w-full rounded-lg border border-[var(--line)] px-3.5 py-2.5 text-sm">
+        </div>
+      </div>
+
+      <div class="mb-2">
+        <label class="block font-medium mb-2 text-sm">Características del grupo o necesidades particulares</label>
+        <textarea id="caracteristicas" rows="3" placeholder="Ej. Grupo numeroso, ritmos de aprendizaje diversos, acceso limitado a internet en casa..." class="w-full rounded-lg border border-[var(--line)] px-3.5 py-2.5 text-sm"></textarea>
+      </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="step-panel" id="panel-1">
+      <p class="dim-tag inline-block px-2 py-1 rounded mb-4">PASO 2 — DISEÑO DE LA SITUACIÓN</p>
+
+      <label class="block font-medium mb-2 text-sm">Tipo de clase</label>
+      <div id="modalidadOptions" class="grid grid-cols-3 gap-2 mb-6"></div>
+
+      <label class="block font-medium mb-2 text-sm">Resultado de aprendizaje o competencia a alcanzar</label>
+      <textarea id="resultado" rows="2" placeholder="Ej. Explica el ciclo del agua y su impacto en la vida cotidiana de su comunidad" class="w-full rounded-lg border border-[var(--line)] px-3.5 py-2.5 text-sm mb-6"></textarea>
+
+      <label class="block font-medium mb-2 text-sm">Enfoque de trabajo preferido</label>
+      <div id="enfoqueOptions" class="grid grid-cols-3 gap-2"></div>
+    </div>
+
+    <!-- NAV -->
+    <div class="flex items-center justify-between mt-8 pt-6 border-t border-[var(--line)]">
+      <button id="btnPrev" class="btn-ghost rounded-lg px-4 py-2.5 text-sm font-medium hidden-init">← Anterior</button>
+      <div class="flex-1"></div>
+      <button id="btnNext" class="btn-primary rounded-lg px-5 py-2.5 text-sm font-medium">Siguiente →</button>
+      <button id="btnGenerate" class="btn-primary rounded-lg px-5 py-2.5 text-sm font-medium hidden-init">Generar objeto de aprendizaje</button>
+    </div>
+    <p id="formHint" class="text-xs text-[var(--slate)] mt-3 hidden-init"></p>
+  </section>
+
+  <!-- ============ RESULTS ============ -->
+  <section id="results" class="hidden-init mt-14"></section>
+
+</main>
+
+<footer class="max-w-5xl mx-auto px-5 py-10 mt-10 border-t border-[var(--line)]">
+  <p class="font-mono text-[11px] text-[var(--slate)] leading-relaxed">
+    Esta herramienta se fundamenta en el modelo sistémico ADDIE (Análisis, Diseño, Desarrollo, Implementación, Evaluación) y en el Entorno de Aprendizaje Constructivista de Jonassen (problema auténtico, casos relacionados, recursos de información, herramientas cognitivas, herramientas de conversación/colaboración y apoyo social). Generado localmente en tu navegador — ningún dato sale de este archivo.
+  </p>
+</footer>
+
+<script>
+/* ================= STATE ================= */
+const state = {
+  step: 0,
+  nivel: null,
+  materia: '',
+  tema: '',
+  caracteristicas: '',
+  modalidad: null,
+  resultado: '',
+  enfoque: null
+};
+
+/* ================= OPTION DATA ================= */
+const NIVELES = ['Primaria','Secundaria','Bachillerato','Licenciatura','Posgrado'];
+const MODALIDADES = [
+  {id:'Presencial', icon:'🏫'},
+  {id:'Híbrida/Mixta', icon:'🔀'},
+  {id:'Virtual/A distancia', icon:'💻'}
+];
+const ENFOQUES = [
+  {id:'Individual', icon:'🧭'},
+  {id:'Colaborativo', icon:'🤝'},
+  {id:'Cooperativo', icon:'🧩'}
+];
+
+function buildOptionButtons(containerId, items, key, iconOnly){
+  const el = document.getElementById(containerId);
+  el.innerHTML = '';
+  items.forEach(item=>{
+    const id = typeof item === 'string' ? item : item.id;
+    const icon = typeof item === 'string' ? '' : item.icon;
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'opt-card rounded-lg px-3 py-3 text-sm font-medium text-center flex flex-col items-center gap-1';
+    btn.innerHTML = (icon? `<span class="text-lg">${icon}</span>`:'') + `<span>${id}</span>`;
+    btn.addEventListener('click', ()=>{
+      state[key] = id;
+      [...el.children].forEach(c=>c.classList.remove('selected'));
+      btn.classList.add('selected');
+    });
+    el.appendChild(btn);
+  });
+}
+buildOptionButtons('nivelOptions', NIVELES, 'nivel');
+buildOptionButtons('modalidadOptions', MODALIDADES, 'modalidad');
+buildOptionButtons('enfoqueOptions', ENFOQUES, 'enfoque');
+
+/* ================= WIZARD NAV ================= */
+const rulerFill = document.getElementById('rulerFill');
+const rulerPositions = [2,26,50,74,98]; // matches ruler-tick left%
+
+function paintRuler(phaseIndex){
+  document.querySelectorAll('.ruler-dot').forEach(dot=>{
+    const p = Number(dot.dataset.phase);
+    dot.classList.toggle('active', p === phaseIndex);
+    dot.classList.toggle('done', p < phaseIndex);
+  });
+  document.querySelectorAll('.ruler-label').forEach(lab=>{
+    const p = Number(lab.dataset.phase);
+    lab.classList.toggle('active', p <= phaseIndex);
+  });
+  rulerFill.style.width = rulerPositions[phaseIndex] + '%';
+}
+paintRuler(0);
+
+function showStep(i){
+  document.querySelectorAll('.step-panel').forEach((p,idx)=>p.classList.toggle('active', idx===i));
+  document.getElementById('btnPrev').classList.toggle('hidden-init', i===0);
+  document.getElementById('btnNext').classList.toggle('hidden-init', i===1);
+  document.getElementById('btnGenerate').classList.toggle('hidden-init', i!==1);
+  paintRuler(i);
+  document.getElementById('formHint').classList.add('hidden-init');
+}
+
+document.getElementById('btnNext').addEventListener('click', ()=>{
+  state.materia = document.getElementById('materia').value.trim();
+  state.tema = document.getElementById('tema').value.trim();
+  state.caracteristicas = document.getElementById('caracteristicas').value.trim();
+  if(!state.nivel || !state.materia || !state.tema){
+    const hint = document.getElementById('formHint');
+    hint.textContent = 'Completa nivel educativo, materia y tema antes de continuar.';
+    hint.classList.remove('hidden-init');
+    return;
+  }
+  state.step = 1;
+  showStep(1);
+});
+
+document.getElementById('btnPrev').addEventListener('click', ()=>{
+  state.step = 0;
+  showStep(0);
+});
+
+document.getElementById('btnGenerate').addEventListener('click', ()=>{
+  state.resultado = document.getElementById('resultado').value.trim();
+  if(!state.modalidad || !state.resultado || !state.enfoque){
+    const hint = document.getElementById('formHint');
+    hint.textContent = 'Selecciona modalidad, enfoque de trabajo y describe el resultado de aprendizaje.';
+    hint.classList.remove('hidden-init');
+    return;
+  }
+  const lo = generateLearningObject(state);
+  renderResults(lo);
+  paintRuler(4);
+  document.getElementById('results').scrollIntoView({behavior:'smooth', block:'start'});
+});
+
+/* ================= HEURISTIC ENGINE ================= */
+function isBasico(nivel){ return nivel === 'Primaria' || nivel === 'Secundaria'; }
+function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+function materiaEmoji(materia){
+  const m = materia.toLowerCase();
+  if(/mate|álgebra|algebra|cálculo|calculo|geometr/.test(m)) return '🔢';
+  if(/ciencia|biolog|química|quimica|física|fisica|natural/.test(m)) return '🔬';
+  if(/histor|social|cívic|civic/.test(m)) return '🏺';
+  if(/lengua|español|espanol|literatur|redacc/.test(m)) return '📖';
+  if(/arte|dibujo|plástic|plastic/.test(m)) return '🎨';
+  if(/músic|music/.test(m)) return '🎵';
+  if(/geograf/.test(m)) return '🗺️';
+  if(/tecnolog|inform|comput|program/.test(m)) return '💻';
+  if(/educaci[oó]n f[ií]sica|deporte/.test(m)) return '🏅';
+  if(/ingl[eé]s|idioma|franc[eé]s|lengua extranjera/.test(m)) return '🌐';
+  if(/derecho|legal|jur[ií]d/.test(m)) return '⚖️';
+  if(/negocio|administra|econom|finanz/.test(m)) return '📊';
+  if(/salud|medic|enfermer/.test(m)) return '🩺';
+  return '✨';
+}
+
+function generateTitle(s){
+  const templatesBasico = [
+    `Misión ${materiaEmoji(s.materia)}: Descifrando ${s.tema}`,
+    `El Gran Reto de ${s.tema}`,
+    `Expedición a ${s.tema}`,
+    `Operación: Salvemos ${s.tema}`
+  ];
+  const templatesSuperior = [
+    `Estudio de caso: ${s.tema} en contexto real`,
+    `Laboratorio de decisiones — ${s.tema}`,
+    `${s.materia}: resolviendo ${s.tema}`,
+    `Simulación profesional — ${s.tema}`
+  ];
+  return isBasico(s.nivel) ? pick(templatesBasico) : pick(templatesSuperior);
+}
+
+function generateChallenge(s){
+  const audience = isBasico(s.nivel) ? 'tu comunidad y tu vida diaria' : 'un contexto profesional real';
+  const templates = [
+    `Imagina que un problema real vinculado a ${s.tema} aparece en ${audience}. Como estudiante de ${s.materia}, te piden diseñar una solución concreta, explicarla con evidencia y defenderla ante un público que no es experto en el tema.`,
+    `Una organización de tu localidad enfrenta una situación relacionada con ${s.tema}. Tu grupo de ${s.materia} debe investigar, diagnosticar y proponer una solución viable en un plazo definido, tomando en cuenta a las personas afectadas.`,
+    `Se presenta una noticia o caso reciente que involucra directamente ${s.tema}. Trabajando como especialistas en ${s.materia}, deben analizar la situación, identificar sus causas y comunicar una recomendación fundamentada.`
+  ];
+  return pick(templates) + (s.caracteristicas ? ` Considera especialmente esto del grupo: "${s.caracteristicas}".` : '');
+}
+
+function generateCases(s){
+  return [
+    `Un caso histórico o cotidiano donde ${s.tema} se resolvió (o falló al resolverse) de forma distinta — útil para comparar estrategias.`,
+    `Un caso de otra disciplina que enfrenta un problema estructuralmente similar a ${s.tema}, para razonar por analogía.`,
+    `Un caso "casi resuelto" con errores intencionales relacionados con ${s.tema}, para que el grupo identifique qué falló y por qué.`
+  ];
+}
+
+function generateResources(s){
+  const base = [
+    `Lectura introductoria (nivel accesible) sobre ${s.tema} en ${s.materia}.`,
+    `Un video corto o infografía que muestre ${s.tema} aplicado a un caso real.`,
+    `Una fuente primaria o dato estadístico reciente relacionado con ${s.tema}.`
+  ];
+  if(s.modalidad === 'Virtual/A distancia'){
+    base.push(`Un simulador interactivo o herramienta en línea (ej. PhET, GeoGebra, mapas interactivos) pertinente a ${s.tema}.`);
+    base.push(`Un foro o repositorio digital curado con enlaces verificados sobre ${s.tema}.`);
+  } else if(s.modalidad === 'Presencial'){
+    base.push(`Material físico manipulable o de biblioteca sobre ${s.tema} disponible en el aula.`);
+    base.push(`Un experto invitado o testimonio local relacionado con ${s.tema}.`);
+  } else {
+    base.push(`Una estación física con material impreso y un recurso digital complementario sobre ${s.tema}.`);
+    base.push(`Un canal virtual (foro, chat o repositorio) con enlaces verificados sobre ${s.tema}.`);
+  }
+  return base;
+}
+
+function generateCognitiveTools(s){
+  if(isBasico(s.nivel)){
+    return [
+      'Mapa mental ilustrado para organizar ideas clave.',
+      'Línea de tiempo o secuencia con dibujos.',
+      'Organizador gráfico tipo "causa → efecto" con íconos.',
+      'Bitácora de aprendizaje con espacio para dibujar y escribir.'
+    ];
+  }
+  return [
+    'Mapa conceptual jerárquico de los factores en juego.',
+    'Matriz comparativa de alternativas de solución (criterios vs. opciones).',
+    'Diagrama causa-efecto (Ishikawa) o árbol de problemas.',
+    'Rúbrica de autoevaluación del proceso de análisis.',
+    'Tablero colaborativo (tipo Miro/Notion) para consolidar evidencia.'
+  ];
+}
+
+function generateCollaboration(s){
+  const enfoqueTexto = {
+    'Individual': 'Cada estudiante documenta su propio proceso de razonamiento en una bitácora',
+    'Colaborativo': 'El grupo construye una respuesta conjunta repartiendo roles complementarios (investigación, análisis, comunicación)',
+    'Cooperativo': 'El grupo se divide en subequipos con tareas interdependientes que luego deben integrarse en una sola propuesta'
+  };
+  const modalidadTexto = {
+    'Presencial': 'durante la sesión de aula, cerrando con una puesta en común oral',
+    'Híbrida/Mixta': 'combinando trabajo en el aula con avances asincrónicos en un espacio virtual compartido',
+    'Virtual/A distancia': 'a través de un foro asincrónico o videollamada, con evidencia escrita de la discusión'
+  };
+  return `${enfoqueTexto[s.enfoque]}, ${modalidadTexto[s.modalidad]}. Se sugiere establecer al menos una ronda de retroalimentación entre pares antes de la entrega final, guiada por preguntas como: "¿qué evidencia respalda tu propuesta sobre ${s.tema}?" y "¿qué le añadirías a la idea de tu compañero/a?".`;
+}
+
+function generateImplementation(s){
+  const modalidadWord = {
+    'Presencial': 'en el aula',
+    'Híbrida/Mixta': 'entre el aula y el espacio virtual',
+    'Virtual/A distancia': 'en la sesión virtual'
+  }[s.modalidad];
+  return [
+    `Abre la sesión ${modalidadWord} presentando el reto de ${s.tema} como una situación real, no como un ejercicio de clase — genera curiosidad antes de dar instrucciones.`,
+    `Modela en voz alta cómo abordarías el primer paso del reto, sin resolverlo por completo, para dar un andamiaje inicial.`,
+    `Circula entre equipos (o entre hilos del foro) haciendo preguntas guía en lugar de dar respuestas: "¿qué evidencia tienes?", "¿qué caso similar conoces?".`,
+    `Habilita los recursos y herramientas cognitivas sugeridas en el momento en que el grupo las necesite, no todas al inicio.`,
+    `Cierra con una puesta en común breve donde cada equipo comunique su solución y reciba una pregunta de un compañero.`
+  ];
+}
+
+function generateEvaluation(s){
+  const formativaBasico = ['Ticket de salida con una pregunta clave sobre el reto.', 'Autoevaluación con carita/semáforo sobre qué tanto entendieron.', 'Coevaluación breve entre parejas usando una lista de cotejo simple.'];
+  const formativaSuperior = ['Ticket de salida con una pregunta de transferencia.', 'Autoevaluación con rúbrica de criterios explícitos.', 'Coevaluación entre equipos con retroalimentación escrita justificada.'];
+  const formativa = isBasico(s.nivel) ? formativaBasico : formativaSuperior;
+  const rubricaCriterios = [
+    `Comprensión del problema: identifica con claridad el reto relacionado con "${s.resultado || s.tema}".`,
+    `Uso de evidencia: sustenta su propuesta con datos o fuentes de los recursos revisados.`,
+    `Proceso colaborativo: participa y aporta en la dinámica de ${s.enfoque.toLowerCase()}.`,
+    `Comunicación: explica su solución con claridad ante otros.`
+  ];
+  return {formativa, rubricaCriterios};
+}
+
+function generateBadges(s){
+  const emoji = materiaEmoji(s.materia);
+  if(isBasico(s.nivel)){
+    const roles = ['Explorador/a de', 'Detective de', 'Guardián/a de', 'Aventurero/a de'];
+    return [
+      {nombre:`${pick(roles)} ${s.tema} ${emoji}`, criterio:`Se otorga al resolver el reto principal sobre ${s.tema}.`, competencia:'Pensamiento crítico y resolución de problemas.'},
+      {nombre:`Rastreador/a de Pistas 🔎`, criterio:`Se otorga al analizar correctamente los casos relacionados y encontrar patrones.`, competencia:'Razonamiento por analogía.'},
+      {nombre:`Compañero/a de Equipo 🤝`, criterio:`Se otorga al participar activamente en la dinámica de ${s.enfoque.toLowerCase()}.`, competencia:'Trabajo en equipo y comunicación.'}
+    ];
+  }
+  const roles = ['Analista Estratégico de', 'Especialista en', 'Consultor/a de', 'Líder de Proyecto en'];
+  return [
+    {nombre:`${pick(roles)} ${s.materia} ${emoji}`, criterio:`Se otorga al resolver con evidencia el reto auténtico sobre ${s.tema}.`, competencia:'Toma de decisiones basada en evidencia.'},
+    {nombre:`Investigador/a de Casos 📂`, criterio:`Se otorga al transferir el aprendizaje de los casos relacionados a una situación nueva.`, competencia:'Pensamiento analítico y transferencia.'},
+    {nombre:`Voz del Equipo 🗣️`, criterio:`Se otorga al aportar evidencia y liderazgo en la dinámica de ${s.enfoque.toLowerCase()}.`, competencia:'Comunicación profesional y trabajo colaborativo.'}
+  ];
+}
+
+function generateCelebration(s){
+  if(isBasico(s.nivel)){
+    return `🎉 Detén la clase, proyecta la insignia ganada y lidera un aplauso rítmico gritando "¡Lo lograste!". Pega una versión impresa de la insignia en el Mural de Logros del salón para que todos la vean.`;
+  }
+  return `Dedica 2–3 minutos al cierre de la sesión para reconocer públicamente (en clase o en el canal virtual del curso) a quienes obtuvieron cada insignia, nombrando la competencia profesional que certifica. Sugiere agregarla como evidencia en su portafolio de aprendizaje.`;
+}
+
+function generateLearningObject(s){
+  return {
+    titulo: generateTitle(s),
+    reto: generateChallenge(s),
+    casos: generateCases(s),
+    recursos: generateResources(s),
+    herramientas: generateCognitiveTools(s),
+    colaboracion: generateCollaboration(s),
+    implementacion: generateImplementation(s),
+    evaluacion: generateEvaluation(s),
+    insignias: generateBadges(s),
+    celebracion: generateCelebration(s)
+  };
+}
+
+/* ================= RENDER ================= */
+function cardWrap(dimLabel, title, innerHtml){
+  return `
+  <div class="sheet rounded-xl p-5 sm:p-6">
+    <span class="dim-tag inline-block px-2 py-1 rounded mb-3">${dimLabel}</span>
+    <h3 class="font-display font-semibold text-base mb-2">${title}</h3>
+    <div class="text-sm text-[var(--ink)]/90 leading-relaxed">${innerHtml}</div>
+  </div>`;
+}
+function ul(items){ return `<ul class="space-y-1.5 list-disc pl-4">${items.map(i=>`<li>${i}</li>`).join('')}</ul>`; }
+function ol(items){ return `<ol class="space-y-2 list-decimal pl-4">${items.map(i=>`<li>${i}</li>`).join('')}</ol>`; }
+
+let lastLO = null, lastState = null;
+
+function renderResults(lo){
+  lastLO = lo; lastState = {...state};
+  const el = document.getElementById('results');
+  el.classList.remove('hidden-init');
+
+  el.innerHTML = `
+    <div class="mb-8">
+      <p class="dim-tag inline-block px-2 py-1 rounded mb-3">OBJETO DE APRENDIZAJE GENERADO</p>
+      <h2 class="font-display text-2xl sm:text-3xl font-semibold">${lo.titulo}</h2>
+      <p class="text-sm text-[var(--slate)] mt-1">${state.nivel} · ${state.materia} · ${state.modalidad} · Enfoque ${state.enfoque.toLowerCase()}</p>
+    </div>
+
+    <div class="mb-3"><h3 class="font-mono text-xs tracking-widest text-[var(--slate)] uppercase">Fase de Desarrollo — Núcleo Jonassen</h3></div>
+    <div class="grid sm:grid-cols-2 gap-4 mb-10">
+      ${cardWrap('DIMENSIÓN 1', 'El reto / problema auténtico', `<p>${lo.reto}</p>`)}
+      ${cardWrap('DIMENSIÓN 2', 'Casos relacionados sugeridos', ul(lo.casos))}
+      ${cardWrap('DIMENSIÓN 3', 'Recursos de información críticos', ul(lo.recursos))}
+      ${cardWrap('DIMENSIÓN 4', 'Herramientas cognitivas recomendadas', ul(lo.herramientas))}
+      ${cardWrap('DIMENSIÓN 5 · 6', 'Colaboración y apoyo social', `<p>${lo.colaboracion}</p>`)}
+    </div>
+
+    <div class="mb-3"><h3 class="font-mono text-xs tracking-widest text-[var(--slate)] uppercase">Fase de Implementación</h3></div>
+    <div class="sheet rounded-xl p-5 sm:p-6 mb-10">
+      <h3 class="font-display font-semibold text-base mb-3">Guía de mediación docente</h3>
+      ${ol(lo.implementacion)}
+    </div>
+
+    <div class="mb-3"><h3 class="font-mono text-xs tracking-widest text-[var(--slate)] uppercase">Fase de Evaluación</h3></div>
+    <div class="grid sm:grid-cols-2 gap-4 mb-10">
+      ${cardWrap('FORMATIVA', 'Evaluación durante el proceso', ul(lo.evaluacion.formativa))}
+      ${cardWrap('SUMATIVA', 'Rúbrica rápida — criterios sugeridos', ul(lo.evaluacion.rubricaCriterios))}
+    </div>
+
+    <div class="mb-3"><h3 class="font-mono text-xs tracking-widest text-[var(--slate)] uppercase">Sistema de insignias</h3></div>
+    <div class="grid sm:grid-cols-3 gap-4 mb-8">
+      ${lo.insignias.map(b=>`
+        <div class="badge-seal p-5 text-center">
+          <p class="font-display font-semibold text-sm mb-2">${b.nombre}</p>
+          <p class="font-mono text-[10px] uppercase tracking-widest text-[var(--amber)] mb-2">Criterio de obtención</p>
+          <p class="text-xs text-[var(--ink)]/80 mb-3">${b.criterio}</p>
+          <p class="font-mono text-[10px] uppercase tracking-widest text-[var(--amber)] mb-1">Certifica</p>
+          <p class="text-xs text-[var(--ink)]/80">${b.competencia}</p>
+        </div>`).join('')}
+    </div>
+
+    <div class="sheet rounded-xl p-5 sm:p-6 mb-10" style="border-color:var(--amber-light);">
+      <span class="dim-tag inline-block px-2 py-1 rounded mb-3" style="color:var(--amber);border-color:var(--amber-light);background:#FFFAF0;">RITUAL DE CELEBRACIÓN</span>
+      <p class="text-sm leading-relaxed">${lo.celebracion}</p>
+    </div>
+
+    <div class="flex flex-wrap gap-3">
+      <button id="btnCopyMd" class="btn-primary rounded-lg px-5 py-2.5 text-sm font-medium">Copiar en Markdown</button>
+      <button id="btnDownloadHtml" class="btn-ghost rounded-lg px-5 py-2.5 text-sm font-medium">Descargar como HTML</button>
+      <button id="btnRestart" class="btn-ghost rounded-lg px-5 py-2.5 text-sm font-medium">Diseñar otro objeto</button>
+    </div>
+    <p id="copyHint" class="text-xs text-[var(--slate)] mt-3"></p>
+  `;
+
+  document.getElementById('btnCopyMd').addEventListener('click', copyMarkdown);
+  document.getElementById('btnDownloadHtml').addEventListener('click', downloadHtml);
+  document.getElementById('btnRestart').addEventListener('click', restart);
+}
+
+/* ================= EXPORT ================= */
+function buildMarkdown(lo, s){
+  return `# ${lo.titulo}
+
+**Nivel:** ${s.nivel} · **Materia:** ${s.materia} · **Modalidad:** ${s.modalidad} · **Enfoque:** ${s.enfoque}
+**Resultado de aprendizaje:** ${s.resultado}
+
+## Fase de Desarrollo (núcleo Jonassen)
+
+### El reto / problema auténtico
+${lo.reto}
+
+### Casos relacionados
+${lo.casos.map(c=>'- '+c).join('\n')}
+
+### Recursos de información
+${lo.recursos.map(c=>'- '+c).join('\n')}
+
+### Herramientas cognitivas
+${lo.herramientas.map(c=>'- '+c).join('\n')}
+
+### Colaboración y apoyo social
+${lo.colaboracion}
+
+## Fase de Implementación
+${lo.implementacion.map((c,i)=>`${i+1}. ${c}`).join('\n')}
+
+## Fase de Evaluación
+
+**Formativa:**
+${lo.evaluacion.formativa.map(c=>'- '+c).join('\n')}
+
+**Sumativa — criterios de rúbrica:**
+${lo.evaluacion.rubricaCriterios.map(c=>'- '+c).join('\n')}
+
+## Insignias
+${lo.insignias.map(b=>`- **${b.nombre}** — Criterio: ${b.criterio} — Certifica: ${b.competencia}`).join('\n')}
+
+## Ritual de celebración
+${lo.celebracion}
+
+---
+*Generado con el Diseñador de Objetos de Aprendizaje, fundamentado en ADDIE y el Entorno de Aprendizaje Constructivista de Jonassen.*
+`;
+}
+
+function copyMarkdown(){
+  const md = buildMarkdown(lastLO, lastState);
+  navigator.clipboard.writeText(md).then(()=>{
+    document.getElementById('copyHint').textContent = '✓ Copiado en formato Markdown al portapapeles.';
+  }).catch(()=>{
+    document.getElementById('copyHint').textContent = 'No se pudo copiar automáticamente. Selecciona y copia el texto manualmente.';
+  });
+}
+
+function downloadHtml(){
+  const lo = lastLO, s = lastState;
+  const doc = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>${lo.titulo}</title>
+  <style>
+    body{font-family:'IBM Plex Sans',Arial,sans-serif;max-width:760px;margin:40px auto;padding:0 20px;color:#1B2340;line-height:1.6;}
+    h1{font-family:'Space Grotesk',Arial,sans-serif;}
+    h2{border-top:2px solid #2B4C7E;padding-top:10px;margin-top:34px;font-size:1.15rem;}
+    .meta{color:#667085;font-size:.9rem;margin-bottom:20px;}
+    .badge{display:inline-block;border:2px dashed #B9832E;border-radius:16px;padding:14px 18px;margin:8px 8px 0 0;text-align:center;width:220px;vertical-align:top;}
+    .tag{font-family:monospace;font-size:.7rem;color:#2B4C7E;background:#EEF3FA;border:1px solid #cdd8ea;border-radius:4px;padding:2px 6px;}
+  </style></head><body>
+  <h1>${lo.titulo}</h1>
+  <p class="meta">${s.nivel} · ${s.materia} · ${s.modalidad} · Enfoque ${s.enfoque}<br>Resultado de aprendizaje: ${s.resultado}</p>
+
+  <h2><span class="tag">DIM 1</span> El reto / problema auténtico</h2><p>${lo.reto}</p>
+  <h2><span class="tag">DIM 2</span> Casos relacionados</h2><ul>${lo.casos.map(c=>`<li>${c}</li>`).join('')}</ul>
+  <h2><span class="tag">DIM 3</span> Recursos de información</h2><ul>${lo.recursos.map(c=>`<li>${c}</li>`).join('')}</ul>
+  <h2><span class="tag">DIM 4</span> Herramientas cognitivas</h2><ul>${lo.herramientas.map(c=>`<li>${c}</li>`).join('')}</ul>
+  <h2><span class="tag">DIM 5·6</span> Colaboración y apoyo social</h2><p>${lo.colaboracion}</p>
+  <h2>Implementación — guía docente</h2><ol>${lo.implementacion.map(c=>`<li>${c}</li>`).join('')}</ol>
+  <h2>Evaluación formativa</h2><ul>${lo.evaluacion.formativa.map(c=>`<li>${c}</li>`).join('')}</ul>
+  <h2>Evaluación sumativa — rúbrica rápida</h2><ul>${lo.evaluacion.rubricaCriterios.map(c=>`<li>${c}</li>`).join('')}</ul>
+  <h2>Insignias</h2>
+  ${lo.insignias.map(b=>`<div class="badge"><strong>${b.nombre}</strong><br><small><b>Criterio:</b> ${b.criterio}</small><br><small><b>Certifica:</b> ${b.competencia}</small></div>`).join('')}
+  <h2>Ritual de celebración</h2><p>${lo.celebracion}</p>
+  <hr><p style="font-family:monospace;font-size:.75rem;color:#667085;">Fundamentado en ADDIE y el Entorno de Aprendizaje Constructivista de Jonassen.</p>
+  </body></html>`;
+  const blob = new Blob([doc], {type:'text/html'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'objeto-de-aprendizaje.html';
+  a.click();
+}
+
+function restart(){
+  document.getElementById('results').classList.add('hidden-init');
+  document.getElementById('wizardSection').scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>
