@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Diseñador de Objetos de Aprendizaje · ADDIE + Jonassen</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#2A2620;
+    --bone:#F3EEE2;
+    --panel:#FBF7ED;
+    --clay:#A6432B;
+    --clay-dark:#7E3320;
+    --moss:#4B5C3E;
+    --ochre:#BE8B2E;
+    --stone:#6E7A72;
+    --line:#DDD3BE;
+  }
+  *{ box-sizing:border-box; }
+  body{
+    background:var(--bone);
+    color:var(--ink);
+    font-family:'Work Sans', system-ui, sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .font-display{ font-family:'Fraunces', serif; }
+  ::selection{ background:var(--ochre); color:var(--ink); }
+
+  /* organic textured background: soft topographic-like lines, subtle, architectural */
+  .terrain{
+    background-image:
+      radial-gradient(circle at 15% 20%, rgba(166,67,43,0.06), transparent 40%),
+      radial-gradient(circle at 85% 10%, rgba(75,92,62,0.07), transparent 45%),
+      radial-gradient(circle at 75% 85%, rgba(190,139,46,0.07), transparent 40%);
+  }
+
+  .step-pill{
+    border:1px solid var(--line);
+    background:var(--panel);
+    color:var(--stone);
+    transition:all .25s ease;
+  }
+  .step-pill.active{
+    border-color:var(--clay);
+    background:var(--clay);
+    color:#fff;
+  }
+  .step-pill.done{
+    border-color:var(--moss);
+    color:var(--moss);
+    background:#fff;
+  }
+  .field-label{
+    font-size:.8rem;
+    color:var(--stone);
+    letter-spacing:.01em;
+  }
+  .field{
+    width:100%;
+    border:1px solid var(--line);
+    background:#fff;
+    border-radius:.6rem;
+    padding:.65rem .85rem;
+    font-size:.95rem;
+    color:var(--ink);
+    transition:border-color .2s ease, box-shadow .2s ease;
+  }
+  .field:focus{
+    outline:none;
+    border-color:var(--clay);
+    box-shadow:0 0 0 3px rgba(166,67,43,0.12);
+  }
+  .btn-primary{
+    background:var(--clay);
+    color:#fff;
+    border-radius:.7rem;
+    padding:.75rem 1.5rem;
+    font-weight:600;
+    transition:background .2s ease, transform .15s ease;
+  }
+  .btn-primary:hover{ background:var(--clay-dark); }
+  .btn-primary:active{ transform:scale(.98); }
+  .btn-primary:disabled{ background:#C9BFAE; cursor:not-allowed; }
+  .btn-ghost{
+    border:1px solid var(--line);
+    background:#fff;
+    color:var(--ink);
+    border-radius:.7rem;
+    padding:.7rem 1.25rem;
+    font-weight:500;
+    transition:border-color .2s ease, background .2s ease;
+  }
+  .btn-ghost:hover{ border-color:var(--stone); background:var(--panel); }
+
+  .choice-card{
+    border:1px solid var(--line);
+    background:#fff;
+    border-radius:.75rem;
+    cursor:pointer;
+    transition:all .18s ease;
+  }
+  .choice-card:hover{ border-color:var(--stone); }
+  .choice-card.selected{
+    border-color:var(--moss);
+    background:#F4F6F1;
+    box-shadow:inset 0 0 0 1px var(--moss);
+  }
+
+  .arch-frame{
+    position:relative;
+  }
+  .arch-frame svg{ display:block; width:100%; height:auto; }
+
+  .medal{
+    border-radius:9999px;
+    width:64px; height:64px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.6rem;
+    background:radial-gradient(circle at 30% 25%, #fff, var(--panel) 60%);
+    border:1.5px solid var(--ochre);
+    box-shadow:0 0 0 4px rgba(190,139,46,0.12);
+    flex-shrink:0;
+  }
+
+  .divider-organic{
+    height:1px;
+    background:linear-gradient(90deg, transparent, var(--line) 15%, var(--line) 85%, transparent);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition:none !important; animation:none !important; }
+  }
+
+  .fade-in{ animation:fadeIn .4s ease both; }
+  @keyframes fadeIn{ from{ opacity:0; transform:translateY(6px); } to{ opacity:1; transform:translateY(0); } }
+
+  textarea.field{ resize:vertical; min-height:5.5rem; }
+
+  .track-line{
+    position:absolute;
+    top:50%;
+    left:0;
+    right:0;
+    height:2px;
+    background:var(--line);
+    z-index:0;
+    transform:translateY(-50%);
+  }
+
+  /* -----------------------------------------------------------
+     Respaldo sin CDN: si Tailwind no carga (sin red, GitHub Pages
+     con bloqueadores, uso local sin conexión), la página conserva
+     estructura y jerarquía legibles con este set mínimo de utilidades.
+  ----------------------------------------------------------- */
+  .hidden{ display:none; }
+  .block{ display:block; }
+  .relative{ position:relative; }
+  .flex{ display:flex; }
+  .flex-col{ flex-direction:column; }
+  .flex-wrap{ flex-wrap:wrap; }
+  .items-center{ align-items:center; }
+  .justify-between{ justify-content:space-between; }
+  .justify-end{ justify-content:flex-end; }
+  .justify-center{ justify-content:center; }
+  .grid{ display:grid; }
+  .grid-cols-3{ grid-template-columns:repeat(3,minmax(0,1fr)); }
+  .gap-2{ gap:.5rem; } .gap-3{ gap:.75rem; } .gap-4{ gap:1rem; } .gap-6{ gap:1.5rem; }
+  .space-y-1\.5 > * + *{ margin-top:.375rem; }
+  .space-y-5 > * + *{ margin-top:1.25rem; }
+  .space-y-6 > * + *{ margin-top:1.5rem; }
+  .space-y-7 > * + *{ margin-top:1.75rem; }
+  .max-w-3xl{ max-width:48rem; } .max-w-md{ max-width:28rem; } .max-w-xl{ max-width:36rem; }
+  .mx-auto{ margin-left:auto; margin-right:auto; }
+  .mb-1{ margin-bottom:.25rem; } .mb-2{ margin-bottom:.5rem; } .mb-3{ margin-bottom:.75rem; }
+  .mb-6{ margin-bottom:1.5rem; } .mb-8{ margin-bottom:2rem; } .mb-10{ margin-bottom:2.5rem; }
+  .mt-2{ margin-top:.5rem; } .mt-3{ margin-top:.75rem; } .mt-4{ margin-top:1rem; } .mt-8{ margin-top:2rem; }
+  .pt-1{ padding-top:.25rem; } .pt-2{ padding-top:.5rem; }
+  .px-2{ padding-left:.5rem; padding-right:.5rem; } .px-4{ padding-left:1rem; padding-right:1rem; } .px-5{ padding-left:1.25rem; padding-right:1.25rem; }
+  .py-2{ padding-top:.5rem; padding-bottom:.5rem; } .py-10{ padding-top:2.5rem; padding-bottom:2.5rem; }
+  .p-3{ padding:.75rem; } .p-4{ padding:1rem; } .p-6{ padding:1.5rem; }
+  .pl-1{ padding-left:.25rem; }
+  .rounded-2xl{ border-radius:1rem; } .rounded-xl{ border-radius:.75rem; } .rounded-full{ border-radius:9999px; }
+  .border{ border:1px solid var(--line); }
+  .bg-white{ background:#fff; }
+  .min-h-screen{ min-height:100vh; }
+  .text-center{ text-align:center; }
+  .text-2xl{ font-size:1.5rem; } .text-3xl{ font-size:1.875rem; }
+  .text-lg{ font-size:1.125rem; } .text-xl{ font-size:1.25rem; }
+  .text-sm{ font-size:.875rem; } .text-xs{ font-size:.75rem; }
+  .text-\[0\.75rem\]{ font-size:.75rem; } .text-\[0\.85rem\]{ font-size:.85rem; }
+  .text-\[0\.92rem\]{ font-size:.92rem; } .text-\[0\.95rem\]{ font-size:.95rem; }
+  .font-medium{ font-weight:500; }
+  .leading-tight{ line-height:1.25; } .leading-relaxed{ line-height:1.6; }
+  .italic{ font-style:italic; }
+  .list-disc{ list-style-type:disc; } .list-decimal{ list-style-type:decimal; } .list-inside{ list-style-position:inside; }
+  .z-10{ z-index:10; }
+  @media (min-width:640px){ .sm\:grid-cols-3{ grid-template-columns:repeat(3,minmax(0,1fr)); } }
+  @media (min-width:768px){
+    .md\:block{ display:block; }
+    .md\:grid-cols-2{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .md\:p-9{ padding:2.25rem; }
+    .md\:py-14{ padding-top:3.5rem; padding-bottom:3.5rem; }
+    .md\:text-3xl{ font-size:1.875rem; }
+    .md\:text-4xl{ font-size:2.25rem; }
+  }
+</style>
+</head>
+<body class="terrain min-h-screen">
+
+<div class="max-w-3xl mx-auto px-5 py-10 md:py-14">
+
+  <!-- HERO: organic arch, inspired by nests/burrows carved by animal architects -->
+  <header class="mb-10">
+    <div class="arch-frame max-w-md mx-auto mb-6">
+      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M20 210 C 20 90, 90 20, 200 20 C 310 20, 380 90, 380 210" fill="none" stroke="var(--clay)" stroke-width="10" stroke-linecap="round"/>
+        <path d="M55 212 C 55 105, 115 55, 200 55 C 285 55, 345 105, 345 212" fill="none" stroke="var(--moss)" stroke-width="4" stroke-linecap="round" opacity="0.55"/>
+        <path d="M90 214 C 90 130, 135 90, 200 90 C 265 90, 310 130, 310 214" fill="none" stroke="var(--ochre)" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+        <!-- swallow silhouette, nod to nests built into cliff arches -->
+        <path d="M175 128 C 168 120, 150 118, 140 126 C 152 128, 160 132, 165 138 C 152 138, 140 144, 134 154 C 150 150, 162 148, 172 152 C 180 158, 190 158, 198 152 C 208 148, 220 150, 236 154 C 230 144, 218 138, 205 138 C 210 132, 218 128, 230 126 C 220 118, 202 120, 195 128 C 190 133, 180 133, 175 128 Z" fill="var(--ink)" opacity="0.85"/>
+      </svg>
+    </div>
+    <h1 class="font-display text-3xl md:text-4xl text-center font-medium leading-tight" style="color:var(--ink)">
+      Diseñador de Objetos de Aprendizaje
+    </h1>
+    <p class="text-center mt-3 max-w-xl mx-auto" style="color:var(--stone)">
+      Convierte un tema difícil en un reto auténtico para tu grupo. Responde tres preguntas de análisis y dos de diseño; el resto lo construye el asistente.
+    </p>
+  </header>
+
+  <!-- STEP INDICATOR -->
+  <div class="relative flex justify-between items-center mb-8 px-2" id="stepIndicator">
+    <div class="track-line"></div>
+    <div class="step-pill rounded-full px-4 py-2 text-sm font-medium relative z-10" data-step="1">1 · Análisis</div>
+    <div class="step-pill rounded-full px-4 py-2 text-sm font-medium relative z-10" data-step="2">2 · Diseño</div>
+    <div class="step-pill rounded-full px-4 py-2 text-sm font-medium relative z-10" data-step="3">3 · Objeto generado</div>
+  </div>
+
+  <!-- CARD -->
+  <main class="bg-white rounded-2xl border p-6 md:p-9 fade-in" style="border-color:var(--line)" id="cardHost">
+
+    <!-- STEP 1 -->
+    <section id="step1" class="space-y-5">
+      <div>
+        <h2 class="font-display text-xl mb-1">Análisis del contexto</h2>
+        <p class="text-sm" style="color:var(--stone)">Fase de Análisis (ADDIE). Estos datos definen a quién le hablas y sobre qué.</p>
+      </div>
+
+      <div>
+        <label class="field-label block mb-1">Nivel educativo</label>
+        <select id="nivel" class="field">
+          <option>Primaria</option>
+          <option>Secundaria</option>
+          <option>Bachillerato</option>
+          <option selected>Licenciatura</option>
+          <option>Posgrado</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="field-label block mb-1">Materia o asignatura</label>
+        <input id="materia" type="text" class="field" value="Fundamentos del Diseño Arquitectónico" placeholder="Ej. Biología, Historia, Cálculo…" />
+      </div>
+
+      <div>
+        <label class="field-label block mb-1">Tema central o concepto complejo</label>
+        <input id="tema" type="text" class="field" value="Bases teóricas del diseño arquitectónico: el proceso creativo (características y etapas), la creatividad y su expresión artística, y los tipos de creatividad" placeholder="Ej. La fotosíntesis, la Revolución Francesa…" />
+      </div>
+
+      <div>
+        <label class="field-label block mb-1">Características del grupo o necesidades particulares</label>
+        <textarea id="caracteristicas" class="field" placeholder="Ej. Grupo numeroso, primer semestre, poca costumbre de argumentar por escrito…">Estudiantes de Licenciatura en Arquitectura, mayores de edad, con experiencia previa en el área; ya manejan vocabulario disciplinar y buscan profundizar —no introducirse por primera vez— en las bases teóricas del proceso de diseño.</textarea>
+      </div>
+
+      <div class="pt-2 flex justify-end">
+        <button class="btn-primary" onclick="goToStep(2)">Continuar a Diseño</button>
+      </div>
+    </section>
+
+    <!-- STEP 2 -->
+    <section id="step2" class="space-y-6 hidden">
+      <div>
+        <h2 class="font-display text-xl mb-1">Diseño de la situación y modalidad</h2>
+        <p class="text-sm" style="color:var(--stone)">Fase de Diseño (ADDIE). Define cómo se vivirá la sesión.</p>
+      </div>
+
+      <div>
+        <label class="field-label block mb-2">Tipo de clase</label>
+        <div class="grid grid-cols-3 gap-2" id="modalidadGroup">
+          <div class="choice-card p-3 text-center text-sm" data-value="Presencial">Presencial</div>
+          <div class="choice-card p-3 text-center text-sm" data-value="Híbrida/Mixta">Híbrida / Mixta</div>
+          <div class="choice-card p-3 text-center text-sm" data-value="Virtual/A distancia">Virtual / A distancia</div>
+        </div>
+      </div>
+
+      <div>
+        <label class="field-label block mb-1">Resultado de aprendizaje o competencia a alcanzar</label>
+        <textarea id="resultado" class="field">Consolidar las bases teóricas del proceso creativo —sus características, etapas, expresión artística y tipos de creatividad— para argumentar con criterio propio el origen y la comprensión de una problemática de diseño arquitectónico real.</textarea>
+      </div>
+
+      <div>
+        <label class="field-label block mb-2">Enfoque de trabajo preferido</label>
+        <div class="grid grid-cols-3 gap-2" id="enfoqueGroup">
+          <div class="choice-card p-3 text-center text-sm" data-value="Individual">Individual</div>
+          <div class="choice-card p-3 text-center text-sm selected" data-value="Colaborativo">Colaborativo</div>
+          <div class="choice-card p-3 text-center text-sm" data-value="Cooperativo">Cooperativo</div>
+        </div>
+      </div>
+
+      <div class="pt-2 flex justify-between">
+        <button class="btn-ghost" onclick="goToStep(1)">Regresar</button>
+        <button class="btn-primary" onclick="generarObjeto()">Generar objeto de aprendizaje</button>
+      </div>
+    </section>
+
+    <!-- STEP 3 : RESULT -->
+    <section id="step3" class="hidden" id="resultHost"></section>
+
+  </main>
+
+  <footer class="mt-8 text-center text-xs leading-relaxed" style="color:var(--stone)">
+    Esta herramienta estructura la fase macro con el modelo <strong>ADDIE</strong> y el núcleo pedagógico con el<br class="hidden md:block">
+    <strong>Entorno de Aprendizaje Constructivista de Jonassen</strong>. La dinámica de creación del reto y de las insignias se ancla en una única fuente:<br class="hidden md:block">
+    Masferrer, A. (2024). <em>Diseño de procesos creativos: metodología para idear y co-crear en equipo</em> (2.ª ed.). Editorial Gustavo Gili. ISBN 978-84-252-3528-3.
+  </footer>
+
+</div>
+
+<script>
+/* ---------------------------------------------------------
+   ESTADO Y NAVEGACIÓN
+--------------------------------------------------------- */
+let modalidad = null;
+let enfoque = 'Colaborativo';
+
+document.querySelectorAll('#modalidadGroup .choice-card').forEach(el=>{
+  el.addEventListener('click', ()=>{
+    document.querySelectorAll('#modalidadGroup .choice-card').forEach(c=>c.classList.remove('selected'));
+    el.classList.add('selected');
+    modalidad = el.dataset.value;
+  });
+});
+document.querySelectorAll('#enfoqueGroup .choice-card').forEach(el=>{
+  el.addEventListener('click', ()=>{
+    document.querySelectorAll('#enfoqueGroup .choice-card').forEach(c=>c.classList.remove('selected'));
+    el.classList.add('selected');
+    enfoque = el.dataset.value;
+  });
+});
+// preselect a default modality so the wizard works even with no click
+modalidad = 'Presencial';
+document.querySelector('#modalidadGroup .choice-card[data-value="Presencial"]').classList.add('selected');
+
+function goToStep(n){
+  [1,2,3].forEach(i=>{
+    document.getElementById('step'+i).classList.toggle('hidden', i!==n);
+  });
+  document.querySelectorAll('#stepIndicator .step-pill').forEach(p=>{
+    const s = parseInt(p.dataset.step,10);
+    p.classList.remove('active','done');
+    if(s === n) p.classList.add('active');
+    else if(s < n) p.classList.add('done');
+  });
+  document.getElementById('cardHost').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+/* ---------------------------------------------------------
+   FUENTE ÚNICA DE REFERENCIA (ancla bibliográfica del motor)
+--------------------------------------------------------- */
+const FUENTE = {
+  cita: 'Masferrer, A. (2024). Diseño de procesos creativos: metodología para idear y co-crear en equipo (2.ª ed.). Editorial Gustavo Gili.',
+  isbn: '978-84-252-3528-3'
+};
+
+// Las "cinco figuras" de co-creación de Masferrer (2024), usadas aquí como
+// motor interno para operacionalizar las 6 dimensiones de Jonassen.
+const FIGURAS = {
+  circulo:  { nombre: 'El Círculo (Entender)',        jonassen: 'Problema/proyecto auténtico' },
+  cuadrado: { nombre: 'El Cuadrado (Definir)',         jonassen: 'Casos relacionados y recursos de indagación' },
+  estrella: { nombre: 'La Estrella (Energizar)',       jonassen: 'Apoyo social y contextual' },
+  triAbierto:{ nombre: 'El Triángulo abierto (Idear)', jonassen: 'Herramientas cognitivas' },
+  triCerrado:{ nombre: 'El Triángulo cerrado (Filtrar)', jonassen: 'Conversación, colaboración y evaluación' }
+};
+
+/* ---------------------------------------------------------
+   HEURÍSTICAS DE CONTENIDO
+--------------------------------------------------------- */
+function hash(str){
+  let h = 0;
+  for(let i=0;i<str.length;i++){ h = (h*31 + str.charCodeAt(i)) >>> 0; }
+  return h;
+}
+function pick(arr, seed){ return arr[seed % arr.length]; }
+
+function nivelCategoria(nivel){
+  return (nivel === 'Primaria' || nivel === 'Secundaria') ? 'basico' : 'avanzado';
+}
+
+function detectarPerfil(materiaTema){
+  const t = materiaTema.toLowerCase();
+  if(/arquitect|urban|diseñ|dise\u00f1o/.test(t)) return {clave:'arquitectura', profesion:'Arquitecto/a', emoji:'🏛️'};
+  if(/derecho|legal|jur\u00eddic/.test(t))         return {clave:'derecho', profesion:'Litigante', emoji:'⚖️'};
+  if(/medicin|salud|enfermer|cl\u00ednic/.test(t)) return {clave:'salud', profesion:'Clínico/a', emoji:'🩺'};
+  if(/ciencia|biolog|qu\u00edmic|f\u00edsic/.test(t)) return {clave:'ciencias', profesion:'Investigador/a', emoji:'🔬'};
+  if(/matem\u00e1tic|c\u00e1lculo|\u00e1lgebra|geometr/.test(t)) return {clave:'matematicas', profesion:'Analista', emoji:'📐'};
+  if(/historia|social|geograf/.test(t))            return {clave:'sociales', profesion:'Cronista', emoji:'📜'};
+  if(/arte|m\u00fasica|literatura|dise\u00f1o gr/.test(t)) return {clave:'arte', profesion:'Curador/a', emoji:'🎨'};
+  if(/negocio|administraci|mercad|finan/.test(t))  return {clave:'negocios', profesion:'Estratega', emoji:'📊'};
+  if(/ingenier|tecnolog|program|inform\u00e1tic/.test(t)) return {clave:'ingenieria', profesion:'Ingeniero/a', emoji:'⚙️'};
+  return {clave:'general', profesion:'Especialista', emoji:'🧭'};
+}
+
+function generarObjeto(){
+  const nivel = document.getElementById('nivel').value;
+  const materia = document.getElementById('materia').value.trim() || 'la asignatura';
+  const tema = document.getElementById('tema').value.trim() || 'el tema de la sesión';
+  const caracteristicas = document.getElementById('caracteristicas').value.trim();
+  const resultado = document.getElementById('resultado').value.trim();
+
+  const cat = nivelCategoria(nivel);
+  const perfil = detectarPerfil(materia + ' ' + tema);
+  const seed = hash(materia + tema + nivel);
+
+  const modo = {
+    'Presencial': 'en el salón, con materiales físicos y trabajo cara a cara',
+    'Híbrida/Mixta': 'combinando momentos presenciales y actividades asincrónicas en línea',
+    'Virtual/A distancia': 'a distancia, con foros, videollamadas y documentos compartidos'
+  }[modalidad] || 'en el salón';
+
+  // Rama especializada: Fundamentos del Diseño Arquitectónico / Bases teóricas del proceso creativo,
+  // para un grupo de Licenciatura ya experimentado (no se trata como primer acercamiento al tema).
+  const esProcesoCreativoArq = perfil.clave === 'arquitectura' && /proceso creativo|creatividad/i.test(tema);
+  const experimentado = cat === 'avanzado' && /experiencia|mayores de edad|ya (manejan|conocen)/i.test(caracteristicas);
+
+  /* ---- Reto / Problema auténtico (Círculo · Entender) ---- */
+  let reto;
+  if(esProcesoCreativoArq){
+    const aperturasArq = [
+      `Tu grupo —ya con trayectoria en el área— recibe un proyecto arquitectónico real cuya problemática de origen está mal argumentada: el "porqué" del diseño no convence. Su encargo es reconstruir el proceso creativo detrás de esa problemática, distinguiendo con precisión sus etapas, su forma de expresión artística y el tipo de creatividad que exige el caso.`,
+      `Presenta al grupo dos proyectos arquitectónicos publicados que resuelven un mismo problema de origen con procesos creativos distintos. El encargo: argumentar, con las categorías teóricas del proceso creativo, cuál etapa y qué tipo de creatividad explican mejor cada solución.`,
+      `Plantea el caso de un despacho que debe justificar ante un comité técnico el origen conceptual de un proyecto. El grupo, con su experiencia previa, debe entender el encargo antes de defenderlo: ¿qué problemática de origen lo detona, en qué etapa del proceso creativo está y cómo se expresa artísticamente esa idea?`
+    ];
+    reto = `${pick(aperturasArq, seed)} La consigna se entrega ${modo}; al tratarse de un grupo con bases previas, el ejercicio exige argumentar con las tres categorías teóricas —características y etapas del proceso creativo, su expresión artística y el tipo de creatividad implicado— y no solo describirlas.`;
+  } else {
+    const aperturasReto = [
+      `Tu grupo asume el rol de un equipo de ${perfil.profesion.toLowerCase()}s al que se le encarga resolver un caso real relacionado con "${tema}".`,
+      `Plantea a tu grupo una situación concreta y actual donde "${tema}" es la pieza que falta para resolver un problema de ${materia.toLowerCase()}.`,
+      `Presenta un encargo auténtico: alguien —una comunidad, un cliente, una institución— necesita que el grupo aplique "${tema}" para resolver algo real.`
+    ];
+    reto = `${pick(aperturasReto, seed)} La consigna se entrega ${modo}, y el grupo debe "entender" el encargo antes de proponer cualquier solución: ¿quién lo pide, qué restricciones tiene, qué pasa si no se resuelve bien?`;
+  }
+
+  /* ---- Casos relacionados (Cuadrado · Definir) ---- */
+  const casos = esProcesoCreativoArq
+    ? [
+        `Un proyecto arquitectónico reconocido cuya memoria descriptiva permita ubicar con claridad sus etapas del proceso creativo (de la idea inicial a la propuesta construida).`,
+        `Un ejemplo de expresión artística vinculada al diseño (bocetos, maquetas conceptuales o collages del propio autor) que muestre cómo la creatividad se hizo visible antes del proyecto ejecutivo.`,
+        `Un contraste entre dos tipos de creatividad —por ejemplo, una solución que surge por analogía formal y otra que surge por restricción técnica— aplicados a un mismo problema de origen arquitectónico.`
+      ]
+    : [
+        `Un caso resuelto de forma insuficiente o apresurada, para discutir en grupo qué faltó por "definir" antes de actuar.`,
+        `Un caso análogo de otro contexto (otra industria, otra época o otra escala) que resolvió un problema parecido con una lógica distinta.`,
+        cat === 'basico'
+          ? `Una situación cotidiana y cercana al grupo que ilustre el mismo principio de "${tema}" en miniatura.`
+          : `Un caso profesional documentado —artículo, informe o proyecto publicado— que muestre buenas y malas decisiones frente a un reto similar.`
+      ];
+
+  /* ---- Recursos de información ---- */
+  const recursos = esProcesoCreativoArq
+    ? [
+        `Capítulo o artículo académico (edición no mayor a cinco años) que defina con rigor las etapas del proceso creativo en diseño.`,
+        `Un banco de memorias descriptivas o portafolios de despachos reconocidos, para analizar cómo documentan su proceso creativo y su expresión artística.`,
+        `Una tipología de la creatividad (por ejemplo, analógica, combinatoria o transformacional) que el grupo use como marco para clasificar sus propios hallazgos.`
+      ]
+    : cat === 'basico'
+      ? [
+          `Un video corto o infografía que explique "${tema}" con ejemplos visuales.`,
+          `Una lectura breve o cuento ilustrado vinculado al tema.`,
+          `Un cuadro comparativo o línea del tiempo que el docente prepara con antelación.`
+        ]
+      : [
+          `Bibliografía académica reciente sobre "${tema}" (artículos indexados o capítulos de libro de los últimos cinco años).`,
+          `Al menos un caso de estudio o proyecto real documentado, con datos verificables.`,
+          `Una guía o rúbrica profesional del área (norma, manual o estándar) que sirva de referencia técnica.`
+        ];
+
+  /* ---- Herramientas cognitivas (Triángulo abierto · Idear) ---- */
+  const herramientasCognitivas = esProcesoCreativoArq
+    ? [
+        `Línea de tiempo del proceso creativo del proyecto analizado, marcando con precisión dónde termina una etapa y comienza la siguiente.`,
+        `Cuadro clasificador que cruce "etapa del proceso creativo" con "tipo de creatividad" y "forma de expresión artística" identificados en el caso.`,
+        `Bitácora de bocetos propia, donde cada estudiante documente su propio proceso creativo mientras resuelve el reto.`
+      ]
+    : [
+        `Mapa conceptual o mapa de ideas para descomponer "${tema}" en sus partes.`,
+        `Organizador gráfico de causa-efecto o de comparación, según lo que exige el reto.`,
+        cat === 'basico' ? `Dibujo o diagrama simple que represente la idea con sus propias palabras.` : `Diagrama de flujo o esquema de decisión que documente el razonamiento del equipo.`
+      ];
+
+  /* ---- Dinámica de colaboración (Estrella + Triángulo cerrado) ---- */
+  const dinamicaColaboracion = modalidad === 'Virtual/A distancia'
+    ? `Foro asincrónico de dos rondas: en la primera cada persona publica su lectura del reto ("Entender"); en la segunda, el equipo comenta al menos dos aportaciones ajenas antes de "filtrar" hacia una propuesta conjunta.`
+    : modalidad === 'Híbrida/Mixta'
+      ? `Trabajo en equipos pequeños que arrancan en línea compartiendo ideas sueltas ("Idear") y cierran de forma presencial "filtrando" entre todas la propuesta que van a defender.`
+      : `Trabajo en equipos de 3-4 personas: una ronda breve para "energizar" (cada quien dice en voz alta una idea sin filtrar) y una segunda ronda para "filtrar" y quedarse con la mejor propuesta grupal.`;
+
+  /* ---- Implementación ---- */
+  const implementacion = esProcesoCreativoArq
+    ? [
+        `Abre con el caso o los proyectos ya seleccionados y pide al grupo que, con su experiencia previa, identifique en cinco minutos en qué etapa del proceso creativo se encuentran —sin darles todavía las categorías teóricas.`,
+        `Introduce o consolida el vocabulario técnico (etapas, expresión artística, tipos de creatividad) contrastándolo con lo que el grupo ya intuyó, no como una definición aislada.`,
+        enfoque === 'Individual'
+          ? `Da tiempo de análisis individual del caso y ofrece retroalimentación puntual centrada en la precisión con la que cada estudiante usa las categorías teóricas, no solo en si "acertó".`
+          : `Circula entre los equipos escuchando cómo argumentan; interviene solo para pedir que sustenten una afirmación con una categoría teórica concreta ("¿qué tipo de creatividad estás describiendo exactamente?").`,
+        `Cierra pidiendo a cada equipo que defienda en dos minutos su clasificación del caso —etapa, expresión artística y tipo de creatividad— ante el resto del grupo.`
+      ]
+    : [
+        `Abre la sesión narrando el encargo como un caso real, no como un ejercicio de clase; deja que el grupo haga preguntas antes de dar cualquier pista.`,
+        `Modela en voz alta cómo "entender" un problema antes de resolverlo: qué preguntas te haces tú como docente frente a un reto así.`,
+        enfoque === 'Individual'
+          ? `Da tiempo de trabajo silencioso y circula ofreciendo retroalimentación puntual a cada persona, sin resolverle el reto.`
+          : `Circula entre los equipos escuchando sin intervenir de inmediato; interviene solo cuando el equipo se atora en la misma idea por más de unos minutos.`,
+        `Antes de cerrar, pide a cada equipo que declare en una frase cuál fue su versión final del problema y cuál su propuesta —ese contraste es la evidencia de aprendizaje.`
+      ];
+
+  /* ---- Evaluación ---- */
+  const evaluacionFormativa = cat === 'basico'
+    ? `Ticket de salida: cada estudiante escribe una idea que entendió mejor hoy y una duda que le quedó pendiente.`
+    : `Autoevaluación breve (3 preguntas) más coevaluación entre equipos usando los mismos criterios de la rúbrica sumativa, antes de la entrega final.`;
+
+  const evaluacionSumativa = esProcesoCreativoArq
+    ? `Rúbrica rápida de 4 criterios, pensada para un grupo con bases previas: (1) identificación precisa de la etapa del proceso creativo, (2) argumentación de la expresión artística del proyecto con evidencia del caso, (3) clasificación correcta del tipo de creatividad involucrado, y (4) coherencia entre la problemática de origen y la lectura teórica que el equipo defiende.`
+    : `Rúbrica rápida de 4 criterios: (1) comprensión del problema auténtico, (2) uso pertinente de los recursos de indagación, (3) calidad del razonamiento con herramientas cognitivas, y (4) coherencia entre el reto y la solución propuesta frente a "${resultado || tema}".`;
+
+  /* ---- Insignias (gamificación) ---- */
+  const insignias = cat === 'basico'
+    ? [
+        { nombre: `Explorador/a de ${materia} ${perfil.emoji}`, criterio: 'Superó el reto inicial y formuló al menos una pregunta propia sobre el problema (fase Entender).', competencia: 'Curiosidad y formulación de preguntas.' },
+        { nombre: `Guardián/a de las Ideas 💡`, criterio: 'Usó una herramienta cognitiva (mapa, dibujo o esquema) para organizar su pensamiento antes de responder.', competencia: 'Organización del pensamiento propio.' },
+        { nombre: `Compañero/a que Suma 🤝`, criterio: 'Participó en la dinámica de equipo aportando y escuchando al menos una idea de otra persona.', competencia: 'Colaboración y escucha.' }
+      ]
+    : esProcesoCreativoArq
+      ? [
+          { nombre: `Cronista del Proceso Creativo 🏛️`, criterio: 'Ubicó con precisión la etapa del proceso creativo del caso analizado y la sustentó con evidencia (fase Entender-Definir).', competencia: 'Análisis teórico aplicado al diseño arquitectónico.' },
+          { nombre: `Lector/a de la Expresión Artística 🖼️`, criterio: 'Argumentó cómo se expresó artísticamente la idea del proyecto antes de volverse propuesta ejecutiva (fase Idear).', competencia: 'Lectura crítica de la expresión creativa en arquitectura.' },
+          { nombre: `Clasificador/a de la Creatividad 🧭`, criterio: 'Filtró entre los tipos de creatividad posibles y defendió con rigor cuál aplica al caso (fase Filtrar).', competencia: 'Argumentación técnica y toma de decisiones justificada.' }
+        ]
+      : [
+          { nombre: `${perfil.profesion} de Ideas ${perfil.emoji}`, criterio: 'Redefinió el problema auténtico con sus propias palabras antes de proponer una solución (fase Entender-Definir).', competencia: `Análisis crítico aplicado a ${materia.toLowerCase()}.` },
+          { nombre: `Cartógrafo/a de Soluciones 🗺️`, criterio: 'Empleó al menos una herramienta cognitiva o un recurso de indagación citado con rigor (fase Idear).', competencia: 'Pensamiento sistemático y manejo de fuentes.' },
+          { nombre: `Curador/a de la Propuesta Final 🖼️`, criterio: 'Filtró entre varias alternativas y defendió por qué la elegida responde mejor al encargo (fase Filtrar).', competencia: 'Toma de decisiones justificada y comunicación profesional.' }
+        ];
+
+  const ritual = cat === 'basico'
+    ? `Al cerrar la sesión, cada estudiante que ganó una insignia la pega en un "mural de progreso" visible en el salón y la nombra en voz alta frente al grupo.`
+    : `Al cerrar, cada equipo presenta en dos minutos su insignia ganada y el criterio que la sustenta; el docente registra el avance en una bitácora visible del curso (física o en el LMS).`;
+
+  const titulosSugeridos = esProcesoCreativoArq
+    ? [
+        `El origen bajo la lupa: argumentar el proceso creativo`,
+        `Del boceto a la propuesta: etapas, expresión y tipo de creatividad`,
+        `Defendiendo el porqué: proceso creativo y problemática de origen`
+      ]
+    : [
+        `El encargo de ${tema.split(':')[0]}`,
+        `${materia}: un caso por resolver`,
+        `De la idea a la propuesta: ${tema.split(':')[0]}`
+      ];
+  const titulo = pick(titulosSugeridos, seed);
+
+  renderResultado({
+    titulo, nivel, materia, tema, caracteristicas, modalidad, resultado, enfoque,
+    reto, casos, recursos, herramientasCognitivas, dinamicaColaboracion,
+    implementacion, evaluacionFormativa, evaluacionSumativa, insignias, ritual
+  });
+
+  goToStep(3);
+}
+
+/* ---------------------------------------------------------
+   RENDER DEL RESULTADO
+--------------------------------------------------------- */
+let ultimoObjeto = null;
+
+function renderResultado(o){
+  ultimoObjeto = o;
+  const el = document.getElementById('step3');
+  el.classList.remove('hidden');
+
+  const li = arr => arr.map(x=>`<li class="pl-1">${x}</li>`).join('');
+
+  el.innerHTML = `
+    <div class="space-y-7 fade-in">
+      <div>
+        <p class="field-label mb-1">Objeto de aprendizaje sugerido</p>
+        <h2 class="font-display text-2xl md:text-3xl font-medium" style="color:var(--ink)">${o.titulo}</h2>
+        <p class="text-sm mt-2" style="color:var(--stone)">${o.nivel} · ${o.materia} · ${o.modalidad}</p>
+      </div>
+
+      <div class="divider-organic"></div>
+
+      <div>
+        <h3 class="font-display text-lg mb-2" style="color:var(--clay)">El reto auténtico</h3>
+        <p class="text-[0.95rem] leading-relaxed">${o.reto}</p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6">
+        <div>
+          <h3 class="font-display text-lg mb-2" style="color:var(--moss)">Casos relacionados</h3>
+          <ul class="list-disc list-inside space-y-1.5 text-[0.92rem]">${li(o.casos)}</ul>
+        </div>
+        <div>
+          <h3 class="font-display text-lg mb-2" style="color:var(--moss)">Recursos de información</h3>
+          <ul class="list-disc list-inside space-y-1.5 text-[0.92rem]">${li(o.recursos)}</ul>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6">
+        <div>
+          <h3 class="font-display text-lg mb-2" style="color:var(--ochre)">Herramientas cognitivas</h3>
+          <ul class="list-disc list-inside space-y-1.5 text-[0.92rem]">${li(o.herramientasCognitivas)}</ul>
+        </div>
+        <div>
+          <h3 class="font-display text-lg mb-2" style="color:var(--ochre)">Dinámica de colaboración</h3>
+          <p class="text-[0.92rem] leading-relaxed">${o.dinamicaColaboracion}</p>
+        </div>
+      </div>
+
+      <div class="divider-organic"></div>
+
+      <div>
+        <h3 class="font-display text-lg mb-2" style="color:var(--clay)">Guía de implementación para el docente</h3>
+        <ol class="list-decimal list-inside space-y-1.5 text-[0.92rem]">${li(o.implementacion)}</ol>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6">
+        <div>
+          <h3 class="font-display text-lg mb-2" style="color:var(--clay)">Evaluación formativa</h3>
+          <p class="text-[0.92rem] leading-relaxed">${o.evaluacionFormativa}</p>
+        </div>
+        <div>
+          <h3 class="font-display text-lg mb-2" style="color:var(--clay)">Evaluación sumativa</h3>
+          <p class="text-[0.92rem] leading-relaxed">${o.evaluacionSumativa}</p>
+        </div>
+      </div>
+
+      <div class="divider-organic"></div>
+
+      <div>
+        <h3 class="font-display text-lg mb-3">Insignias de progreso</h3>
+        <div class="grid sm:grid-cols-3 gap-4">
+          ${o.insignias.map(ins => `
+            <div class="border rounded-xl p-4 text-center flex flex-col items-center gap-2" style="border-color:var(--line)">
+              <div class="medal">${ins.nombre.match(/\p{Emoji}/u) ? ins.nombre.match(/\p{Emoji}/u)[0] : '🏅'}</div>
+              <p class="font-display text-sm font-medium leading-tight">${ins.nombre.replace(/\p{Emoji}/gu,'').trim()}</p>
+              <p class="text-xs" style="color:var(--stone)"><strong>Criterio:</strong> ${ins.criterio}</p>
+              <p class="text-xs" style="color:var(--stone)"><strong>Competencia:</strong> ${ins.competencia}</p>
+            </div>
+          `).join('')}
+        </div>
+        <p class="text-[0.85rem] mt-4 italic" style="color:var(--stone)">${o.ritual}</p>
+      </div>
+
+      <div class="divider-organic"></div>
+
+      <div class="flex flex-wrap gap-3 justify-between items-center pt-1">
+        <button class="btn-ghost" onclick="goToStep(2)">Ajustar diseño</button>
+        <div class="flex gap-3">
+          <button class="btn-ghost" onclick="copiarMarkdown()">Copiar en Markdown</button>
+          <button class="btn-primary" onclick="descargarHTML()">Descargar como HTML</button>
+        </div>
+      </div>
+
+      <p class="text-[0.75rem] text-center pt-2" style="color:var(--stone)">
+        Estructura basada en ADDIE + Jonassen, operacionalizada con el modelo de Alejandro Masferrer:
+        <em>Diseño de procesos creativos</em> (2.ª ed., Gustavo Gili, 2024).
+      </p>
+    </div>
+  `;
+}
+
+/* ---------------------------------------------------------
+   EXPORTACIÓN
+--------------------------------------------------------- */
+function objetoAMarkdown(o){
+  return `# ${o.titulo}
+
+**Nivel:** ${o.nivel}  **Materia:** ${o.materia}  **Modalidad:** ${o.modalidad}  **Enfoque:** ${o.enfoque}
+**Tema:** ${o.tema}
+**Resultado de aprendizaje:** ${o.resultado}
+
+## El reto auténtico
+${o.reto}
+
+## Casos relacionados
+${o.casos.map(c=>`- ${c}`).join('\n')}
+
+## Recursos de información
+${o.recursos.map(r=>`- ${r}`).join('\n')}
+
+## Herramientas cognitivas
+${o.herramientasCognitivas.map(h=>`- ${h}`).join('\n')}
+
+## Dinámica de colaboración
+${o.dinamicaColaboracion}
+
+## Guía de implementación
+${o.implementacion.map((p,i)=>`${i+1}. ${p}`).join('\n')}
+
+## Evaluación
+**Formativa:** ${o.evaluacionFormativa}
+**Sumativa:** ${o.evaluacionSumativa}
+
+## Insignias de progreso
+${o.insignias.map(i=>`- **${i.nombre}** — Criterio: ${i.criterio} · Competencia: ${i.competencia}`).join('\n')}
+
+**Ritual de celebración:** ${o.ritual}
+
+---
+Estructura ADDIE + Jonassen, operacionalizada con Masferrer, A. (2024). *Diseño de procesos creativos* (2.ª ed.). Editorial Gustavo Gili. ISBN 978-84-252-3528-3.
+`;
+}
+
+function copiarMarkdown(){
+  if(!ultimoObjeto) return;
+  const md = objetoAMarkdown(ultimoObjeto);
+  navigator.clipboard.writeText(md).then(()=>{
+    flashMensaje('Copiado en formato Markdown.');
+  }).catch(()=>{
+    const ta = document.createElement('textarea');
+    ta.value = md; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    flashMensaje('Copiado en formato Markdown.');
+  });
+}
+
+function descargarHTML(){
+  if(!ultimoObjeto) return;
+  const o = ultimoObjeto;
+  const doc = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>${o.titulo}</title>
+  <style>
+    body{font-family:'Work Sans',system-ui,sans-serif;max-width:760px;margin:2.5rem auto;padding:0 1.5rem;color:#2A2620;line-height:1.6;}
+    h1{font-family:Georgia,serif;} h2{font-family:Georgia,serif;color:#A6432B;margin-top:2rem;}
+    .badge{border:1px solid #DDD3BE;border-radius:12px;padding:1rem;margin-bottom:.75rem;}
+    footer{margin-top:3rem;font-size:.8rem;color:#6E7A72;border-top:1px solid #DDD3BE;padding-top:1rem;}
+  </style></head><body>
+  <h1>${o.titulo}</h1>
+  <p><strong>${o.nivel}</strong> · ${o.materia} · ${o.modalidad} · Enfoque ${o.enfoque}</p>
+  <p><strong>Tema:</strong> ${o.tema}</p>
+  <p><strong>Resultado de aprendizaje:</strong> ${o.resultado}</p>
+  <h2>El reto auténtico</h2><p>${o.reto}</p>
+  <h2>Casos relacionados</h2><ul>${o.casos.map(c=>`<li>${c}</li>`).join('')}</ul>
+  <h2>Recursos de información</h2><ul>${o.recursos.map(r=>`<li>${r}</li>`).join('')}</ul>
+  <h2>Herramientas cognitivas</h2><ul>${o.herramientasCognitivas.map(h=>`<li>${h}</li>`).join('')}</ul>
+  <h2>Dinámica de colaboración</h2><p>${o.dinamicaColaboracion}</p>
+  <h2>Guía de implementación</h2><ol>${o.implementacion.map(p=>`<li>${p}</li>`).join('')}</ol>
+  <h2>Evaluación</h2><p><strong>Formativa:</strong> ${o.evaluacionFormativa}</p><p><strong>Sumativa:</strong> ${o.evaluacionSumativa}</p>
+  <h2>Insignias de progreso</h2>
+  ${o.insignias.map(i=>`<div class="badge"><strong>${i.nombre}</strong><br>Criterio: ${i.criterio}<br>Competencia: ${i.competencia}</div>`).join('')}
+  <p><em>${o.ritual}</em></p>
+  <footer>Basado en ADDIE + Jonassen, operacionalizado con Masferrer, A. (2024). Diseño de procesos creativos (2.ª ed.). Editorial Gustavo Gili. ISBN 978-84-252-3528-3.</footer>
+  </body></html>`;
+  const blob = new Blob([doc], {type:'text/html'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = (o.titulo.toLowerCase().replace(/[^a-z0-9]+/g,'-').slice(0,50) || 'objeto-de-aprendizaje') + '.html';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  flashMensaje('Archivo HTML descargado.');
+}
+
+function flashMensaje(msg){
+  const div = document.createElement('div');
+  div.textContent = msg;
+  div.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#2A2620;color:#fff;padding:.6rem 1.1rem;border-radius:.6rem;font-size:.85rem;z-index:50;box-shadow:0 4px 14px rgba(0,0,0,.2);';
+  document.body.appendChild(div);
+  setTimeout(()=>{ div.style.transition='opacity .3s'; div.style.opacity='0'; setTimeout(()=>div.remove(),300); }, 1800);
+}
+
+// init
+goToStep(1);
+</script>
+</body>
+</html>
