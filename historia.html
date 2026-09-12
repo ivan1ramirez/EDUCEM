@@ -5,14 +5,445 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Historia de la Arquitectura · Tema 1 — EDUCEM</title>
 <meta name="description" content="Introducción general al estudio de la arquitectura: teoría, praxis, lenguaje formal y determinación social e ideológica. Instituto Universitario del Centro de México.">
-<link rel="stylesheet" href="styles.css">
+<style>
+/* ========================================================================
+   EDUCEM · Historia de la Arquitectura
+   Sistema de diseño: "Blueprint académico" — retícula de plano técnico,
+   azul institucional, tipografía editorial + anotaciones técnicas.
+   ======================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+:root{
+  --navy-deep:   #16224a;
+  --navy:        #21316b;
+  --blue:        #314387;
+  --blue-mid:    #4b5da3;
+  --blue-tint:   #eef1f9;
+  --blue-tint-2: #e2e7f5;
+  --paper:       #fbfbfa;
+  --white:       #ffffff;
+  --ink:         #1c2338;
+  --ink-soft:    #4a5170;
+  --brass:       #b8935a;
+  --line:        rgba(33,49,107,0.16);
+
+  --serif: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+  --sans:  'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --mono:  'IBM Plex Mono', 'SF Mono', Menlo, monospace;
+
+  --maxw: 1120px;
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
+body{
+  margin:0;
+  font-family:var(--sans);
+  color:var(--ink);
+  background:var(--paper);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+img{ max-width:100%; display:block; }
+a{ color:inherit; }
+h1,h2,h3,h4{ font-family:var(--serif); color:var(--navy-deep); margin:0; line-height:1.15; }
+p{ margin:0 0 1em; }
+.container{ max-width:var(--maxw); margin:0 auto; padding:0 clamp(20px,4vw,48px); }
+
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto; }
+  *,*::before,*::after{ animation-duration:0.001ms !important; transition-duration:0.001ms !important; }
+}
+
+/* subtle blueprint grid used as background texture */
+.grid-bg{
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size:40px 40px;
+}
+
+/* corner registration marks — echoes drafting-sheet crop marks */
+.regmarks{ position:relative; }
+.regmarks::before,.regmarks::after{
+  content:"";
+  position:absolute;
+  width:14px; height:14px;
+  border-top:2px solid var(--blue);
+  border-left:2px solid var(--blue);
+  top:0; left:0;
+  opacity:0.55;
+}
+.regmarks::after{
+  left:auto; right:0; top:auto; bottom:0;
+  border-top:none; border-left:none;
+  border-bottom:2px solid var(--blue);
+  border-right:2px solid var(--blue);
+}
+
+/* ---------------------------------- Navbar ---------------------------------- */
+.navbar{
+  position:sticky; top:0; z-index:100;
+  background:rgba(251,251,250,0.92);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+}
+.navbar .container{
+  display:flex; align-items:center; justify-content:space-between;
+  height:72px;
+}
+.brand{ display:flex; align-items:center; gap:12px; text-decoration:none; }
+.brand img{ height:40px; width:auto; }
+.brand-text{ display:flex; flex-direction:column; line-height:1.15; }
+.brand-text strong{ font-family:var(--serif); font-size:1.05rem; color:var(--navy-deep); }
+.brand-text span{ font-family:var(--mono); font-size:0.68rem; letter-spacing:0.02em; color:var(--ink-soft); }
+
+.nav-links{ display:flex; gap:2px; align-items:center; }
+.nav-links a{
+  text-decoration:none; font-size:0.92rem; color:var(--ink-soft);
+  padding:10px 14px; border-radius:6px; transition:color .15s ease, background .15s ease;
+}
+.nav-links a:hover{ color:var(--navy); background:var(--blue-tint); }
+.nav-links a.current{ color:var(--navy); font-weight:600; }
+
+.nav-toggle{
+  display:none; background:none; border:1px solid var(--line); border-radius:8px;
+  width:42px; height:42px; cursor:pointer; position:relative;
+}
+.nav-toggle span, .nav-toggle span::before, .nav-toggle span::after{
+  content:""; position:absolute; left:11px; right:11px; height:2px; background:var(--navy);
+}
+.nav-toggle span{ top:20px; }
+.nav-toggle span::before{ top:-7px; }
+.nav-toggle span::after{ top:7px; }
+
+@media (max-width:860px){
+  .nav-links{
+    position:fixed; inset:72px 0 auto 0; flex-direction:column; align-items:stretch;
+    background:var(--paper); border-bottom:1px solid var(--line);
+    padding:8px; gap:0;
+    transform:translateY(-8px); opacity:0; pointer-events:none;
+    transition:transform .18s ease, opacity .18s ease;
+  }
+  .nav-links.open{ transform:translateY(0); opacity:1; pointer-events:auto; }
+  .nav-links a{ padding:14px 16px; border-radius:8px; }
+  .nav-toggle{ display:block; }
+}
+
+/* ---------------------------------- Hero ---------------------------------- */
+.hero{
+  position:relative;
+  background:linear-gradient(180deg, var(--navy-deep) 0%, var(--navy) 62%, var(--blue) 100%);
+  color:var(--white);
+  overflow:hidden;
+  padding:clamp(56px,9vw,104px) 0 clamp(64px,10vw,120px);
+}
+.hero::before{
+  content:"";
+  position:absolute; inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px);
+  background-size:52px 52px;
+  mask-image:linear-gradient(180deg, black, transparent 85%);
+}
+.hero .container{
+  position:relative;
+  display:grid; grid-template-columns:1.15fr 0.85fr; gap:48px; align-items:center;
+}
+@media (max-width:900px){ .hero .container{ grid-template-columns:1fr; } .hero-figure{ order:-1; max-width:280px; margin:0 auto; } }
+
+.eyebrow-line{
+  display:flex; align-items:center; gap:10px;
+  font-family:var(--mono); font-size:0.78rem; color:#c7d0ee;
+  margin-bottom:22px;
+}
+.eyebrow-line .tick{ width:22px; height:1px; background:#7f8ecb; }
+
+.hero h1{
+  color:var(--white);
+  font-weight:600;
+  font-size:clamp(2.1rem, 4.2vw, 3.4rem);
+  letter-spacing:-0.01em;
+  max-width:15ch;
+}
+.hero h1 em{ font-style:italic; color:#cfd8f4; }
+.hero-sub{
+  margin-top:20px; max-width:52ch;
+  color:#d7deef; font-size:1.08rem;
+}
+.hero-meta{
+  display:flex; flex-wrap:wrap; gap:28px;
+  margin-top:34px; padding-top:24px; border-top:1px solid rgba(255,255,255,0.16);
+}
+.hero-meta div{ font-family:var(--mono); font-size:0.72rem; color:#9fabd6; }
+.hero-meta strong{ display:block; font-family:var(--sans); font-size:0.98rem; color:var(--white); margin-top:4px; font-weight:600;}
+
+.hero-actions{ margin-top:34px; display:flex; gap:14px; flex-wrap:wrap; }
+.btn{
+  display:inline-flex; align-items:center; gap:8px;
+  padding:13px 22px; border-radius:8px; font-weight:600; font-size:0.94rem;
+  text-decoration:none; border:1px solid transparent; cursor:pointer;
+  transition:transform .15s ease, background .15s ease, border-color .15s ease;
+  font-family:var(--sans);
+}
+.btn:active{ transform:translateY(1px); }
+.btn-primary{ background:var(--white); color:var(--navy-deep); }
+.btn-primary:hover{ background:#e9edfa; }
+.btn-outline{ border-color:rgba(255,255,255,0.4); color:var(--white); }
+.btn-outline:hover{ border-color:#fff; background:rgba(255,255,255,0.08); }
+
+/* hero technical illustration */
+.hero-figure svg{ width:100%; height:auto; }
+
+/* ---------------------------------- Section shell ---------------------------------- */
+section{ padding:clamp(56px,7vw,96px) 0; }
+.section-head{
+  display:flex; justify-content:space-between; align-items:flex-end; gap:24px;
+  margin-bottom:40px; flex-wrap:wrap;
+  border-bottom:1px solid var(--line); padding-bottom:22px;
+}
+.section-kicker{
+  font-family:var(--mono); font-size:0.74rem; color:var(--blue); letter-spacing:0.02em;
+}
+.section-head h2{ font-size:clamp(1.5rem,2.6vw,2.1rem); margin-top:6px; max-width:22ch; }
+.section-note{ font-size:0.92rem; color:var(--ink-soft); max-width:34ch; text-align:right; }
+@media (max-width:700px){ .section-note{ text-align:left; } }
+
+.lede{ font-size:1.08rem; color:var(--ink-soft); max-width:74ch; margin-bottom:8px; }
+
+/* ---------------------------------- Temario nav strip ---------------------------------- */
+.topic-strip{ background:var(--blue-tint); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+.topic-strip .container{
+  display:flex; gap:0; overflow-x:auto; padding-top:14px; padding-bottom:14px;
+  scrollbar-width:thin;
+}
+.topic-strip a{
+  flex:0 0 auto;
+  display:flex; align-items:baseline; gap:8px;
+  text-decoration:none; padding:10px 18px; border-radius:24px;
+  font-size:0.86rem; color:var(--navy); white-space:nowrap;
+  border:1px solid transparent;
+}
+.topic-strip a:hover{ border-color:var(--line); background:var(--white); }
+.topic-strip a .num{ font-family:var(--mono); color:var(--blue-mid); font-size:0.78rem; }
+
+/* ---------------------------------- Tab interface ---------------------------------- */
+.tabs{ border:1px solid var(--line); border-radius:14px; overflow:hidden; background:var(--white); }
+.tabs-nav{
+  display:flex; overflow-x:auto; background:var(--blue-tint); border-bottom:1px solid var(--line);
+  scrollbar-width:thin;
+}
+.tab-btn{
+  flex:0 0 auto;
+  display:flex; align-items:center; gap:10px;
+  background:none; border:none; cursor:pointer;
+  padding:16px 22px; font-family:var(--sans); font-size:0.9rem; color:var(--ink-soft);
+  white-space:nowrap; border-bottom:2px solid transparent;
+  transition:color .15s ease, border-color .15s ease, background .15s ease;
+}
+.tab-btn:hover{ color:var(--navy); background:rgba(255,255,255,0.5); }
+.tab-btn.active{ color:var(--navy-deep); border-bottom-color:var(--blue); background:var(--white); font-weight:600; }
+.tab-num{ font-family:var(--mono); color:var(--blue-mid); font-size:0.82rem; }
+.tab-btn.active .tab-num{ color:var(--brass); }
+
+.tab-progress{ height:3px; background:var(--blue-tint-2); }
+.tab-progress-bar{ height:100%; width:20%; background:var(--blue); transition:width .3s ease; }
+
+.tab-panels{ position:relative; padding:36px clamp(20px,4vw,44px) 44px; }
+.tab-panel{ display:none; animation:panelIn .28s ease; }
+.tab-panel.active{ display:block; }
+@keyframes panelIn{ from{ opacity:0; transform:translateY(6px);} to{ opacity:1; transform:translateY(0);} }
+
+.tab-panel h3{ font-size:1.5rem; margin-bottom:16px; }
+.tab-panel p{ color:var(--ink-soft); max-width:76ch; }
+.tab-panel p + p{ margin-top:1em; }
+.tab-panel strong{ color:var(--ink); }
+.tab-panel ul{ color:var(--ink-soft); max-width:74ch; padding-left:1.15em; margin:1em 0; }
+.tab-panel li{ margin-bottom:0.5em; }
+.tab-panel li::marker{ color:var(--blue); }
+
+.insight-box{
+  margin-top:26px; padding:20px 22px; border-radius:10px;
+  background:linear-gradient(135deg, var(--navy-deep), var(--navy) 70%);
+  color:#e5e9f7; position:relative; overflow:hidden;
+}
+.insight-box::before{
+  content:""; position:absolute; inset:0;
+  background-image:linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size:22px 22px; pointer-events:none;
+}
+.insight-tag{
+  display:inline-block; font-family:var(--mono); font-size:0.68rem; letter-spacing:0.02em;
+  color:var(--brass); margin-bottom:10px; position:relative;
+}
+.insight-box p{ color:#dbe1f5; margin:0; position:relative; font-size:0.95rem; }
+.insight-box strong{ color:#fff; }
+
+@media (max-width:640px){
+  .tab-panels{ padding:26px 18px 32px; }
+}
+
+/* ---------------------------------- Caso de estudio integrado ---------------------------------- */
+.case-shell{
+  display:grid; grid-template-columns:0.85fr 1.15fr; gap:0;
+  border:1px solid var(--line); border-radius:12px; overflow:hidden; background:var(--white);
+}
+@media (max-width:860px){ .case-shell{ grid-template-columns:1fr; } }
+.case-visual{
+  background:var(--blue-tint); padding:36px; display:flex; flex-direction:column; gap:16px;
+  border-right:1px solid var(--line);
+}
+@media (max-width:860px){ .case-visual{ border-right:none; border-bottom:1px solid var(--line); } }
+.case-visual svg{ width:100%; max-width:220px; }
+.case-visual h3{ font-size:1.2rem; margin-top:2px; }
+.case-visual p{ color:var(--ink-soft); font-size:0.92rem; }
+.case-qa{ padding:8px 30px; }
+@media (max-width:640px){ .case-qa{ padding:4px 18px; } }
+
+/* ---------------------------------- Cards (Evidencias / Casos) ---------------------------------- */
+.card-grid{ display:grid; grid-template-columns:repeat(3, 1fr); gap:22px; }
+@media (max-width:920px){ .card-grid{ grid-template-columns:repeat(2,1fr); } }
+@media (max-width:640px){ .card-grid{ grid-template-columns:1fr; } }
+
+.card{
+  background:var(--white); border:1px solid var(--line); border-radius:10px;
+  padding:26px 24px; position:relative;
+  transition:border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+.card:hover{ border-color:var(--blue-mid); box-shadow:0 10px 28px -18px rgba(33,49,107,0.45); transform:translateY(-2px); }
+.card .card-tag{
+  font-family:var(--mono); font-size:0.68rem; color:var(--blue); text-transform:uppercase;
+  letter-spacing:0.03em;
+}
+.card h4{ font-size:1.08rem; margin:10px 0 10px; }
+.card p{ color:var(--ink-soft); font-size:0.94rem; margin-bottom:14px; }
+.card .card-meta{
+  display:flex; justify-content:space-between; align-items:center;
+  font-size:0.78rem; color:var(--ink-soft); border-top:1px dashed var(--line); padding-top:12px;
+}
+.badge{
+  display:inline-block; padding:3px 9px; border-radius:20px; font-size:0.72rem;
+  background:var(--blue-tint); color:var(--navy); font-weight:600;
+}
+
+.evidencias-section{ background:var(--navy-deep); color:var(--white); }
+.evidencias-section .section-kicker{ color:#9fabd6; }
+.evidencias-section h2{ color:var(--white); }
+.evidencias-section .section-note{ color:#c7d0ee; }
+.evidencias-section .card{ background:rgba(255,255,255,0.05); border-color:rgba(255,255,255,0.14); }
+.evidencias-section .card:hover{ border-color:rgba(255,255,255,0.4); box-shadow:none; }
+.evidencias-section .card h4{ color:var(--white); }
+.evidencias-section .card p{ color:#c7d0ee; }
+.evidencias-section .card .card-meta{ color:#9fabd6; border-top-color:rgba(255,255,255,0.16); }
+.evidencias-section .badge{ background:rgba(255,255,255,0.12); color:var(--white); }
+
+/* progress checklist interaction on evidencias */
+.check-row{ display:flex; align-items:center; gap:10px; cursor:pointer; user-select:none; }
+.check-box{
+  width:20px; height:20px; border-radius:5px; border:1.5px solid rgba(255,255,255,0.5);
+  flex:0 0 auto; position:relative; transition:background .15s ease, border-color .15s ease;
+}
+.check-row.done .check-box{ background:var(--brass); border-color:var(--brass); }
+.check-row.done .check-box::after{
+  content:""; position:absolute; left:5px; top:1px; width:6px; height:11px;
+  border:solid var(--navy-deep); border-width:0 2px 2px 0; transform:rotate(40deg);
+}
+.check-label{ font-size:0.9rem; color:#e5e9f7; }
+.check-row.done .check-label{ text-decoration:line-through; color:#9fabd6; }
+
+/* ---------------------------------- Casos de estudio ---------------------------------- */
+.caso-feature{
+  display:grid; grid-template-columns:1fr 1fr; gap:0;
+  border:1px solid var(--line); border-radius:12px; overflow:hidden; background:var(--white);
+}
+@media (max-width:820px){ .caso-feature{ grid-template-columns:1fr; } }
+.caso-visual{
+  background:var(--blue-tint);
+  padding:40px; display:flex; align-items:center; justify-content:center;
+}
+.caso-visual svg{ width:100%; max-width:280px; height:auto; }
+.caso-body{ padding:40px; }
+.caso-body h3{ font-size:1.5rem; margin:12px 0 14px; }
+.caso-body p{ color:var(--ink-soft); }
+
+/* ---------------------------------- Notice banner ---------------------------------- */
+.notice{
+  border:1px dashed var(--blue-mid); background:var(--blue-tint);
+  border-radius:10px; padding:18px 20px; margin:0 0 28px; font-size:0.92rem; color:var(--navy);
+}
+.notice strong{ color:var(--navy-deep); }
+
+/* ---------------------------------- Q&A accordion (used in Casos de estudio) ---------------------------------- */
+.qa-block{ border-bottom:1px solid var(--line); padding:22px 0; }
+.qa-block:last-of-type{ border-bottom:none; }
+.qa-q{
+  display:flex; gap:14px; align-items:flex-start; cursor:pointer;
+}
+.qa-num{ font-family:var(--mono); color:var(--blue); font-size:0.88rem; flex:0 0 auto; padding-top:3px; }
+.qa-q h4{ font-size:1.02rem; flex:1; color:var(--navy-deep); font-family:var(--serif); font-weight:600; }
+.qa-toggle{
+  width:24px; height:24px; border-radius:50%; border:1px solid var(--line);
+  display:flex; align-items:center; justify-content:center; flex:0 0 auto;
+  color:var(--blue); font-size:0.95rem; transition:transform .2s ease;
+}
+.qa-block.open .qa-toggle{ transform:rotate(45deg); }
+.qa-answer{
+  max-height:0; overflow:hidden; transition:max-height .28s ease;
+  padding-left:calc(14px + 0.88rem + 4px);
+}
+.qa-block.open .qa-answer{ max-height:600px; }
+.qa-answer-inner{ padding-top:10px; color:var(--ink-soft); max-width:70ch; font-size:0.94rem; }
+.qa-answer-inner p + p{ margin-top:0.9em; }
+
+/* ---------------------------------- Referencias ---------------------------------- */
+.refs-list{ display:flex; flex-direction:column; gap:16px; max-width:850px; }
+.ref-item{
+  display:grid; grid-template-columns:30px 1fr; gap:14px;
+  font-size:0.92rem; color:var(--ink-soft); padding-bottom:14px; border-bottom:1px solid var(--line);
+}
+.ref-item:last-child{ border-bottom:none; }
+.ref-item .ref-num{ font-family:var(--mono); color:var(--blue); }
+.ref-item strong{ color:var(--ink); }
+
+/* ---------------------------------- Footer ---------------------------------- */
+footer{ background:var(--navy-deep); color:#c7d0ee; padding:56px 0 28px; }
+.footer-grid{ display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:36px; }
+@media (max-width:760px){ .footer-grid{ grid-template-columns:1fr; } }
+.footer-brand{ display:flex; align-items:center; gap:12px; margin-bottom:14px; }
+.footer-brand img{ height:34px; background:var(--white); border-radius:6px; padding:4px; }
+.footer-brand strong{ color:var(--white); font-family:var(--serif); font-size:1.05rem; }
+footer h5{ color:var(--white); font-size:0.82rem; font-family:var(--mono); margin-bottom:14px; letter-spacing:0.02em; }
+footer ul{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:9px; }
+footer a{ text-decoration:none; color:#c7d0ee; font-size:0.92rem; }
+footer a:hover{ color:var(--white); }
+.footer-bottom{
+  margin-top:44px; padding-top:22px; border-top:1px solid rgba(255,255,255,0.14);
+  display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+  font-size:0.78rem; color:#8b97c4;
+}
+
+/* back to top */
+.to-top{
+  position:fixed; right:22px; bottom:22px; width:44px; height:44px; border-radius:50%;
+  background:var(--navy); color:var(--white); border:none; cursor:pointer;
+  display:flex; align-items:center; justify-content:center; font-size:1rem;
+  opacity:0; pointer-events:none; transform:translateY(8px);
+  transition:opacity .2s ease, transform .2s ease;
+  box-shadow:0 10px 24px -10px rgba(22,34,74,0.6);
+  z-index:90;
+}
+.to-top.show{ opacity:1; pointer-events:auto; transform:translateY(0); }
+
+</style>
 </head>
 <body>
 
 <nav class="navbar">
   <div class="container">
     <a href="index.html" class="brand">
-      <img src="assets/logo.png" alt="EDUCEM — Instituto Universitario del Centro de México">
+      <img src="data:image/png;base64,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" alt="EDUCEM — Instituto Universitario del Centro de México">
       <span class="brand-text">
         <strong>Historia de la Arquitectura</strong>
         <span>EDUCEM · M1ED108</span>
@@ -23,7 +454,6 @@
       <a href="#temario">Temario</a>
       <a href="#evidencias">Evidencias de aprendizaje</a>
       <a href="#casos">Casos de estudio</a>
-      <a href="blog.html">Blog académico</a>
       <a href="#referencias">Referencias</a>
     </div>
   </div>
@@ -34,15 +464,15 @@
     <div class="hero-copy">
       <div class="eyebrow-line"><span class="tick"></span> TEMA 1 · MÓDULO 1</div>
       <h1>Introducción general al estudio de <em>la arquitectura</em></h1>
-      <p class="hero-sub">Un recorrido conceptual por la teoría, la praxis y el lenguaje formal que sostienen el pensamiento arquitectónico — desde la tríada vitruviana hasta la lectura ideológica del espacio construido.</p>
+      <p class="hero-sub">Un recorrido conceptual por la teoría, la praxis y el lenguaje formal que sostienen el pensamiento arquitectónico — desde la tríada vitruviana hasta la crítica ideológica contemporánea del espacio construido.</p>
       <div class="hero-actions">
-        <a href="#temario" class="btn btn-primary">Comenzar el temario</a>
-        <a href="blog.html" class="btn btn-outline">Ir al blog académico</a>
+        <a href="#temario" class="btn btn-primary">Explorar el temario</a>
+        <a href="#casos" class="btn btn-outline">Ver caso de estudio</a>
       </div>
       <div class="hero-meta">
         <div>SUBTEMAS<strong>5 apartados</strong></div>
-        <div>LECTURA ESTIMADA<strong>~20 minutos</strong></div>
-        <div>FUENTES CITADAS<strong>10 referencias</strong></div>
+        <div>FUENTES CITADAS<strong>12 autores</strong></div>
+        <div>PERSPECTIVAS<strong>Clásica → crítica</strong></div>
       </div>
     </div>
     <div class="hero-figure" aria-hidden="true">
@@ -51,7 +481,6 @@
         <circle cx="160" cy="160" r="80" stroke="#4b5da3" stroke-width="1" stroke-dasharray="4 5"/>
         <line x1="160" y1="10" x2="160" y2="310" stroke="#4b5da3" stroke-width="1"/>
         <line x1="10" y1="160" x2="310" y2="160" stroke="#4b5da3" stroke-width="1"/>
-        <!-- classical column, simplified line drawing -->
         <g stroke="#e7ebfa" stroke-width="2" fill="none" stroke-linecap="round">
           <line x1="120" y1="235" x2="120" y2="120"/>
           <line x1="200" y1="235" x2="200" y2="120"/>
@@ -68,16 +497,6 @@
   </div>
 </header>
 
-<nav class="topic-strip" aria-label="Subtemas">
-  <div class="container">
-    <a href="#s1"><span class="num">1.1</span> Teoría de la arquitectura</a>
-    <a href="#s2"><span class="num">1.2</span> La teoría como transformación</a>
-    <a href="#s3"><span class="num">1.3</span> Praxis arquitectónica</a>
-    <a href="#s4"><span class="num">1.4</span> Lenguaje de la forma</a>
-    <a href="#s5"><span class="num">1.5</span> Determinación social e ideológica</a>
-  </div>
-</nav>
-
 <section id="temario">
   <div class="container">
     <div class="section-head">
@@ -85,67 +504,85 @@
         <div class="section-kicker">DESARROLLO TEMÁTICO</div>
         <h2>Tema 1 — Introducción general al estudio de la arquitectura</h2>
       </div>
-      <p class="section-note">Desarrollo con rigor conceptual, perspectiva crítica y citas en formato APA (7.ª ed.).</p>
+      <p class="section-note">Cada apartado incorpora, además del fundamento clásico, una perspectiva crítica contemporánea.</p>
     </div>
 
-    <p class="lede">La arquitectura no se agota en la construcción material del espacio: es, ante todo, un cuerpo de pensamiento que articula ideas sobre el habitar, la forma y el orden social. Este primer tema sienta las bases epistemológicas, metodológicas y críticas necesarias para abordar la disciplina como objeto de estudio universitario.</p>
+    <p class="lede">La arquitectura no se agota en la construcción material del espacio: es, ante todo, un cuerpo de pensamiento que articula ideas sobre el habitar, la forma y el orden social. Selecciona un subtema para desplegar su desarrollo conceptual.</p>
 
-    <article class="subtopic" id="s1">
-      <div class="subtopic-num">1.1<span>Teoría de la arquitectura</span></div>
-      <div>
-        <h3>Introducción a la teoría de la arquitectura</h3>
-        <p>La teoría arquitectónica constituye un marco interpretativo mediante el cual la disciplina reflexiona sobre sus propios fundamentos, métodos y fines. A diferencia del conocimiento puramente técnico —orientado a la resolución de problemas estructurales o constructivos—, la teoría opera en un plano epistemológico: pregunta por qué la arquitectura es lo que es, qué la legitima como práctica cultural y qué criterios permiten juzgar la calidad de una obra. En este sentido, la teoría no describe edificios; construye los lentes conceptuales a través de los cuales los edificios se vuelven inteligibles <cite>(Ching, 2015)</cite>.</p>
-        <p>El fundamento clásico de esta reflexión se encuentra en la tríada formulada por <strong>Marco Vitruvio Polión</strong> en su tratado <em>De Architectura</em>, donde establece que toda obra debe satisfacer simultáneamente los principios de <em>utilitas</em> (utilidad funcional), <em>firmitas</em> (firmeza estructural) y <em>venustas</em> (belleza o deleite estético) <cite>(Vitruvio, 1997)</cite>. Lejos de ser una fórmula obsoleta, esta tríada permanece vigente como matriz analítica: cualquier crítica arquitectónica contemporánea —desde la sostenibilidad hasta el diseño paramétrico— puede leerse como una renegociación del equilibrio entre estos tres términos. Un edificio bioclimático, por ejemplo, reformula la <em>firmitas</em> en clave ambiental sin abandonar la exigencia estética.</p>
-        <p>Desde esta perspectiva, la arquitectura se define como un <strong>acto volitivo de resolución intencional de problemas espaciales</strong>. No es la simple respuesta técnica a una necesidad de cobijo, sino una decisión deliberada sobre cómo organizar el espacio para producir determinados efectos —funcionales, simbólicos, perceptuales— en quienes lo habitan. La teoría, entonces, es el instrumento que permite explicitar y justificar esas decisiones, transformando la intuición proyectual en un discurso comunicable y transmisible.</p>
+    <div class="tabs" id="tabsWidget">
+      <div class="tabs-nav" role="tablist" aria-label="Subtemas del Tema 1">
+        <button class="tab-btn active" role="tab" aria-selected="true" data-tab="t1"><span class="tab-num">1.1</span>Teoría de la arquitectura</button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-tab="t2"><span class="tab-num">1.2</span>La teoría como transformación</button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-tab="t3"><span class="tab-num">1.3</span>Praxis arquitectónica</button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-tab="t4"><span class="tab-num">1.4</span>Lenguaje de la forma</button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-tab="t5"><span class="tab-num">1.5</span>Determinación social e ideológica</button>
       </div>
-    </article>
 
-    <article class="subtopic" id="s2">
-      <div class="subtopic-num">1.2<span>Teoría como transformación</span></div>
-      <div>
-        <h3>La teoría como proceso de transformación en el arte y el diseño</h3>
-        <p>Si la teoría define los marcos interpretativos de una época, también es el motor que provoca su ruptura. La historia de la arquitectura puede leerse como una sucesión de marcos teóricos que, al agotar su capacidad explicativa, son sustituidos por otros que habilitan nuevas posibilidades estéticas y tecnológicas. La tratadística renacentista inaugura este mecanismo de manera sistemática: <strong>Leon Battista Alberti</strong>, en <em>De re aedificatoria</em>, recupera y actualiza los principios vitruvianos para fundar una disciplina autónoma, regida por la razón proporcional y la <em>concinnitas</em> —la armonía de las partes entre sí y con el todo <cite>(Alberti, 2007)</cite>.</p>
-        <p>Esta tradición se prolonga en tratadistas como <strong>Filarete</strong>, con su propuesta utópica de la ciudad ideal, y <strong>Andrea Palladio</strong>, cuyos <em>Cuatro libros de la arquitectura</em> sistematizan un canon proporcional que influirá durante siglos en la arquitectura occidental <cite>(Murray, 1986)</cite>. Sin embargo, el siglo XX representa la transformación más radical: los manifiestos del <strong>Movimiento Moderno</strong> —la Bauhaus, la obra teórica de <strong>Le Corbusier</strong> en <em>Hacia una arquitectura</em>, y las propuestas expresionistas de <strong>Bruno Taut</strong>— rompen con el canon clásico para proponer una arquitectura fundada en la máquina, la estandarización industrial y la función social del espacio doméstico <cite>(Le Corbusier, 1998)</cite>.</p>
-        <p>La segunda mitad del siglo introduce una nueva ruptura: las críticas posmoderna y deconstructivista. <strong>Robert Venturi</strong>, en <em>Complejidad y contradicción en la arquitectura</em>, cuestiona el reduccionismo funcionalista moderno y reivindica la ambigüedad, el híbrido y el "menos es aburrido" como categorías legítimas de diseño <cite>(Venturi, 1978)</cite>. Paralelamente, <strong>Aldo Rossi</strong> desplaza el foco hacia la memoria colectiva y la permanencia tipológica de la ciudad, entendiendo la arquitectura urbana como un artefacto histórico acumulativo <cite>(Rossi, 1982)</cite>. Cada uno de estos momentos confirma que la teoría no es un comentario pasivo sobre la práctica, sino su condición de posibilidad transformadora.</p>
-      </div>
-    </article>
+      <div class="tab-progress"><div class="tab-progress-bar" id="tabProgressBar"></div></div>
 
-    <article class="subtopic" id="s3">
-      <div class="subtopic-num">1.3<span>Praxis arquitectónica</span></div>
-      <div>
-        <h3>Praxis arquitectónica</h3>
-        <p>La figura del arquitecto ha experimentado una transformación profesional paralela a la de la teoría. En el medievo, el arquitecto se confunde con el maestro de obras: un artesano calificado, formado en el gremio, cuyo saber es fundamentalmente empírico y transmitido oralmente en el sitio de construcción. El Renacimiento opera aquí una segunda ruptura decisiva: al separar la concepción del proyecto (el dibujo, la traza, el tratado) de su ejecución material, consolida al arquitecto como <strong>profesional intelectual y humanista</strong>, capaz de dialogar con las matemáticas, la filosofía y las artes liberales <cite>(Roth, 1999)</cite>.</p>
-        <p>Esta profesionalización trae consigo una metodología explícita del proceso proyectual, que puede sistematizarse en fases interdependientes:</p>
-        <ul>
-          <li><strong>Investigación:</strong> recopilación de información sobre el sitio, el usuario, las normativas y los referentes tipológicos pertinentes.</li>
-          <li><strong>Programa arquitectónico:</strong> definición cuantitativa y cualitativa de los espacios requeridos y sus relaciones funcionales.</li>
-          <li><strong>Hipótesis de diseño:</strong> formulación de una idea rectora que orienta las decisiones formales y espaciales.</li>
-          <li><strong>Zonificación:</strong> organización espacial preliminar de los usos según criterios de circulación, jerarquía y compatibilidad.</li>
-          <li><strong>Anteproyecto:</strong> desarrollo esquemático que anticipa la solución definitiva antes del proyecto ejecutivo.</li>
-        </ul>
-        <p>En esta metodología, la <strong>ergonomía</strong> y la <strong>antropometría</strong> cumplen un papel decisivo, pues traducen al lenguaje del proyecto la relación entre el cuerpo humano y el espacio habitable. Las tablas antropométricas sistematizadas por <strong>Ernst Neufert</strong> en su célebre manual de proyección han funcionado durante décadas como referencia normativa para dimensionar mobiliario, circulaciones y locales, estableciendo el cuerpo humano —y sus variaciones— como la unidad de medida última del diseño arquitectónico <cite>(Neufert, 2013)</cite>. La praxis, en suma, es el terreno donde la teoría se somete a la prueba de la habitabilidad concreta.</p>
-      </div>
-    </article>
+      <div class="tab-panels">
 
-    <article class="subtopic" id="s4">
-      <div class="subtopic-num">1.4<span>Lenguaje de la forma</span></div>
-      <div>
-        <h3>Introducción al lenguaje de la forma</h3>
-        <p>Toda composición arquitectónica se construye a partir de un vocabulario formal reducido pero combinatoriamente inagotable. <strong>Francis D. K. Ching</strong> sistematiza este vocabulario identificando cuatro elementos primarios: el <em>punto</em>, que marca una posición en el espacio; la <em>línea</em>, que resulta de la extensión de un punto y define bordes o ejes; el <em>plano</em>, que delimita volumen mediante superficie; y el <em>volumen</em>, que ocupa y desplaza espacio tridimensional <cite>(Ching, 2015)</cite>. Este vocabulario elemental funciona de manera análoga al alfabeto en el lenguaje verbal: por sí solo carece de significado, pero organizado mediante reglas sintácticas produce composiciones legibles y expresivas.</p>
-        <p>Dichas reglas sintácticas son los <strong>principios ordenadores</strong> de la composición: el <em>eje</em>, línea reguladora que organiza elementos simétrica o asimétricamente a su alrededor; la <em>simetría</em>, distribución equilibrada respecto a un eje o punto; la <em>jerarquía</em>, énfasis diferencial que distingue elementos por tamaño, forma o posición; el <em>ritmo</em> y la <em>repetición</em>, recurrencia de elementos que genera pautas perceptuales; la <em>pauta</em> o retícula, sistema regulador subyacente; y la <em>transformación</em>, modificación sistemática de una forma base que preserva su identidad conceptual mientras genera variedad <cite>(Ching, 2015)</cite>.</p>
-        <p>Estos principios no son neutrales: encarnan posturas teóricas sobre la relación entre forma y función. La consigna moderna "la forma sigue a la función", atribuida al pensamiento organicista de finales del siglo XIX, subordina la configuración formal a la eficiencia programática. Frente a ella, posturas plásticas y estéticas —desde el expresionismo de Taut hasta ciertas corrientes contemporáneas— reivindican la <strong>integración plástica</strong> como valor autónomo, sosteniendo que la forma también comunica significado, identidad y experiencia sensorial más allá de su desempeño funcional <cite>(Taut, 2015)</cite>. El lenguaje de la forma es, así, el territorio donde se dirime buena parte de la disputa teórica de la disciplina.</p>
-      </div>
-    </article>
+        <article class="tab-panel active" id="t1" role="tabpanel">
+          <h3>Introducción a la teoría de la arquitectura</h3>
+          <p>La teoría arquitectónica constituye un marco interpretativo mediante el cual la disciplina reflexiona sobre sus propios fundamentos, métodos y fines. A diferencia del conocimiento puramente técnico —orientado a la resolución de problemas estructurales o constructivos—, la teoría opera en un plano epistemológico: pregunta por qué la arquitectura es lo que es, qué la legitima como práctica cultural y qué criterios permiten juzgar la calidad de una obra. En este sentido, la teoría no describe edificios; construye los lentes conceptuales a través de los cuales los edificios se vuelven inteligibles (Ching, 2015).</p>
+          <p>El fundamento clásico de esta reflexión se encuentra en la tríada formulada por <strong>Marco Vitruvio Polión</strong> en su tratado <em>De Architectura</em>, donde establece que toda obra debe satisfacer simultáneamente los principios de <em>utilitas</em> (utilidad funcional), <em>firmitas</em> (firmeza estructural) y <em>venustas</em> (belleza o deleite estético) (Vitruvio, 1997). Esta tríada permanece vigente como matriz analítica: cualquier crítica arquitectónica contemporánea puede leerse como una renegociación del equilibrio entre estos tres términos.</p>
+          <p>Desde esta perspectiva, la arquitectura se define como un <strong>acto volitivo de resolución intencional de problemas espaciales</strong>: una decisión deliberada sobre cómo organizar el espacio para producir determinados efectos —funcionales, simbólicos, perceptuales— en quienes lo habitan.</p>
+          <div class="insight-box">
+            <span class="insight-tag">Perspectiva crítica contemporánea</span>
+            <p>El teórico mexicano-canadiense <strong>Alberto Pérez-Gómez</strong> cuestiona que la teoría moderna haya reducido la arquitectura a un problema técnico-cuantitativo, argumentando que la disciplina atraviesa una "crisis de la ciencia moderna" al perder el vínculo simbólico y poético que originalmente unía geometría, cosmología y significado (Pérez-Gómez, 1983). Su lectura invita a interpretar la tríada vitruviana no como una lista de requisitos técnicos, sino como una integración de saberes que la modernidad tecnocrática ha fragmentado.</p>
+          </div>
+        </article>
 
-    <article class="subtopic" id="s5">
-      <div class="subtopic-num">1.5<span>Determinación social e ideológica</span></div>
-      <div>
-        <h3>Determinación social e ideológica</h3>
-        <p>Ninguna forma arquitectónica emerge en un vacío cultural: toda decisión de diseño está atravesada por condicionantes políticos, económicos e ideológicos que exceden la voluntad individual del proyectista. La arquitectura funciona simultáneamente como instrumento y como <strong>expresión simbólica del poder</strong> de su época. La arquitectura palaciega y religiosa clásica —templos, catedrales, palacios— materializa jerarquías teocráticas y monárquicas mediante escala monumental, ejes de aproximación ceremonial y programas iconográficos explícitos <cite>(Roth, 1999)</cite>.</p>
-        <p>Esta determinación ideológica se mantiene, transformada, en la modernidad. El <strong>brutalismo socialista</strong> de posguerra en Europa del Este utiliza el hormigón visto y la repetición modular no solo por razones económicas, sino como declaración estética de un proyecto colectivista que rechaza el ornamento burgués. De manera análoga, los programas masivos de <strong>vivienda de interés social</strong> del siglo XX —desde las unidades habitacionales de Le Corbusier hasta los conjuntos habitacionales latinoamericanos— responden a políticas estatales de industrialización de la construcción, revelando cómo la estandarización formal traduce decisiones económicas sobre la asignación de recursos públicos.</p>
-        <p>En las últimas décadas, la <strong>arquitectura sustentable</strong> emerge como un nuevo condicionante ideológico: la crisis ambiental global redefine los criterios de legitimidad proyectual, incorporando el desempeño energético, el ciclo de vida de los materiales y la relación con el ecosistema como categorías de valor equiparables a la utilidad y la belleza vitruvianas. Este recorrido evidencia que la forma urbana y edilicia nunca es ideológicamente neutra: cada estilo, lejos de ser una elección puramente estética, cristaliza las relaciones de poder, producción y valores de la sociedad que lo produce <cite>(Rossi, 1982)</cite>.</p>
+        <article class="tab-panel" id="t2" role="tabpanel">
+          <h3>La teoría como proceso de transformación en el arte y el diseño</h3>
+          <p>Si la teoría define los marcos interpretativos de una época, también es el motor que provoca su ruptura. La tratadística renacentista inaugura este mecanismo de manera sistemática: <strong>Leon Battista Alberti</strong>, en <em>De re aedificatoria</em>, recupera y actualiza los principios vitruvianos para fundar una disciplina autónoma, regida por la razón proporcional y la <em>concinnitas</em> —la armonía de las partes entre sí y con el todo (Alberti, 2007).</p>
+          <p>El siglo XX representa la transformación más radical: los manifiestos del <strong>Movimiento Moderno</strong> —la Bauhaus y la obra teórica de <strong>Le Corbusier</strong> en <em>Hacia una arquitectura</em>— rompen con el canon clásico para proponer una arquitectura fundada en la máquina, la estandarización industrial y la función social del espacio doméstico (Le Corbusier, 1998). La segunda mitad del siglo introduce una nueva ruptura: <strong>Robert Venturi</strong>, en <em>Complejidad y contradicción en la arquitectura</em>, cuestiona el reduccionismo funcionalista moderno y reivindica la ambigüedad como categoría legítima de diseño (Venturi, 1978), mientras <strong>Aldo Rossi</strong> desplaza el foco hacia la memoria colectiva y la permanencia tipológica de la ciudad (Rossi, 1982).</p>
+          <div class="insight-box">
+            <span class="insight-tag">Perspectiva crítica contemporánea</span>
+            <p>El historiador italiano <strong>Manfredo Tafuri</strong> radicaliza esta lectura: para él, toda arquitectura moderna —incluidas sus vanguardias más "revolucionarias"— funciona como ideología al servicio del desarrollo capitalista, incapaz de transformar por sí misma las relaciones sociales que la producen (Tafuri, 1976). Su tesis obliga a distinguir entre transformación <em>formal</em> del lenguaje arquitectónico y transformación real de las condiciones sociales que ese lenguaje solo puede representar, no resolver.</p>
+          </div>
+        </article>
+
+        <article class="tab-panel" id="t3" role="tabpanel">
+          <h3>Praxis arquitectónica</h3>
+          <p>La figura del arquitecto ha experimentado una transformación profesional paralela a la de la teoría. En el medievo, el arquitecto se confunde con el maestro de obras: un artesano calificado cuyo saber es empírico y transmitido oralmente en el sitio de construcción. El Renacimiento separa la concepción del proyecto de su ejecución material, consolidando al arquitecto como <strong>profesional intelectual y humanista</strong> (Roth, 1999).</p>
+          <p>Esta profesionalización trae consigo una metodología explícita del proceso proyectual:</p>
+          <ul>
+            <li><strong>Investigación:</strong> recopilación de información sobre sitio, usuario, normativas y referentes tipológicos.</li>
+            <li><strong>Programa arquitectónico:</strong> definición cuantitativa y cualitativa de los espacios requeridos.</li>
+            <li><strong>Hipótesis de diseño:</strong> idea rectora que orienta las decisiones formales y espaciales.</li>
+            <li><strong>Zonificación:</strong> organización espacial preliminar según circulación y jerarquía.</li>
+            <li><strong>Anteproyecto:</strong> desarrollo esquemático previo al proyecto ejecutivo.</li>
+          </ul>
+          <p>La <strong>ergonomía</strong> y la <strong>antropometría</strong> traducen al proyecto la relación entre el cuerpo humano y el espacio habitable; las tablas sistematizadas por <strong>Ernst Neufert</strong> han funcionado durante décadas como referencia normativa para dimensionar mobiliario y locales (Neufert, 2013).</p>
+          <div class="insight-box">
+            <span class="insight-tag">Perspectiva crítica contemporánea</span>
+            <p><strong>Kenneth Frampton</strong> propone desplazar el eje de la praxis desde la abstracción espacial hacia la <em>tectónica</em>: la "poética de la construcción" entendida como el modo en que estructura, material y detalle constructivo son, en sí mismos, portadores de significado arquitectónico (Frampton, 1999). Bajo esta lectura, el anteproyecto no culmina en una forma abstracta, sino en una lógica constructiva coherente que el proceso proyectual debe anticipar desde sus primeras fases.</p>
+          </div>
+        </article>
+
+        <article class="tab-panel" id="t4" role="tabpanel">
+          <h3>Introducción al lenguaje de la forma</h3>
+          <p>Toda composición arquitectónica se construye a partir de un vocabulario formal reducido pero combinatoriamente inagotable. <strong>Francis D. K. Ching</strong> identifica cuatro elementos primarios: el <em>punto</em>, la <em>línea</em>, el <em>plano</em> y el <em>volumen</em> (Ching, 2015). Este vocabulario funciona de manera análoga al alfabeto verbal: organizado mediante reglas sintácticas, produce composiciones legibles y expresivas.</p>
+          <p>Dichas reglas son los <strong>principios ordenadores</strong> de la composición: eje, simetría, jerarquía, ritmo/repetición, pauta y transformación (Ching, 2015). Estos principios encarnan posturas teóricas sobre la relación entre forma y función: la consigna moderna "la forma sigue a la función" subordina la configuración formal a la eficiencia programática, mientras posturas plásticas reivindican la integración estética como valor autónomo.</p>
+          <div class="insight-box">
+            <span class="insight-tag">Perspectiva crítica contemporánea</span>
+            <p><strong>Juhani Pallasmaa</strong> objeta que el lenguaje de la forma, tal como se enseña habitualmente, privilegia de manera desproporcionada la experiencia <em>visual</em> del espacio en detrimento del tacto, el sonido y la memoria corporal; para él, la arquitectura auténtica se dirige a los siete sentidos, no solo al ojo (Pallasmaa, 2006). Esta crítica reformula el lenguaje formal de Ching como un vocabulario incompleto si no se articula con cualidades materiales, acústicas y táctiles del espacio habitado.</p>
+          </div>
+        </article>
+
+        <article class="tab-panel" id="t5" role="tabpanel">
+          <h3>Determinación social e ideológica</h3>
+          <p>Ninguna forma arquitectónica emerge en un vacío cultural: toda decisión de diseño está atravesada por condicionantes políticos, económicos e ideológicos. La arquitectura funciona como instrumento y como <strong>expresión simbólica del poder</strong> de su época: la arquitectura palaciega y religiosa clásica materializa jerarquías teocráticas y monárquicas mediante escala monumental y programas iconográficos explícitos (Roth, 1999).</p>
+          <p>Esta determinación se mantiene, transformada, en la modernidad. El <strong>brutalismo socialista</strong> de posguerra utiliza el hormigón visto y la repetición modular como declaración estética de un proyecto colectivista. Los programas masivos de <strong>vivienda de interés social</strong> del siglo XX responden a políticas estatales de industrialización de la construcción. La <strong>arquitectura sustentable</strong> emerge como un nuevo condicionante ideológico que redefine los criterios de legitimidad proyectual frente a la crisis ambiental.</p>
+          <div class="insight-box">
+            <span class="insight-tag">Perspectiva crítica contemporánea</span>
+            <p><strong>Manfredo Tafuri</strong> lleva esta idea a su forma más radical al sostener que, desde el Renacimiento, no puede existir una arquitectura de clase, sino solo una crítica de clase de la arquitectura: toda forma construida es ya ideología, y ninguna vanguardia estética puede por sí sola emancipar las relaciones sociales que la producen (Tafuri, 1976). Aplicada al caso de la vivienda social o el urbanismo sustentable, esta tesis exige preguntar no solo qué forma se propone, sino a qué estructura de poder y de producción sirve esa forma.</p>
+          </div>
+        </article>
+
       </div>
-    </article>
+    </div>
   </div>
 </section>
 
@@ -156,14 +593,14 @@
         <div class="section-kicker">SEGUIMIENTO DEL APRENDIZAJE</div>
         <h2>Evidencias de aprendizaje</h2>
       </div>
-      <p class="section-note">Marca cada evidencia conforme la vayas completando. El progreso se mantiene mientras navegas la página.</p>
+      <p class="section-note">Marca cada evidencia conforme la vayas completando. El progreso se guarda en tu navegador.</p>
     </div>
 
     <div class="card-grid">
       <div class="card">
         <span class="card-tag">Evidencia 1</span>
         <h4>Mapa conceptual — Tríada vitruviana</h4>
-        <p>Elabora un mapa conceptual que relacione <em>utilitas</em>, <em>firmitas</em> y <em>venustas</em> con un edificio contemporáneo de tu elección, justificando cada relación.</p>
+        <p>Elabora un mapa conceptual que relacione <em>utilitas</em>, <em>firmitas</em> y <em>venustas</em> con un edificio contemporáneo, justificando cada relación.</p>
         <div class="card-meta">
           <span class="badge">Individual</span>
           <label class="check-row" data-key="ev1"><span class="check-box"></span><span class="check-label">Marcar como entregada</span></label>
@@ -172,7 +609,7 @@
       <div class="card">
         <span class="card-tag">Evidencia 2</span>
         <h4>Línea de tiempo teórica</h4>
-        <p>Construye una línea de tiempo que sitúe la tratadística renacentista, el Movimiento Moderno y las críticas posmoderna/deconstructivista, con una obra representativa por periodo.</p>
+        <p>Construye una línea de tiempo que sitúe la tratadística renacentista, el Movimiento Moderno y las críticas posmoderna y neomarxista (Tafuri).</p>
         <div class="card-meta">
           <span class="badge">Individual</span>
           <label class="check-row" data-key="ev2"><span class="check-box"></span><span class="check-label">Marcar como entregada</span></label>
@@ -180,8 +617,8 @@
       </div>
       <div class="card">
         <span class="card-tag">Evidencia 3</span>
-        <h4>Análisis compositivo</h4>
-        <p>Selecciona una obra arquitectónica y descompón su lenguaje formal identificando los principios ordenadores (eje, simetría, jerarquía, ritmo, pauta y transformación).</p>
+        <h4>Análisis compositivo y tectónico</h4>
+        <p>Selecciona una obra y descompón su lenguaje formal (Ching) y su lógica constructiva (Frampton) en un mismo análisis integrado.</p>
         <div class="card-meta">
           <span class="badge">Individual</span>
           <label class="check-row" data-key="ev3"><span class="check-box"></span><span class="check-label">Marcar como entregada</span></label>
@@ -190,7 +627,7 @@
       <div class="card">
         <span class="card-tag">Evidencia 4</span>
         <h4>Ensayo crítico</h4>
-        <p>Redacta un ensayo de 800-1000 palabras sobre la determinación ideológica de un estilo arquitectónico específico, apoyado en al menos tres fuentes académicas.</p>
+        <p>Redacta un ensayo de 800-1000 palabras sobre la determinación ideológica de un estilo arquitectónico, apoyado en al menos tres fuentes académicas.</p>
         <div class="card-meta">
           <span class="badge">Individual</span>
           <label class="check-row" data-key="ev4"><span class="check-box"></span><span class="check-label">Marcar como entregada</span></label>
@@ -199,7 +636,7 @@
       <div class="card">
         <span class="card-tag">Evidencia 5</span>
         <h4>Foro de discusión</h4>
-        <p>Participa en el foro grupal debatiendo la vigencia de "la forma sigue a la función" frente a posturas de integración plástica contemporáneas.</p>
+        <p>Debate en el foro grupal la vigencia de "la forma sigue a la función" frente a la crítica sensorial de Pallasmaa.</p>
         <div class="card-meta">
           <span class="badge">Colaborativa</span>
           <label class="check-row" data-key="ev5"><span class="check-box"></span><span class="check-label">Marcar como entregada</span></label>
@@ -208,7 +645,7 @@
       <div class="card">
         <span class="card-tag">Evidencia 6</span>
         <h4>Resolución del caso de estudio</h4>
-        <p>Responde el cuestionario de análisis del caso asignado en el blog académico del curso, fundamentando cada respuesta en los conceptos del Tema 1.</p>
+        <p>Responde el cuestionario de análisis del caso asignado en la sección "Casos de estudio", fundamentando cada respuesta en los conceptos del Tema 1.</p>
         <div class="card-meta">
           <span class="badge">Individual</span>
           <label class="check-row" data-key="ev6"><span class="check-box"></span><span class="check-label">Marcar como entregada</span></label>
@@ -225,11 +662,11 @@
         <div class="section-kicker">APLICACIÓN CRÍTICA</div>
         <h2>Casos de estudio</h2>
       </div>
-      <p class="section-note">El análisis completo del caso asignado se desarrolla en el blog académico del curso.</p>
+      <p class="section-note">Despliega cada pregunta para ver el análisis fundamentado.</p>
     </div>
 
-    <div class="caso-feature regmarks">
-      <div class="caso-visual">
+<div class="case-shell regmarks">
+      <div class="case-visual">
         <svg viewBox="0 0 240 200" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="20" y="60" width="200" height="120" stroke="#314387" stroke-width="1.5"/>
           <line x1="20" y1="90" x2="220" y2="90" stroke="#314387" stroke-width="1"/>
@@ -242,13 +679,62 @@
           <line x1="210" y1="190" x2="210" y2="195" stroke="#4b5da3"/>
           <text x="100" y="205" font-family="IBM Plex Mono" font-size="8" fill="#4b5da3">ESC. 1:100</text>
         </svg>
-      </div>
-      <div class="caso-body">
         <span class="card-tag">Caso asignado · M1ED108</span>
-        <h3>Resolución de caso: teoría y praxis en tensión</h3>
-        <p>El curso incorpora un caso de estudio documentado que confronta al estudiante con una situación proyectual real, exigiendo la aplicación articulada de los conceptos revisados en el Tema 1: la tríada vitruviana, la evolución del rol profesional del arquitecto y la lectura ideológica de la forma construida.</p>
-        <p>Las preguntas de análisis, sus respuestas fundamentadas y la discusión crítica del caso se presentan de manera extendida en la sección de blog, organizadas como un cuestionario desplegable con referencias directas a la bibliografía del curso.</p>
-        <a href="blog.html" class="btn btn-primary">Leer el blog académico</a>
+        <h3>Teoría y praxis en tensión</h3>
+        <p>El caso confronta al estudiante con una situación proyectual real, exigiendo la aplicación articulada de la tríada vitruviana, la evolución del rol profesional del arquitecto y la lectura ideológica de la forma construida.</p>
+      </div>
+
+      <div class="case-qa" id="qaList">
+        <div class="qa-block open" data-qa>
+          <div class="qa-q">
+            <span class="qa-num">01</span>
+            <h4>¿Cuál es el problema central del caso desde la teoría arquitectónica?</h4>
+            <span class="qa-toggle">+</span>
+          </div>
+          <div class="qa-answer"><div class="qa-answer-inner">
+            <p>El caso expone la dificultad de sostener simultáneamente utilidad, firmeza y belleza cuando las condiciones reales del encargo presionan hacia la resolución de uno de ellos en detrimento de los otros (Vitruvio, 1997). Leído desde Pérez-Gómez, el conflicto también revela cómo la lógica técnico-cuantitativa moderna tiende a desplazar el componente simbólico del proyecto (Pérez-Gómez, 1983).</p>
+          </div></div>
+        </div>
+        <div class="qa-block" data-qa>
+          <div class="qa-q">
+            <span class="qa-num">02</span>
+            <h4>¿Qué rol desempeña el arquitecto y cómo dialoga con la evolución de la profesión?</h4>
+            <span class="qa-toggle">+</span>
+          </div>
+          <div class="qa-answer"><div class="qa-answer-inner">
+            <p>El profesional del caso actúa desde el modelo consolidado en el Renacimiento: un intelectual que media entre cliente, usuario y condiciones técnicas del sitio (Roth, 1999). La metodología proyectual —investigación, programa, hipótesis, zonificación, anteproyecto— permite reconstruir en qué fase se originó la tensión central del caso.</p>
+          </div></div>
+        </div>
+        <div class="qa-block" data-qa>
+          <div class="qa-q">
+            <span class="qa-num">03</span>
+            <h4>¿Cómo se manifiesta el lenguaje formal y la lógica constructiva en la solución?</h4>
+            <span class="qa-toggle">+</span>
+          </div>
+          <div class="qa-answer"><div class="qa-answer-inner">
+            <p>La solución recurre a un eje compositivo claro y a la repetición modular, principios ordenadores descritos por Ching (2015). Leída desde Frampton (1999), la coherencia tectónica de la propuesta —cómo material y estructura se articulan— resulta tan relevante como su lógica compositiva abstracta.</p>
+          </div></div>
+        </div>
+        <div class="qa-block" data-qa>
+          <div class="qa-q">
+            <span class="qa-num">04</span>
+            <h4>¿Qué condicionantes sociales o ideológicos influyen en la decisión de diseño?</h4>
+            <span class="qa-toggle">+</span>
+          </div>
+          <div class="qa-answer"><div class="qa-answer-inner">
+            <p>Toda decisión formal responde a condicionantes que exceden lo disciplinar: presupuesto, expectativas culturales del usuario y modelos heredados de estandarización constructiva (Rossi, 1982). Desde Tafuri (1976), corresponde preguntar a qué estructura de poder y producción sirve la forma propuesta, no solo evaluar su resolución técnica.</p>
+          </div></div>
+        </div>
+        <div class="qa-block" data-qa>
+          <div class="qa-q">
+            <span class="qa-num">05</span>
+            <h4>¿Qué postura crítica propia se sostiene frente a la resolución del caso?</h4>
+            <span class="qa-toggle">+</span>
+          </div>
+          <div class="qa-answer"><div class="qa-answer-inner">
+            <p>Una postura fundamentada evita tanto la condena simplista como la aceptación acrítica: corresponde valorar el equilibrio entre los tres vértices vitruvianos bajo las restricciones dadas y proponer alternativas metodológicas cuando sea pertinente. El ejercicio confirma la tesis central del Tema 1: toda decisión proyectual es, a la vez, teoría, praxis y posicionamiento ideológico.</p>
+          </div></div>
+        </div>
       </div>
     </div>
   </div>
@@ -261,19 +747,21 @@
         <div class="section-kicker">FUENTES CONSULTADAS</div>
         <h2>Referencias bibliográficas</h2>
       </div>
-      <p class="section-note">Formato APA, 7.ª edición.</p>
+      <p class="section-note">Formato APA, 7.ª edición · incluye bibliografía especializada contemporánea.</p>
     </div>
     <div class="refs-list">
       <div class="ref-item"><span class="ref-num">01</span><span><strong>Alberti, L. B.</strong> (2007). <em>De re aedificatoria</em> (J. Fresnillo, Trad.). Akal. (Obra original publicada en 1485).</span></div>
       <div class="ref-item"><span class="ref-num">02</span><span><strong>Ching, F. D. K.</strong> (2015). <em>Arquitectura: Forma, espacio y orden</em> (4.ª ed.). Gustavo Gili.</span></div>
-      <div class="ref-item"><span class="ref-num">03</span><span><strong>Le Corbusier.</strong> (1998). <em>Hacia una arquitectura</em> (J. Sainz, Trad.). Apóstrofe. (Obra original publicada en 1923).</span></div>
-      <div class="ref-item"><span class="ref-num">04</span><span><strong>Murray, P.</strong> (1986). <em>Arquitectura del Renacimiento</em>. Aguilar.</span></div>
+      <div class="ref-item"><span class="ref-num">03</span><span><strong>Frampton, K.</strong> (1999). <em>Estudios sobre cultura tectónica: Poéticas de la construcción en la arquitectura de los siglos XIX y XX</em>. Akal.</span></div>
+      <div class="ref-item"><span class="ref-num">04</span><span><strong>Le Corbusier.</strong> (1998). <em>Hacia una arquitectura</em> (J. Sainz, Trad.). Apóstrofe. (Obra original publicada en 1923).</span></div>
       <div class="ref-item"><span class="ref-num">05</span><span><strong>Neufert, E.</strong> (2013). <em>Arte de proyectar en arquitectura</em> (16.ª ed.). Gustavo Gili.</span></div>
-      <div class="ref-item"><span class="ref-num">06</span><span><strong>Roth, L. M.</strong> (1999). <em>Entender la arquitectura: Sus elementos, historia y significado</em>. Gustavo Gili.</span></div>
-      <div class="ref-item"><span class="ref-num">07</span><span><strong>Rossi, A.</strong> (1982). <em>La arquitectura de la ciudad</em>. Gustavo Gili.</span></div>
-      <div class="ref-item"><span class="ref-num">08</span><span><strong>Taut, B.</strong> (2015). <em>Arquitectura alpina</em>. Pre-Textos. (Obra original publicada en 1919).</span></div>
-      <div class="ref-item"><span class="ref-num">09</span><span><strong>Venturi, R.</strong> (1978). <em>Complejidad y contradicción en la arquitectura</em>. Gustavo Gili.</span></div>
-      <div class="ref-item"><span class="ref-num">10</span><span><strong>Vitruvio, M.</strong> (1997). <em>Los diez libros de arquitectura</em> (D. Rodríguez, Trad.). Alianza Editorial. (Obra original publicada ca. 15 a. C.).</span></div>
+      <div class="ref-item"><span class="ref-num">06</span><span><strong>Pallasmaa, J.</strong> (2006). <em>Los ojos de la piel: La arquitectura y los sentidos</em>. Gustavo Gili.</span></div>
+      <div class="ref-item"><span class="ref-num">07</span><span><strong>Pérez-Gómez, A.</strong> (1983). <em>Architecture and the crisis of modern science</em>. MIT Press.</span></div>
+      <div class="ref-item"><span class="ref-num">08</span><span><strong>Rossi, A.</strong> (1982). <em>La arquitectura de la ciudad</em>. Gustavo Gili.</span></div>
+      <div class="ref-item"><span class="ref-num">09</span><span><strong>Roth, L. M.</strong> (1999). <em>Entender la arquitectura: Sus elementos, historia y significado</em>. Gustavo Gili.</span></div>
+      <div class="ref-item"><span class="ref-num">10</span><span><strong>Tafuri, M.</strong> (1976). <em>Architecture and utopia: Design and capitalist development</em> (B. L. La Penta, Trad.). MIT Press. (Obra original publicada en 1973).</span></div>
+      <div class="ref-item"><span class="ref-num">11</span><span><strong>Venturi, R.</strong> (1978). <em>Complejidad y contradicción en la arquitectura</em>. Gustavo Gili.</span></div>
+      <div class="ref-item"><span class="ref-num">12</span><span><strong>Vitruvio, M.</strong> (1997). <em>Los diez libros de arquitectura</em> (D. Rodríguez, Trad.). Alianza Editorial. (Obra original publicada ca. 15 a. C.).</span></div>
     </div>
   </div>
 </section>
@@ -283,7 +771,7 @@
     <div class="footer-grid">
       <div>
         <div class="footer-brand">
-          <img src="assets/logo.png" alt="EDUCEM">
+          <img src="data:image/png;base64,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" alt="EDUCEM">
           <strong>EDUCEM</strong>
         </div>
         <p style="max-width:36ch; font-size:0.9rem;">Instituto Universitario del Centro de México. Materiales elaborados para el curso Historia de la Arquitectura, Tema 1.</p>
@@ -294,7 +782,6 @@
           <li><a href="#temario">Temario</a></li>
           <li><a href="#evidencias">Evidencias de aprendizaje</a></li>
           <li><a href="#casos">Casos de estudio</a></li>
-          <li><a href="blog.html">Blog académico</a></li>
         </ul>
       </div>
       <div>
@@ -314,6 +801,143 @@
 
 <button class="to-top" id="toTopBtn" aria-label="Volver arriba">↑</button>
 
-<script src="script.js"></script>
+<script>
+// ===================================================================
+// EDUCEM · Historia de la Arquitectura — interacciones del sitio
+// ===================================================================
+(function () {
+  'use strict';
+
+  /* ---------- Menú responsivo ---------- */
+  var navToggle = document.getElementById('navToggle');
+  var navLinks = document.getElementById('navLinks');
+  if (navToggle && navLinks) {
+    navToggle.addEventListener('click', function () {
+      var isOpen = navLinks.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', String(isOpen));
+    });
+    navLinks.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        navLinks.classList.remove('open');
+        navToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+
+  /* ---------- Interfaz de pestañas del temario ---------- */
+  var tabBtns = document.querySelectorAll('.tab-btn');
+  var tabPanels = document.querySelectorAll('.tab-panel');
+  var progressBar = document.getElementById('tabProgressBar');
+
+  function activateTab(key) {
+    tabBtns.forEach(function (btn) {
+      var isActive = btn.getAttribute('data-tab') === key;
+      btn.classList.toggle('active', isActive);
+      btn.setAttribute('aria-selected', String(isActive));
+    });
+    tabPanels.forEach(function (panel) {
+      panel.classList.toggle('active', panel.id === key);
+    });
+    if (progressBar) {
+      var idx = Array.prototype.indexOf.call(tabBtns, Array.prototype.find.call(tabBtns, function (b) {
+        return b.getAttribute('data-tab') === key;
+      }));
+      var pct = ((idx + 1) / tabBtns.length) * 100;
+      progressBar.style.width = pct + '%';
+    }
+  }
+
+  tabBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      activateTab(btn.getAttribute('data-tab'));
+      var panel = document.getElementById(btn.getAttribute('data-tab'));
+      if (panel) {
+        var rect = panel.closest('.tabs').getBoundingClientRect();
+        var offset = window.pageYOffset + rect.top - 90;
+        if (rect.top < 0) window.scrollTo({ top: offset, behavior: 'smooth' });
+      }
+    });
+  });
+
+  /* allow left/right arrow keys to move between tabs */
+  var tabsNav = document.querySelector('.tabs-nav');
+  if (tabsNav) {
+    tabsNav.addEventListener('keydown', function (e) {
+      var current = document.querySelector('.tab-btn.active');
+      var idx = Array.prototype.indexOf.call(tabBtns, current);
+      if (e.key === 'ArrowRight' && idx < tabBtns.length - 1) {
+        tabBtns[idx + 1].focus(); activateTab(tabBtns[idx + 1].getAttribute('data-tab'));
+      } else if (e.key === 'ArrowLeft' && idx > 0) {
+        tabBtns[idx - 1].focus(); activateTab(tabBtns[idx - 1].getAttribute('data-tab'));
+      }
+    });
+  }
+
+  /* ---------- Checklist de evidencias con persistencia local ---------- */
+  var STORAGE_KEY = 'educem-evidencias-progreso';
+  var checkRows = document.querySelectorAll('.check-row[data-key]');
+  var state = {};
+  try { state = JSON.parse(window.localStorage.getItem(STORAGE_KEY) || '{}'); } catch (e) { state = {}; }
+
+  function applyState() {
+    checkRows.forEach(function (row) {
+      var key = row.getAttribute('data-key');
+      if (state[key]) row.classList.add('done');
+    });
+  }
+  function saveState() {
+    try { window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* no-op */ }
+  }
+  checkRows.forEach(function (row) {
+    row.addEventListener('click', function () {
+      var key = row.getAttribute('data-key');
+      var done = row.classList.toggle('done');
+      state[key] = done;
+      saveState();
+    });
+    row.setAttribute('role', 'checkbox');
+    row.setAttribute('tabindex', '0');
+    row.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); row.click(); }
+    });
+  });
+  applyState();
+
+  /* ---------- Acordeón de preguntas (blog) ---------- */
+  var qaBlocks = document.querySelectorAll('[data-qa]');
+  qaBlocks.forEach(function (block) {
+    var q = block.querySelector('.qa-q');
+    q.setAttribute('role', 'button');
+    q.setAttribute('tabindex', '0');
+    function toggle() { block.classList.toggle('open'); }
+    q.addEventListener('click', toggle);
+    q.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+    });
+  });
+
+  /* ---------- Botón volver arriba ---------- */
+  var toTopBtn = document.getElementById('toTopBtn');
+  var topLink = document.getElementById('topLink');
+  function onScroll() {
+    if (!toTopBtn) return;
+    if (window.scrollY > 480) toTopBtn.classList.add('show');
+    else toTopBtn.classList.remove('show');
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  if (toTopBtn) {
+    toTopBtn.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+  if (topLink) {
+    topLink.addEventListener('click', function (e) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+})();
+
+</script>
 </body>
 </html>
